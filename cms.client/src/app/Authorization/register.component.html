@@ -1,0 +1,82 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>Create Your Account</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <!-- Username Input -->
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input id="username"
+               formControlName="username"
+               name="username"
+               required />
+        <div *ngIf="
+            registerForm.controls['username'].invalid &&
+            registerForm.controls['username'].touched
+          ">
+          <small class="error">Username is required and must be at least 3 characters.</small>
+        </div>
+      </div>
+
+      <!-- Email Input -->
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email"
+               formControlName="email"
+               name="email"
+               type="email"
+               required />
+        <div *ngIf="
+            registerForm.controls['email'].invalid &&
+            registerForm.controls['email'].touched
+          ">
+          <small class="error">A valid email is required.</small>
+        </div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input id="password"
+               formControlName="password"
+               name="password"
+               type="password"
+               required />
+        <div *ngIf="
+            registerForm.controls['password'].invalid &&
+            registerForm.controls['password'].touched
+          ">
+          <small class="error">Password is required and must be at least 6 characters.</small>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="register-btn" [disabled]="registerForm.invalid">Register</button>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="message error-message">
+        <small>{{ errorMessage }}</small>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="registrationSuccess" class="message success-message">
+        <small>Registration successful! Redirecting to gallery...</small>
+      </div>
+    </form>
+
+    <div class="alternative-options">
+      <div class="divider">
+        <span>Or</span>
+      </div>
+
+      <div class="action-buttons">
+        <a routerLink="/login" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i> Already have an account? Log in
+        </a>
+
+        <a routerLink="/public-gallery" class="browse-btn">
+          <i class="fas fa-eye"></i> Browse Gallery Without Registration
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

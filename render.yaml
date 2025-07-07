@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: cms-app
+    env: docker
+    buildCommand: ./build.sh
+    startCommand: dotnet CMS.Server.dll
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: cms-db
+          property: connectionString
+      - key: Jwt__Key
+        generateValue: true
+      - key: Jwt__Issuer
+        value: FF Fancy Collection
+      - key: Jwt__Audience
+        value: Customers
+      - key: Cloudinary__CloudName
+        sync: false
+      - key: Cloudinary__ApiKey
+        sync: false
+      - key: Cloudinary__ApiSecret
+        sync: false
+
+databases:
+  - name: cms-db
+    databaseName: cms_db
+    plan: free

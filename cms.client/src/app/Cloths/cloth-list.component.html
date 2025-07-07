@@ -1,0 +1,78 @@
+<div class="cloth-list-container">
+  <header>
+    <h1>Clothing Management</h1>
+  </header>
+
+  <div class="content-grid">
+    <!-- Left side: Form for adding/editing cloths -->
+    <div class="form-section">
+      <div class="card">
+        <h2>{{ clothForm.value.id ? 'Edit' : 'Add New' }} Cloth</h2>
+        <form [formGroup]="clothForm" (ngSubmit)="clothForm.value.id ? updateCloth() : addCloth()">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" formControlName="name" placeholder="e.g. T-Shirt, Jeans" required>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price</label>
+            <div class="price-input">
+              <span class="currency">Rs</span>
+              <input id="price" type="number" step="0.01" formControlName="price" placeholder="0.00" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" placeholder="Product description" rows="3"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">{{ clothForm.value.id ? 'Update' : 'Add' }} Cloth</button>
+            <button type="button" class="btn-secondary" (click)="clothForm.reset()">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card" *ngIf="selectedCloth">
+        <h3>Selected Cloth Details</h3>
+        <div class="selected-item">
+          <p><strong>ID:</strong> {{ selectedCloth.id }}</p>
+          <p><strong>Name:</strong> {{ selectedCloth.name }}</p>
+          <p><strong>Price:</strong> ${{ selectedCloth.price }}</p>
+          <p><strong>Description:</strong> {{ selectedCloth.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side: Cloth list -->
+    <div class="list-section">
+      <div class="card">
+        <h2>Clothing Inventory</h2>
+        <div class="search-bar">
+          <div class="search-input-container">
+            <input type="text" placeholder="Search clothes..." [(ngModel)]="searchTerm">
+            <button class="search-button" (click)="searchClothsButton()">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+        </div>
+
+        <div class="cloth-grid">
+          <div class="cloth-item" *ngFor="let cloth of filteredCloths">
+            <div class="cloth-info">
+              <h3>{{ cloth.name }}</h3>
+              <p class="price">Rs {{ cloth.price }}</p>
+              <p class="description">{{ cloth.description }}</p>
+            </div>
+            <div class="cloth-actions">
+              <button class="btn-edit" (click)="editCloth(cloth)">Edit</button>
+              <button class="btn-info" (click)="getClothById(cloth.id)">Details</button>
+              <button class="btn-delete" (click)="deleteCloth(cloth.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

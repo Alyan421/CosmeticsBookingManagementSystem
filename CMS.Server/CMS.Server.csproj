@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Removed SPA configuration properties -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\EmailService.cs" />
+    <Compile Remove="Services\ExpiredOTPService.cs" />
+    <Compile Remove="Services\IEmailService.cs" />
+    <Compile Remove="Services\IExpiredOTPService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\3rdpartylicenses.txt" />
+    <Content Remove="wwwroot\browser\favicon.ico" />
+    <Content Remove="wwwroot\browser\index.html" />
+    <Content Remove="wwwroot\browser\main-UAMH66Z4.js" />
+    <Content Remove="wwwroot\browser\polyfills-FFHMD2TL.js" />
+    <Content Remove="wwwroot\browser\styles-5INURTSO.css" />
+    <Content Remove="wwwroot\prerendered-routes.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.27.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
+    <!-- Removed Microsoft.AspNetCore.SpaProxy package reference -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <!-- Removed ProjectReference to cms.client.esproj -->
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\3rdpartylicenses.txt" />
+    <None Include="wwwroot\browser\favicon.ico" />
+    <None Include="wwwroot\browser\index.html" />
+    <None Include="wwwroot\browser\main-UAMH66Z4.js" />
+    <None Include="wwwroot\browser\polyfills-FFHMD2TL.js" />
+    <None Include="wwwroot\browser\styles-5INURTSO.css" />
+    <None Include="wwwroot\prerendered-routes.json" />
+  </ItemGroup>
+
+</Project>
