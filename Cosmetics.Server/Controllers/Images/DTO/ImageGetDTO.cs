@@ -9,6 +9,6 @@
         public double Price { get; set; }
         public string BrandName { get; set; }
         public string CategoryName { get; set; }
-        public int AvailableStock { get; set; }
+        public int AvailableProduct { get; set; }
     }
 }

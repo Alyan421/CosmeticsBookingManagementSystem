@@ -15,6 +15,6 @@ namespace CMS.Server.Managers.Images
         Task DeleteAsync(int id);
         Task<List<ImageGetDTO>> FilterByBrandNameAsync(string brandName);
         Task<List<ImageGetDTO>> FilterByCategoryAsync(string categoryName);
-        Task<List<ImageGetDTO>> GetByBrandCategoryIdAsync(int brandId, int categoryId);
+        Task<List<ImageGetDTO>> GetByProductIdAsync(int brandId, int categoryId);
     }
 }

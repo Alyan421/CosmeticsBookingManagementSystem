@@ -5,7 +5,7 @@ import { AuthService } from '../Authorization/auth.service';
 import { CategoryService } from '../Categories/category.service';
 import { BrandService } from '../Brands/brand.service';
 import { ImageService } from '../Images/image.service';
-import { StockService } from '../Stock/stock.service';
+import { ProductService } from '../Product/product.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class AdminDashboardComponent implements OnInit {
     categories: 0,
     brands: 0,
     images: 0,
-    stock: 0
+    product: 0
   };
   isLoading: boolean = true;
 
@@ -35,7 +35,7 @@ export class AdminDashboardComponent implements OnInit {
     private categoryService: CategoryService,
     private brandService: BrandService,
     private imageService: ImageService,
-    private stockService: StockService
+    private productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -72,8 +72,8 @@ export class AdminDashboardComponent implements OnInit {
         console.error('Error fetching images:', error);
         return of([]);
       })),
-      stocks: this.stockService.getAllStock().pipe(catchError(error => {
-        console.error('Error fetching stock:', error);
+      products: this.productService.getAllProduct().pipe(catchError(error => {
+        console.error('Error fetching product:', error);
         return of([]);
       }))
     }).subscribe({
@@ -82,7 +82,7 @@ export class AdminDashboardComponent implements OnInit {
           categories: results.categories.length,
           brands: results.brands.length,
           images: results.images.length,
-          stock: results.stocks.length
+          product: results.products.length
         };
         this.isLoading = false;
       },

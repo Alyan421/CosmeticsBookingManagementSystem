@@ -6,7 +6,7 @@ import { CategoryService } from '../Categories/category.service';
 import { NotificationService } from '../core/notification.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { StockService, Stock, StockUpdate } from '../Stock/stock.service';
+import { ProductService, Product, ProductUpdate } from '../Product/product.service';
 
 interface ImageData {
   id: number;
@@ -43,7 +43,7 @@ export class ImageUploadComponent implements OnInit, OnChanges {
     private imageService: ImageService,
     private brandService: BrandService,
     private categoryService: CategoryService,
-    private stockService: StockService,
+    private productService: ProductService,
     private notification: NotificationService,
     private router: Router
   ) {
@@ -51,7 +51,7 @@ export class ImageUploadComponent implements OnInit, OnChanges {
       file: [null, this.isUpdateMode ? null : Validators.required],
       brandId: ['', Validators.required],
       categoryId: ['', Validators.required],
-      availableStock: [0, [Validators.required, Validators.min(0)]]
+      availableProduct: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -68,24 +68,24 @@ export class ImageUploadComponent implements OnInit, OnChanges {
   prepopulateForm(): void {
     if (!this.imageToUpdate) return;
 
-    // Fetch stock data to get available stock
-    this.stockService.getStock(
+    // Fetch product data to get available product
+    this.productService.getProduct(
       this.imageToUpdate.brandId,
       this.imageToUpdate.categoryId
     ).subscribe({
-      next: (stockData: Stock) => {
+      next: (productData: Product) => {
         this.uploadForm.patchValue({
           brandId: this.imageToUpdate?.brandId,
           categoryId: this.imageToUpdate?.categoryId,
-          availableStock: stockData?.availableStock || 0
+          availableProduct: productData?.availableProduct || 0
         });
 
         // Show the current image preview - ensure we handle undefined
         this.imagePreview = this.imageToUpdate?.url || null;
       },
       error: (error: any) => {
-        console.error('Error fetching stock data:', error);
-        // Still set the brand and category IDs even if stock fetch fails
+        console.error('Error fetching product data:', error);
+        // Still set the brand and category IDs even if product fetch fails
         this.uploadForm.patchValue({
           brandId: this.imageToUpdate?.brandId,
           categoryId: this.imageToUpdate?.categoryId
@@ -162,15 +162,15 @@ export class ImageUploadComponent implements OnInit, OnChanges {
       formData.append('imagefile', formValues.file);
     }
 
-    // First create/update the stock entry
-    const stockData: StockUpdate = {
+    // First create/update the product entry
+    const productData: ProductUpdate = {
       brandId: formValues.brandId,
       categoryId: formValues.categoryId,
-      availableStock: formValues.availableStock
+      availableProduct: formValues.availableProduct
     };
 
-    this.stockService.updateStock(stockData).subscribe({
-      next: (stockResponse: Stock) => {
+    this.productService.updateProduct(productData).subscribe({
+      next: (productResponse: Product) => {
         // Now upload/update the image
         if (this.isUpdateMode && this.imageToUpdate) {
           // Update existing image
@@ -196,7 +196,7 @@ export class ImageUploadComponent implements OnInit, OnChanges {
           // Upload new image
           this.imageService.uploadImage(formData).subscribe({
             next: (response) => {
-              this.notification.success('Image uploaded and stock created successfully');
+              this.notification.success('Image uploaded and product created successfully');
               this.resetForm();
               this.router.navigate(['/images']);
             },
@@ -209,8 +209,8 @@ export class ImageUploadComponent implements OnInit, OnChanges {
         }
       },
       error: (error: any) => {
-        this.notification.error('Failed to update stock');
-        console.error('Error updating stock:', error);
+        this.notification.error('Failed to update product');
+        console.error('Error updating product:', error);
         this.isLoading = false;
       }
     });
@@ -221,7 +221,7 @@ export class ImageUploadComponent implements OnInit, OnChanges {
       file: null,
       brandId: '',
       categoryId: '',
-      availableStock: 0
+      availableProduct: 0
     });
     this.imagePreview = null;
   }

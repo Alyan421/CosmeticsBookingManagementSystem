@@ -15,18 +15,18 @@ namespace CMS.Server.Managers.Images
     public class ImageManager : IImageManager
     {
         private readonly IGenericRepository<Image> _imageRepository;
-        private readonly IGenericRepository<BrandCategory> _brandCategoryRepository;
+        private readonly IGenericRepository<Product> _productRepository;
         private readonly IImageStorageService _imageStorage;
         private readonly AMSDbContext _context;
 
         public ImageManager(
             IGenericRepository<Image> imageRepository,
-            IGenericRepository<BrandCategory> brandCategoryRepository,
+            IGenericRepository<Product> productRepository,
             IImageStorageService imageStorage,
             AMSDbContext context)
         {
             _imageRepository = imageRepository;
-            _brandCategoryRepository = brandCategoryRepository;
+            _productRepository = productRepository;
             _imageStorage = imageStorage;
             _context = context;
         }
@@ -35,9 +35,9 @@ namespace CMS.Server.Managers.Images
         {
             // Get all images with their brand-category relationships
             var images = await _imageRepository.GetDbSet()
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Category)
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Brand)
                 .ToListAsync();
 
@@ -47,19 +47,19 @@ namespace CMS.Server.Managers.Images
                 BrandId = i.BrandId,
                 CategoryId = i.CategoryId,
                 URL = i.URL,
-                CategoryName = i.BrandCategory?.Category?.CategoryName ?? "Unknown",
-                BrandName = i.BrandCategory?.Brand?.Name ?? "Unknown",
-                Price = i.BrandCategory?.Brand?.Price ?? 0,
-                AvailableStock = i.BrandCategory?.AvailableStock ?? 0
+                CategoryName = i.Product?.Category?.CategoryName ?? "Unknown",
+                BrandName = i.Product?.Brand?.Name ?? "Unknown",
+                Price = i.Product?.Price ?? 0, // Updated: Get Price from Product
+                AvailableProduct = i.Product?.AvailableProduct ?? 0
             }).ToList();
         }
 
-        public async Task<List<ImageGetDTO>> GetByBrandCategoryIdAsync(int brandId, int categoryId)
+        public async Task<List<ImageGetDTO>> GetByProductIdAsync(int brandId, int categoryId)
         {
             var images = await _imageRepository.GetDbSet()
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Category)
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Brand)
                 .Where(i => i.BrandId == brandId && i.CategoryId == categoryId)
                 .ToListAsync();
@@ -70,10 +70,10 @@ namespace CMS.Server.Managers.Images
                 BrandId = i.BrandId,
                 CategoryId = i.CategoryId,
                 URL = i.URL,
-                CategoryName = i.BrandCategory?.Category?.CategoryName ?? "Unknown",
-                BrandName = i.BrandCategory?.Brand?.Name ?? "Unknown",
-                Price = i.BrandCategory?.Brand?.Price ?? 0,
-                AvailableStock = i.BrandCategory?.AvailableStock ?? 0
+                CategoryName = i.Product?.Category?.CategoryName ?? "Unknown",
+                BrandName = i.Product?.Brand?.Name ?? "Unknown",
+                Price = i.Product?.Price ?? 0, // Updated: Get Price from Product
+                AvailableProduct = i.Product?.AvailableProduct ?? 0
             }).ToList();
         }
 
@@ -81,18 +81,18 @@ namespace CMS.Server.Managers.Images
         public async Task<List<ImageGetDTO>> GetByCategoryIdAsync(int categoryId)
         {
             // Find all brand-category combinations with this category
-            var brandCategories = await _context.BrandCategories
+            var products = await _context.Products
                 .Where(cc => cc.CategoryId == categoryId)
                 .ToListAsync();
 
-            if (!brandCategories.Any())
+            if (!products.Any())
                 return new List<ImageGetDTO>();
 
             // Get images for these brand-category combinations
             var images = await _imageRepository.GetDbSet()
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Category)
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Brand)
                 .Where(i => i.CategoryId == categoryId)
                 .ToListAsync();
@@ -103,19 +103,19 @@ namespace CMS.Server.Managers.Images
                 BrandId = i.BrandId,
                 CategoryId = i.CategoryId,
                 URL = i.URL,
-                CategoryName = i.BrandCategory?.Category?.CategoryName ?? "Unknown",
-                BrandName = i.BrandCategory?.Brand?.Name ?? "Unknown",
-                Price = i.BrandCategory?.Brand?.Price ?? 0,
-                AvailableStock = i.BrandCategory?.AvailableStock ?? 0
+                CategoryName = i.Product?.Category?.CategoryName ?? "Unknown",
+                BrandName = i.Product?.Brand?.Name ?? "Unknown",
+                Price = i.Product?.Price ?? 0, // Updated: Get Price from Product
+                AvailableProduct = i.Product?.AvailableProduct ?? 0
             }).ToList();
         }
 
         public async Task<ImageGetDTO> GetByIdAsync(int id)
         {
             var image = await _imageRepository.GetDbSet()
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Category)
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Brand)
                 .FirstOrDefaultAsync(i => i.Id == id);
 
@@ -127,10 +127,10 @@ namespace CMS.Server.Managers.Images
                 BrandId = image.BrandId,
                 CategoryId = image.CategoryId,
                 URL = image.URL,
-                CategoryName = image.BrandCategory?.Category?.CategoryName ?? "Unknown",
-                BrandName = image.BrandCategory?.Brand?.Name ?? "Unknown",
-                Price = image.BrandCategory?.Brand?.Price ?? 0,
-                AvailableStock = image.BrandCategory?.AvailableStock ?? 0
+                CategoryName = image.Product?.Category?.CategoryName ?? "Unknown",
+                BrandName = image.Product?.Brand?.Name ?? "Unknown",
+                Price = image.Product?.Price ?? 0, // Updated: Get Price from Product
+                AvailableProduct = image.Product?.AvailableProduct ?? 0
             };
         }
 
@@ -147,9 +147,9 @@ namespace CMS.Server.Managers.Images
 
             // Get images for these brands
             var images = await _imageRepository.GetDbSet()
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Category)
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Brand)
                 .Where(i => brandIds.Contains(i.BrandId))
                 .ToListAsync();
@@ -160,10 +160,10 @@ namespace CMS.Server.Managers.Images
                 BrandId = i.BrandId,
                 CategoryId = i.CategoryId,
                 URL = i.URL,
-                CategoryName = i.BrandCategory?.Category?.CategoryName ?? "Unknown",
-                BrandName = i.BrandCategory?.Brand?.Name ?? "Unknown",
-                Price = i.BrandCategory?.Brand?.Price ?? 0,
-                AvailableStock = i.BrandCategory?.AvailableStock ?? 0
+                CategoryName = i.Product?.Category?.CategoryName ?? "Unknown",
+                BrandName = i.Product?.Brand?.Name ?? "Unknown",
+                Price = i.Product?.Price ?? 0, // Updated: Get Price from Product
+                AvailableProduct = i.Product?.AvailableProduct ?? 0
             }).ToList();
         }
 
@@ -180,9 +180,9 @@ namespace CMS.Server.Managers.Images
 
             // Get images for these categories
             var images = await _imageRepository.GetDbSet()
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Category)
-                .Include(i => i.BrandCategory)
+                .Include(i => i.Product)
                 .ThenInclude(cc => cc.Brand)
                 .Where(i => categoryIds.Contains(i.CategoryId))
                 .ToListAsync();
@@ -193,22 +193,22 @@ namespace CMS.Server.Managers.Images
                 BrandId = i.BrandId,
                 CategoryId = i.CategoryId,
                 URL = i.URL,
-                CategoryName = i.BrandCategory?.Category?.CategoryName ?? "Unknown",
-                BrandName = i.BrandCategory?.Brand?.Name ?? "Unknown",
-                Price = i.BrandCategory?.Brand?.Price ?? 0,
-                AvailableStock = i.BrandCategory?.AvailableStock ?? 0
+                CategoryName = i.Product?.Category?.CategoryName ?? "Unknown",
+                BrandName = i.Product?.Brand?.Name ?? "Unknown",
+                Price = i.Product?.Price ?? 0, // Updated: Get Price from Product
+                AvailableProduct = i.Product?.AvailableProduct ?? 0
             }).ToList();
         }
 
         public async Task<ImageGetDTO> CreateAsync(ImageCreateDTO dto, IFormFile file)
         {
-            // Find the BrandCategory record
-            var brandCategory = await _context.BrandCategories
+            // Find the Product record
+            var product = await _context.Products
                 .Include(cc => cc.Brand)
                 .Include(cc => cc.Category)
                 .FirstOrDefaultAsync(cc => cc.BrandId == dto.BrandId && cc.CategoryId == dto.CategoryId);
 
-            if (brandCategory == null)
+            if (product == null)
             {
                 throw new KeyNotFoundException($"No relationship found between brand ID {dto.BrandId} and category ID {dto.CategoryId}");
             }
@@ -235,10 +235,10 @@ namespace CMS.Server.Managers.Images
                     BrandId = existingImage.BrandId,
                     CategoryId = existingImage.CategoryId,
                     URL = existingImage.URL,
-                    CategoryName = brandCategory.Category?.CategoryName ?? "Unknown",
-                    BrandName = brandCategory.Brand?.Name ?? "Unknown",
-                    Price = brandCategory.Brand?.Price ?? 0,
-                    AvailableStock = brandCategory.AvailableStock
+                    CategoryName = product.Category?.CategoryName ?? "Unknown",
+                    BrandName = product.Brand?.Name ?? "Unknown",
+                    Price = product.Price, // Updated: Get Price from Product
+                    AvailableProduct = product.AvailableProduct
                 };
             }
             else
@@ -259,10 +259,10 @@ namespace CMS.Server.Managers.Images
                     BrandId = image.BrandId,
                     CategoryId = image.CategoryId,
                     URL = image.URL,
-                    CategoryName = brandCategory.Category?.CategoryName ?? "Unknown",
-                    BrandName = brandCategory.Brand?.Name ?? "Unknown",
-                    Price = brandCategory.Brand?.Price ?? 0,
-                    AvailableStock = brandCategory.AvailableStock
+                    CategoryName = product.Category?.CategoryName ?? "Unknown",
+                    BrandName = product.Brand?.Name ?? "Unknown",
+                    Price = product.Price, // Updated: Get Price from Product
+                    AvailableProduct = product.AvailableProduct
                 };
             }
         }
@@ -279,11 +279,11 @@ namespace CMS.Server.Managers.Images
                 image.URL = newUrl;
             }
 
-            // Find the BrandCategory record
-            var brandCategory = await _context.BrandCategories
+            // Find the Product record
+            var product = await _context.Products
                 .FirstOrDefaultAsync(cc => cc.BrandId == dto.BrandId && cc.CategoryId == dto.CategoryId);
 
-            if (brandCategory == null)
+            if (product == null)
             {
                 throw new KeyNotFoundException($"No relationship found between brand ID {dto.BrandId} and category ID {dto.CategoryId}");
             }

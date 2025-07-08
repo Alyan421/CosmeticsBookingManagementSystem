@@ -47,6 +47,7 @@
   <!-- Removed ProjectReference to cms.client.esproj -->
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

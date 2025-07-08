@@ -14,16 +14,16 @@ namespace CMS.Server.Managers.Categories
     public class CategoryManager : ICategoryManager
     {
         private readonly IGenericRepository<Category> _categoryRepository;
-        private readonly IGenericRepository<BrandCategory> _brandCategoryRepository;
+        private readonly IGenericRepository<Product> _productRepository;
         private readonly IMapper _mapper;
 
         public CategoryManager(
             IGenericRepository<Category> categoryRepository,
-            IGenericRepository<BrandCategory> brandCategoryRepository,
+            IGenericRepository<Product> productRepository,
             IMapper mapper)
         {
             _categoryRepository = categoryRepository;
-            _brandCategoryRepository = brandCategoryRepository;
+            _productRepository = productRepository;
             _mapper = mapper;
         }
 
@@ -32,7 +32,7 @@ namespace CMS.Server.Managers.Categories
             try
             {
                 var query = _categoryRepository.GetDbSet()
-                    .Include(c => c.BrandCategories)
+                    .Include(c => c.Products)
                     .ThenInclude(cc => cc.Brand);
 
                 return (await _categoryRepository.GetListAsync(c => true)).ToList();
@@ -130,7 +130,7 @@ namespace CMS.Server.Managers.Categories
                 }
 
                 // Check if category is associated with any brands
-                var hasAssociatedBrands = await _brandCategoryRepository.ExistsAsync(cc => cc.CategoryId == id);
+                var hasAssociatedBrands = await _productRepository.ExistsAsync(cc => cc.CategoryId == id);
                 if (hasAssociatedBrands)
                 {
                     throw new InvalidOperationException("Cannot delete category as it is associated with one or more brands. Please remove these associations first.");

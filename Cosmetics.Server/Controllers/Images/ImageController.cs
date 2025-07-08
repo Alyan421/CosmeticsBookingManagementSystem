@@ -36,9 +36,9 @@ namespace CMS.Server.Controllers.Images
         }
 
         [HttpGet("by-brand-category")]
-        public async Task<IActionResult> GetByBrandCategory(int brandId, int categoryId)
+        public async Task<IActionResult> GetByProduct(int brandId, int categoryId)
         {
-            var result = await _manager.GetByBrandCategoryIdAsync(brandId, categoryId);
+            var result = await _manager.GetByProductIdAsync(brandId, categoryId);
             return Ok(result);
         }
 
@@ -65,20 +65,21 @@ namespace CMS.Server.Controllers.Images
                 return BadRequest("Image is required");
 
             // Check if the brand-category combination exists
-            var brandCategory = await _context.BrandCategories
+            var product = await _context.Products
                 .FirstOrDefaultAsync(cc => cc.BrandId == dto.BrandId && cc.CategoryId == dto.CategoryId);
 
-            if (brandCategory == null)
+            if (product == null)
             {
                 // Create the brand-category relationship if it doesn't exist
-                brandCategory = new BrandCategory
+                product = new Product
                 {
                     BrandId = dto.BrandId,
                     CategoryId = dto.CategoryId,
-                    AvailableStock = 0 // Default stock
+                    AvailableProduct = 0, // Default product
+                    Price = 0.0 // Default price
                 };
 
-                _context.BrandCategories.Add(brandCategory);
+                _context.Products.Add(product);
                 await _context.SaveChangesAsync();
             }
 
@@ -89,9 +90,9 @@ namespace CMS.Server.Controllers.Images
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id,
-    [FromForm] int brandId,
-    [FromForm] int categoryId,
-    [FromForm] IFormFile imagefile = null)
+        [FromForm] int brandId,
+        [FromForm] int categoryId,
+        [FromForm] IFormFile imagefile = null)
         {
             var dto = new ImageUpdateDTO
             {
@@ -101,20 +102,21 @@ namespace CMS.Server.Controllers.Images
             };
 
             // Check if the brand-category combination exists
-            var brandCategory = await _context.BrandCategories
+            var product = await _context.Products
             .FirstOrDefaultAsync(cc => cc.BrandId == dto.BrandId && cc.CategoryId == dto.CategoryId);
 
-            if (brandCategory == null)
+            if (product == null)
             {
                 // Create the brand-category relationship if it doesn't exist
-                brandCategory = new BrandCategory
+                product = new Product
                 {
                     BrandId = dto.BrandId,
                     CategoryId = dto.CategoryId,
-                    AvailableStock = 0 // Default stock
+                    AvailableProduct = 0, // Default product
+                    Price = 0.0 // Default price
                 };
 
-                _context.BrandCategories.Add(brandCategory);
+                _context.Products.Add(product);
                 await _context.SaveChangesAsync();
             }
 
@@ -150,23 +152,23 @@ namespace CMS.Server.Controllers.Images
             try
             {
                 // Get all brand-category combinations for this brand
-                var brandCategories = await _context.BrandCategories
+                var products = await _context.Products
                     .Where(cc => cc.BrandId == brandId)
                     .ToListAsync();
 
-                if (!brandCategories.Any())
+                if (!products.Any())
                 {
                     return Ok(new List<ImageGetDTO>());
                 }
 
                 // Get images for these brand-category combinations
                 var images = new List<ImageGetDTO>();
-                foreach (var brandCategory in brandCategories)
+                foreach (var product in products)
                 {
-                    var brandCategoryImages = await _manager.GetByBrandCategoryIdAsync(brandCategory.BrandId, brandCategory.CategoryId);
-                    if (brandCategoryImages != null && brandCategoryImages.Any())
+                    var productImages = await _manager.GetByProductIdAsync(product.BrandId, product.CategoryId);
+                    if (productImages != null && productImages.Any())
                     {
-                        images.AddRange(brandCategoryImages);
+                        images.AddRange(productImages);
                     }
                 }
 

@@ -100,10 +100,9 @@ namespace CMS.Server.Controllers.Brands
 
                 // Update basic properties
                 existingBrand.Name = brandUpdateDTO.Name;
-                existingBrand.Price = brandUpdateDTO.Price;
                 existingBrand.Description = brandUpdateDTO.Description;
 
-                // MISSING LINE: Save the updated brand
+                // Save the updated brand
                 await _brandManager.UpdateBrandAsync(existingBrand);
 
                 var brandDTO = _mapper.Map<BrandGetDTO>(existingBrand);

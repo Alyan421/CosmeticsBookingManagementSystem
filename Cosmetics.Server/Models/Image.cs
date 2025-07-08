@@ -9,5 +9,5 @@ public class Image : BaseEntity<int>
     public int CategoryId { get; set; }
 
     // Navigation property
-    public BrandCategory BrandCategory { get; set; }
+    public Product Product { get; set; }
 }

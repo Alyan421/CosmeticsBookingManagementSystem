@@ -394,19 +394,19 @@ header {
   margin-bottom: 8px;
 }
 
-.product-stock {
+.product-product {
   font-size: 13px;
   padding: 4px 8px;
   border-radius: 4px;
   display: inline-block;
 }
 
-.in-stock {
+.in-product {
   background-category: #e8f5e9;
   category: #2e7d32;
 }
 
-.out-of-stock {
+.out-of-product {
   background-category: #ffebee;
   category: #c62828;
 }

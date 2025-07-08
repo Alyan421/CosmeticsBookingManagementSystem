@@ -14,16 +14,16 @@ namespace CMS.Server.Managers.Brands
     public class BrandManager : IBrandManager
     {
         private readonly IGenericRepository<Brand> _brandRepository;
-        private readonly IGenericRepository<BrandCategory> _brandCategoryRepository;
+        private readonly IGenericRepository<Product> _productRepository;
         private readonly IMapper _mapper;
 
         public BrandManager(
             IGenericRepository<Brand> brandRepository,
-            IGenericRepository<BrandCategory> brandCategoryRepository,
+            IGenericRepository<Product> productRepository,
             IMapper mapper)
         {
             _brandRepository = brandRepository;
-            _brandCategoryRepository = brandCategoryRepository;
+            _productRepository = productRepository;
             _mapper = mapper;
         }
 
@@ -71,7 +71,7 @@ namespace CMS.Server.Managers.Brands
                     return false; // Brand not found
                 }
 
-                var hasAssociatedBrands = await _brandCategoryRepository.ExistsAsync(cc => cc.BrandId == id);
+                var hasAssociatedBrands = await _productRepository.ExistsAsync(cc => cc.BrandId == id);
                 if (hasAssociatedBrands)
                 {
                     throw new InvalidOperationException("Cannot delete brand as it is associated with one or more brands. Please remove these associations first.");

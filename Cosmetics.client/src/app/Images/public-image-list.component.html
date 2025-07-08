@@ -103,8 +103,8 @@
             <span>{{ image.categoryName || getCategoryName(image.categoryId) }}</span>
           </div>
           <div class="product-price">{{ currency }} {{ image.price }}</div>
-          <div class="product-stock" [class.in-stock]="image.availableStock > 0" [class.out-of-stock]="image.availableStock === 0">
-            {{ image.availableStock > 0 ? 'In Stock' : 'Out of Stock' }}
+          <div class="product-product" [class.in-product]="image.availableProduct > 0" [class.out-of-product]="image.availableProduct === 0">
+            {{ image.availableProduct > 0 ? 'In Product' : 'Out of Product' }}
           </div>
         </div>
       </div>
@@ -147,8 +147,8 @@
           <span>{{ selectedImage.categoryName || getCategoryName(selectedImage.categoryId) }}</span>
         </div>
         <div class="product-price">{{ currency }} {{ selectedImage.price }}</div>
-        <div class="product-stock" [class.in-stock]="selectedImage.availableStock > 0" [class.out-of-stock]="selectedImage.availableStock === 0">
-          {{ selectedImage.availableStock > 0 ? 'In Stock: ' + selectedImage.availableStock + ' available' : 'Out of Stock' }}
+        <div class="product-product" [class.in-product]="selectedImage.availableProduct > 0" [class.out-of-product]="selectedImage.availableProduct === 0">
+          {{ selectedImage.availableProduct > 0 ? 'In Product: ' + selectedImage.availableProduct + ' available' : 'Out of Product' }}
         </div>
       </div>
     </div>

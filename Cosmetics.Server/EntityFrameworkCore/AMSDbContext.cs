@@ -13,7 +13,7 @@ namespace CMS.Server.EntityFrameworkCore
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<BrandCategory> BrandCategories { get; set; }  // Add the junction table
+        public DbSet<Product> Products { get; set; }  // Add the junction table
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,22 +51,23 @@ namespace CMS.Server.EntityFrameworkCore
                       .HasMaxLength(50);
             });
 
-            // Configure BrandCategory (Junction Table)
-            modelBuilder.Entity<BrandCategory>(entity =>
+            // Configure Product (Junction Table)
+            modelBuilder.Entity<Product>(entity =>
             {
                 // Set composite key
                 entity.HasKey(cc => new { cc.BrandId, cc.CategoryId });
-                entity.Property(e => e.AvailableStock).IsRequired();
+                entity.Property(e => e.AvailableProduct).IsRequired();
+                entity.Property(e => e.Price).IsRequired(); // Add Price property configuration
 
                 // Configure many-to-many relationship with Brand
                 entity.HasOne(cc => cc.Brand)
-                      .WithMany(c => c.BrandCategories)
+                      .WithMany(c => c.Products)
                       .HasForeignKey(cc => cc.BrandId)
                       .OnDelete(DeleteBehavior.Cascade);
 
                 // Configure many-to-many relationship with Category
                 entity.HasOne(cc => cc.Category)
-                      .WithMany(c => c.BrandCategories)
+                      .WithMany(c => c.Products)
                       .HasForeignKey(cc => cc.CategoryId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
@@ -83,8 +84,8 @@ namespace CMS.Server.EntityFrameworkCore
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.Price).IsRequired();
                 entity.Property(e => e.Description).HasMaxLength(500);
+                // Removed Price property from Brand
             });
 
             // Configure Image entity
@@ -94,7 +95,7 @@ namespace CMS.Server.EntityFrameworkCore
                 entity.Property(e => e.URL).IsRequired().HasMaxLength(500);
 
                 // Configure relationship with composite foreign key
-                entity.HasOne(i => i.BrandCategory)
+                entity.HasOne(i => i.Product)
                       .WithOne(cc => cc.Image)
                       .HasForeignKey<Image>(i => new { i.BrandId, i.CategoryId })
                       .OnDelete(DeleteBehavior.Cascade);

@@ -67,9 +67,9 @@
               </div>
             </div>
             <div class="category-actions">
-              <!-- Link to stock management for this category -->
-              <a [routerLink]="['/admin/stock']" [queryParams]="{categoryId: category.id}" class="btn btn-info btn-sm">
-                <i class="fas fa-boxes"></i> Manage Stock
+              <!-- Link to product management for this category -->
+              <a [routerLink]="['/admin/product']" [queryParams]="{categoryId: category.id}" class="btn btn-info btn-sm">
+                <i class="fas fa-boxes"></i> Manage Product
               </a>
               <button class="btn btn-primary btn-sm" (click)="editCategory(category)">
                 <i class="fas fa-edit"></i> Edit

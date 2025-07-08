@@ -12,10 +12,10 @@ namespace CMS.Server.Controllers.Images
             CreateMap<Image, ImageGetDTO>()
                 .ForMember(dest => dest.BrandId, opt => opt.MapFrom(src => src.BrandId))
                 .ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId))
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.BrandCategory.Category.CategoryName))
-                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.BrandCategory.Brand.Name))
-                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.BrandCategory.Brand.Price))
-                .ForMember(dest => dest.AvailableStock, opt => opt.MapFrom(src => src.BrandCategory.AvailableStock));
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Product.Category.CategoryName))
+                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.Product.Brand.Name))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Product.Price)) // Updated: Get Price from Product
+                .ForMember(dest => dest.AvailableProduct, opt => opt.MapFrom(src => src.Product.AvailableProduct));
 
             // Update mapping for DTOs to entity
             CreateMap<ImageCreateDTO, Image>()

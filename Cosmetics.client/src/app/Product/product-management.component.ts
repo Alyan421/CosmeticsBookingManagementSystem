@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StockService, Stock, StockUpdate } from './stock.service';
+import { ProductService, Product, ProductUpdate } from './product.service';
 import { BrandService } from '../Brands/brand.service';
 import { CategoryService } from '../Categories/category.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -9,9 +9,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-stock-management',
-  templateUrl: './stock-management.component.html',
-  styleUrls: ['./stock-management.component.css'],
+  selector: 'app-product-management',
+  templateUrl: './product-management.component.html',
+  styleUrls: ['./product-management.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -20,12 +20,12 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
     RouterModule
   ]
 })
-export class StockManagementComponent implements OnInit {
-  stocks: Stock[] = [];
-  filteredStocks: Stock[] = [];
+export class ProductManagementComponent implements OnInit {
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
   brands: any[] = [];
   categories: any[] = [];
-  stockForm: FormGroup;
+  productForm: FormGroup;
   isLoading = true;
   isSubmitting = false;
   isEditing = false; // Add this variable declaration
@@ -35,17 +35,17 @@ export class StockManagementComponent implements OnInit {
   totalItems = 0;
 
   constructor(
-    private stockService: StockService,
+    private productService: ProductService,
     private brandService: BrandService,
     private categoryService: CategoryService,
     private fb: FormBuilder,
     private notification: NotificationService,
     private route: ActivatedRoute
   ) {
-    this.stockForm = this.fb.group({
+    this.productForm = this.fb.group({
       brandId: ['', Validators.required],
       categoryId: ['', Validators.required],
-      availableStock: [0, [Validators.required, Validators.min(0)]]
+      availableProduct: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -59,22 +59,22 @@ export class StockManagementComponent implements OnInit {
         this.searchTerm = ''; // Clear any existing search
 
         // Filter by the specified category ID
-        this.stockService.getStockByCategory(categoryId).subscribe({
+        this.productService.getProductByCategory(categoryId).subscribe({
           next: (data) => {
-            this.stocks = data;
-            this.filteredStocks = [...this.stocks];
-            this.totalItems = this.filteredStocks.length;
+            this.products = data;
+            this.filteredProducts = [...this.products];
+            this.totalItems = this.filteredProducts.length;
             this.paginate();
             this.isLoading = false;
           },
           error: (error) => {
-            this.notification.error('Failed to load stock data for category');
-            console.error('Error loading stock data:', error);
+            this.notification.error('Failed to load product data for category');
+            console.error('Error loading product data:', error);
             this.isLoading = false;
           }
         });
       } else {
-        // Load all stock data as normal
+        // Load all product data as normal
         this.loadData();
       }
     });
@@ -83,17 +83,17 @@ export class StockManagementComponent implements OnInit {
   loadData(): void {
     this.isLoading = true;
 
-    // Load brands, categories, and stocks in parallel
+    // Load brands, categories, and products in parallel
     forkJoin({
       brands: this.brandService.getAllBrands(),
       categories: this.categoryService.getAllCategories(),
-      stocks: this.stockService.getAllStock()
+      products: this.productService.getAllProduct()
     }).subscribe({
       next: (data) => {
         this.brands = data.brands;
         this.categories = data.categories;
-        this.stocks = data.stocks;
-        this.filterStocks();
+        this.products = data.products;
+        this.filterProducts();
         this.isLoading = false;
       },
       error: (error) => {
@@ -104,24 +104,24 @@ export class StockManagementComponent implements OnInit {
     });
   }
 
-  filterStocks(): void {
+  filterProducts(): void {
     if (!this.searchTerm) {
-      this.filteredStocks = [...this.stocks];
+      this.filteredProducts = [...this.products];
     } else {
       const term = this.searchTerm.toLowerCase();
-      this.filteredStocks = this.stocks.filter(stock =>
-        stock.brandName.toLowerCase().includes(term) ||
-        stock.categoryName.toLowerCase().includes(term)
+      this.filteredProducts = this.products.filter(product =>
+        product.brandName.toLowerCase().includes(term) ||
+        product.categoryName.toLowerCase().includes(term)
       );
     }
 
-    this.totalItems = this.filteredStocks.length;
+    this.totalItems = this.filteredProducts.length;
     this.paginate();
   }
 
   paginate(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    this.filteredStocks = [...this.stocks].slice(startIndex, startIndex + this.itemsPerPage);
+    this.filteredProducts = [...this.products].slice(startIndex, startIndex + this.itemsPerPage);
   }
 
   onPageChange(page: number): void {
@@ -131,7 +131,7 @@ export class StockManagementComponent implements OnInit {
 
   onSearch(): void {
     this.currentPage = 1;
-    this.filterStocks();
+    this.filterProducts();
   }
 
   getMinValue(a: number, b: number): number {
@@ -147,7 +147,7 @@ export class StockManagementComponent implements OnInit {
   }
 
   submitForm(): void {
-    if (this.stockForm.invalid) {
+    if (this.productForm.invalid) {
       this.notification.error('Please fill in all required fields correctly');
       return;
     }
@@ -155,59 +155,59 @@ export class StockManagementComponent implements OnInit {
     this.isSubmitting = true;
 
     // Use getRawValue() instead of value to include disabled controls
-    const stockData: StockUpdate = this.stockForm.getRawValue();
+    const productData: ProductUpdate = this.productForm.getRawValue();
 
-    this.stockService.updateStock(stockData).subscribe({
+    this.productService.updateProduct(productData).subscribe({
       next: (response) => {
         // Only handle update case now
-        const index = this.stocks.findIndex(s =>
-          s.brandId === stockData.brandId && s.categoryId === stockData.categoryId);
+        const index = this.products.findIndex(s =>
+          s.brandId === productData.brandId && s.categoryId === productData.categoryId);
 
         if (index !== -1) {
-          this.stocks[index] = response;
-          this.notification.success('Stock updated successfully');
+          this.products[index] = response;
+          this.notification.success('Product updated successfully');
         }
 
         this.resetForm();
-        this.filterStocks();
+        this.filterProducts();
         this.isSubmitting = false;
       },
       error: (error) => {
-        this.notification.error(error.error || 'Failed to update stock');
-        console.error('Error updating stock:', error);
+        this.notification.error(error.error || 'Failed to update product');
+        console.error('Error updating product:', error);
         this.isSubmitting = false;
       }
     });
   }
 
-  editStock(stock: Stock): void {
+  editProduct(product: Product): void {
     this.isEditing = true;
-    this.stockForm.patchValue({
-      brandId: stock.brandId,
-      categoryId: stock.categoryId,
-      availableStock: stock.availableStock
+    this.productForm.patchValue({
+      brandId: product.brandId,
+      categoryId: product.categoryId,
+      availableProduct: product.availableProduct
     });
 
     // Disable brand and category selection during edit
-    this.stockForm.get('brandId')?.disable();
-    this.stockForm.get('categoryId')?.disable();
+    this.productForm.get('brandId')?.disable();
+    this.productForm.get('categoryId')?.disable();
 
     // Scroll to form
-    document.getElementById('stockForm')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('productForm')?.scrollIntoView({ behavior: 'smooth' });
   }
 
-  deleteStock(stock: Stock): void {
-    if (confirm(`Are you sure you want to delete stock for ${stock.brandName} in ${stock.categoryName}?`)) {
-      this.stockService.deleteStock(stock.brandId, stock.categoryId).subscribe({
+  deleteProduct(product: Product): void {
+    if (confirm(`Are you sure you want to delete product for ${product.brandName} in ${product.categoryName}?`)) {
+      this.productService.deleteProduct(product.brandId, product.categoryId).subscribe({
         next: () => {
-          this.stocks = this.stocks.filter(s =>
-            !(s.brandId === stock.brandId && s.categoryId === stock.categoryId));
-          this.filterStocks();
-          this.notification.success('Stock deleted successfully');
+          this.products = this.products.filter(s =>
+            !(s.brandId === product.brandId && s.categoryId === product.categoryId));
+          this.filterProducts();
+          this.notification.success('Product deleted successfully');
         },
         error: (error) => {
-          this.notification.error(error.error || 'Failed to delete stock');
-          console.error('Error deleting stock:', error);
+          this.notification.error(error.error || 'Failed to delete product');
+          console.error('Error deleting product:', error);
         }
       });
     }
@@ -215,15 +215,15 @@ export class StockManagementComponent implements OnInit {
 
   resetForm(): void {
     this.isEditing = false; // Reset the isEditing flag
-    this.stockForm.reset({
+    this.productForm.reset({
       brandId: '',
       categoryId: '',
-      availableStock: 0
+      availableProduct: 0
     });
 
     // Enable brand and category selection
-    this.stockForm.get('brandId')?.enable();
-    this.stockForm.get('categoryId')?.enable();
+    this.productForm.get('brandId')?.enable();
+    this.productForm.get('categoryId')?.enable();
   }
 
   getBrandName(brandId: number): string {
@@ -237,13 +237,13 @@ export class StockManagementComponent implements OnInit {
   }
 
   exportToCSV(): void {
-    const headers = ['Brand ID', 'Brand Name', 'Category ID', 'Category Name', 'Available Stock'];
-    const csvData = this.stocks.map(stock => [
-      stock.brandId,
-      stock.brandName,
-      stock.categoryId,
-      stock.categoryName,
-      stock.availableStock
+    const headers = ['Brand ID', 'Brand Name', 'Category ID', 'Category Name', 'Available Product'];
+    const csvData = this.products.map(product => [
+      product.brandId,
+      product.brandName,
+      product.categoryId,
+      product.categoryName,
+      product.availableProduct
     ]);
 
     // Create CSV content
@@ -257,7 +257,7 @@ export class StockManagementComponent implements OnInit {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', 'stock_inventory.csv');
+    link.setAttribute('download', 'product_inventory.csv');
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();

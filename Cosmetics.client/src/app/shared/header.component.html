@@ -18,9 +18,9 @@
         <li *ngIf="isAdmin"><a routerLink="/upload-image" routerLinkActive="active">Upload Image</a></li>
         <li *ngIf="isAdmin"><a routerLink="/categories" routerLinkActive="active">Categories</a></li>
         <li *ngIf="isAdmin"><a routerLink="/brands" routerLinkActive="active">Brands</a></li>
-        <!-- Add Stock Management link -->
+        <!-- Add Product Management link -->
         <li *ngIf="isAdmin">
-          <a routerLink="/admin/stock" routerLinkActive="active">
+          <a routerLink="/admin/product" routerLinkActive="active">
             <i class="fas fa-boxes"></i> Inventory
           </a>
         </li>
@@ -49,9 +49,9 @@
       <li *ngIf="isAdmin"><a routerLink="/upload-image" (click)="closeMobileMenu()">Upload Image</a></li>
       <li *ngIf="isAdmin"><a routerLink="/categories" (click)="closeMobileMenu()">Categories</a></li>
       <li *ngIf="isAdmin"><a routerLink="/brands" (click)="closeMobileMenu()">Brands</a></li>
-      <!-- Add Stock Management link to mobile menu -->
+      <!-- Add Product Management link to mobile menu -->
       <li *ngIf="isAdmin">
-        <a routerLink="/admin/stock" (click)="closeMobileMenu()">
+        <a routerLink="/admin/product" (click)="closeMobileMenu()">
           <i class="fas fa-boxes"></i> Inventory Management
         </a>
       </li>

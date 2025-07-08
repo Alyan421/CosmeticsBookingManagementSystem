@@ -15,7 +15,7 @@ namespace CMS.Server.Controllers.Brands.DTO
         public List<CategoryInfoDTO> Categories { get; set; } = new List<CategoryInfoDTO>();
     }
 
-    // Update CategoryInfoDTO to include stock information
+    // Update CategoryInfoDTO to include product information
     public class CategoryInfoDTO
     {
         public int Id { get; set; }

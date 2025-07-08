@@ -12,7 +12,7 @@ import { AuthGuard } from './Authorization/auth.guard';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from './Authorization/auth.service';
-import { StockManagementComponent } from './Stock/stock-management.component';
+import { ProductManagementComponent } from './Product/product-management.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,8 +24,8 @@ export const routes: Routes = [
   { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' } },
   { path: 'public-gallery', component: PublicImageListComponent },
   {
-    path: 'admin/stock',
-    component: StockManagementComponent,
+    path: 'admin/product',
+    component: ProductManagementComponent,
     canActivate: [AuthGuard],
     data: { role: 'Admin' }
   },

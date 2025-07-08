@@ -1,7 +1,7 @@
 <div class="upload-container">
   <div class="header" *ngIf="!isUpdateMode">
     <h1>Upload Image</h1>
-    <p>Upload an image and associate it with a brand, category, and set initial stock</p>
+    <p>Upload an image and associate it with a brand, category, and set initial product</p>
   </div>
 
   <div class="content-wrapper">
@@ -56,12 +56,12 @@
             </div>
           </div>
 
-          <!-- Stock quantity -->
+          <!-- Product quantity -->
           <div class="form-group">
-            <label for="availableStock">{{ isUpdateMode ? 'Update Stock Quantity' : 'Initial Stock Quantity' }}</label>
-            <input type="number" id="availableStock" formControlName="availableStock" class="form-control" min="0" [class.is-invalid]="uploadForm.get('availableStock')?.invalid && uploadForm.get('availableStock')?.touched">
-            <div class="invalid-feedback" *ngIf="uploadForm.get('availableStock')?.invalid && uploadForm.get('availableStock')?.touched">
-              Stock quantity must be a positive number.
+            <label for="availableProduct">{{ isUpdateMode ? 'Update Product Quantity' : 'Initial Product Quantity' }}</label>
+            <input type="number" id="availableProduct" formControlName="availableProduct" class="form-control" min="0" [class.is-invalid]="uploadForm.get('availableProduct')?.invalid && uploadForm.get('availableProduct')?.touched">
+            <div class="invalid-feedback" *ngIf="uploadForm.get('availableProduct')?.invalid && uploadForm.get('availableProduct')?.touched">
+              Product quantity must be a positive number.
             </div>
           </div>
 
@@ -69,7 +69,7 @@
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || isLoading">
               <i class="fas" [class.fa-upload]="!isUpdateMode" [class.fa-save]="isUpdateMode"></i>
-              {{ isUpdateMode ? 'Update Image & Stock' : 'Upload Image & Create Stock' }}
+              {{ isUpdateMode ? 'Update Image & Product' : 'Upload Image & Create Product' }}
             </button>
             <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isLoading" *ngIf="!isUpdateMode">
               <i class="fas fa-undo"></i> Reset
@@ -82,7 +82,7 @@
           <!-- Loading indicator -->
           <div class="loading-indicator" *ngIf="isLoading">
             <div class="spinner"></div>
-            <p>{{ isUpdateMode ? 'Updating image and stock...' : 'Uploading image and creating stock...' }}</p>
+            <p>{{ isUpdateMode ? 'Updating image and product...' : 'Uploading image and creating product...' }}</p>
           </div>
         </form>
       </div>

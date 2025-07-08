@@ -12,7 +12,7 @@ namespace CMS.Server.Controllers.Brands
             // Map from entity to DTO
             CreateMap<Brand, BrandGetDTO>()
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom(src =>
-                    src.BrandCategories.Select(cc => new CategoryInfoDTO
+                    src.Products.Select(cc => new CategoryInfoDTO
                     {
                         Id = cc.Category.Id,
                         CategoryName = cc.Category.CategoryName,

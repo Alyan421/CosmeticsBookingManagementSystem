@@ -11,12 +11,12 @@ namespace CMS.Server.Controllers.Categories
         {
             // Map from entity to DTO
             CreateMap<Category, CategoryGetDTO>()
-                .ForMember(dest => dest.BrandCategories, opt => opt.MapFrom(src =>
-                    src.BrandCategories.Select(cc => new BrandCategoryInfoDTO
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(src =>
+                    src.Products.Select(cc => new ProductInfoDTO
                     {
                         BrandId = cc.BrandId,
                         BrandName = cc.Brand.Name,
-                        AvailableStock = cc.AvailableStock,
+                        AvailableProduct = cc.AvailableProduct,
                     }).ToList()));
 
             // Map from DTO to entity

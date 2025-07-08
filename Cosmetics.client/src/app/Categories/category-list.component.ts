@@ -144,8 +144,8 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-  // Navigate to stock management for this category
-  navigateToStockManagement(categoryId: number): void {
+  // Navigate to product management for this category
+  navigateToProductManagement(categoryId: number): void {
     // This will be handled by the router link in the template
   }
 }
