@@ -1,0 +1,67 @@
+<header class="main-header">
+  <div class="container">
+    <div class="logo">
+      <a routerLink="/">
+        <span class="logo-icon"><i class="fas fa-tshirt"></i></span>
+        <span class="logo-text">Sohni Silk</span>
+      </a>
+    </div>
+
+    <nav class="main-nav">
+      <ul>
+        <!-- Public links -->
+        <li><a routerLink="/public-gallery" routerLinkActive="active">Gallery</a></li>
+
+        <!-- Admin-only links -->
+        <li *ngIf="isAdmin"><a routerLink="/admin-dashboard" routerLinkActive="active">Admin Dashboard</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/images" routerLinkActive="active">Manage Images</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/upload-image" routerLinkActive="active">Upload Image</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/categories" routerLinkActive="active">Categories</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/brands" routerLinkActive="active">Brands</a></li>
+        <!-- Add Stock Management link -->
+        <li *ngIf="isAdmin">
+          <a routerLink="/admin/stock" routerLinkActive="active">
+            <i class="fas fa-boxes"></i> Inventory
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="auth-buttons">
+      <a routerLink="/login" class="auth-btn login-btn" *ngIf="!isLoggedIn">Login</a>
+      <button class="auth-btn logout-btn" *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+    </div>
+
+    <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" [class.open]="isMobileMenuOpen">
+    <ul>
+      <!-- Public links -->
+      <li><a routerLink="/public-gallery" (click)="closeMobileMenu()">Gallery</a></li>
+
+      <!-- Admin-only links -->
+      <li *ngIf="isAdmin"><a routerLink="/admin-dashboard" (click)="closeMobileMenu()">Admin Dashboard</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/images" (click)="closeMobileMenu()">Manage Images</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/upload-image" (click)="closeMobileMenu()">Upload Image</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/categories" (click)="closeMobileMenu()">Categories</a></li>
+      <li *ngIf="isAdmin"><a routerLink="/brands" (click)="closeMobileMenu()">Brands</a></li>
+      <!-- Add Stock Management link to mobile menu -->
+      <li *ngIf="isAdmin">
+        <a routerLink="/admin/stock" (click)="closeMobileMenu()">
+          <i class="fas fa-boxes"></i> Inventory Management
+        </a>
+      </li>
+
+      <!-- Auth links -->
+      <li *ngIf="!isLoggedIn"><a routerLink="/login" (click)="closeMobileMenu()">Login</a></li>
+      <li *ngIf="isLoggedIn"><a (click)="logout(); closeMobileMenu()">Logout</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

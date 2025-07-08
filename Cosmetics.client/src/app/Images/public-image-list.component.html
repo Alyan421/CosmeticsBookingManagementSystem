@@ -1,0 +1,159 @@
+<div class="public-gallery">
+  <header>
+    <h1>Branding Collection</h1>
+    <div class="gallery-controls">
+      <div class="view-options">
+        <button [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')">
+          <i class="fas fa-th"></i> Grid
+        </button>
+        <button [class.active]="viewMode === 'list'" (click)="setViewMode('list')">
+          <i class="fas fa-list"></i> List
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Moved filters to top -->
+  <div class="top-filters">
+    <div class="filter-header">
+      <h3>Filters</h3>
+      <button class="clear-filters" [class.active]="isFilterActive" (click)="clearFilters()">
+        <i class="fas fa-times"></i> Clear Filters
+      </button>
+    </div>
+
+    <div class="filters-row">
+      <!-- Brand Filter -->
+      <div class="filter-group">
+        <h4>Brand Type</h4>
+        <div class="select-wrapper">
+          <select [(ngModel)]="selectedBrandName" (change)="onBrandFilterChange()">
+            <option value="">All Brands</option>
+            <option *ngFor="let brand of brands" [value]="brand.name">{{ brand.name }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <h4>Category</h4>
+        <div class="select-wrapper">
+          <select [(ngModel)]="selectedCategoryName" (change)="onCategoryFilterChange()">
+            <option value="">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category.categoryName">{{ category.categoryName }}</option>
+          </select>
+        </div>
+        <div class="category-chips">
+          <div class="category-chip all" [class.selected]="!selectedCategoryName" (click)="clearFilters()">All</div>
+          <div *ngFor="let category of categories"
+               class="category-chip"
+               [class.selected]="selectedCategoryName === category.categoryName"
+               [style.background-category]="getCategoryBackground(category.categoryName)"
+               (click)="filterByCategoryName(category.categoryName)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Range Filter -->
+      <div class="filter-group">
+        <h4>Price Range</h4>
+        <div class="price-inputs">
+          <div class="price-input">
+            <label>Min</label>
+            <div class="input-with-currency">
+              <span>{{ currency }}</span>
+              <input type="number" [(ngModel)]="priceRange.min" (change)="onPriceFilterChange()" min="0" [max]="priceRange.max">
+            </div>
+          </div>
+          <div class="price-input">
+            <label>Max</label>
+            <div class="input-with-currency">
+              <span>{{ currency }}</span>
+              <input type="number" [(ngModel)]="priceRange.max" (change)="onPriceFilterChange()" [min]="priceRange.min">
+            </div>
+          </div>
+        </div>
+        <div class="price-slider">
+          <input type="range" [(ngModel)]="priceRange.min" (input)="onPriceFilterChange()" [min]="minPrice" [max]="maxPrice">
+          <input type="range" [(ngModel)]="priceRange.max" (input)="onPriceFilterChange()" [min]="minPrice" [max]="maxPrice">
+        </div>
+        <div class="price-range-display">
+          <span>{{ currency }} {{ priceRange.min }}</span>
+          <span>{{ currency }} {{ priceRange.max }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="gallery-content">
+    <div class="gallery-info">
+      <p>Showing {{ paginatedImages.length }} of {{ filteredImages.length }} items</p>
+    </div>
+
+    <div class="products-grid" [class.grid-view]="viewMode === 'grid'" [class.list-view]="viewMode === 'list'">
+      <div class="product-card" *ngFor="let image of paginatedImages" (click)="viewImage(image)">
+        <div class="product-image">
+          <img [src]="image.url" [alt]="image.brandName || getBrandName(image.brandId)" loading="lazy">
+        </div>
+        <div class="product-details">
+          <!-- Display brand name -->
+          <h3 class="product-title">{{ image.brandName || getBrandName(image.brandId) }}</h3>
+          <div class="product-category">
+            <span class="category-dot" [style.background-category]="getCategoryBackground(image.categoryName || getCategoryName(image.categoryId))"></span>
+            <span>{{ image.categoryName || getCategoryName(image.categoryId) }}</span>
+          </div>
+          <div class="product-price">{{ currency }} {{ image.price }}</div>
+          <div class="product-stock" [class.in-stock]="image.availableStock > 0" [class.out-of-stock]="image.availableStock === 0">
+            {{ image.availableStock > 0 ? 'In Stock' : 'Out of Stock' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="paginatedImages.length === 0" class="no-results">
+      <div class="no-results-content">
+        <i class="fas fa-search"></i>
+        <h3>No products found</h3>
+        <p>Try adjusting your filters or browse our entire collection.</p>
+        <button class="reset-btn" (click)="clearFilters()">View All Products</button>
+      </div>
+    </div>
+
+    <div class="pagination" *ngIf="filteredImages.length > itemsPerPage">
+      <button class="pagination-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+        <i class="fas fa-chevron-left"></i> Previous
+      </button>
+      <div class="page-indicator">
+        Page {{ currentPage }} of {{ totalPages }}
+      </div>
+      <button class="pagination-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+        Next <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </main>
+
+  <!-- Image Detail Modal -->
+  <div *ngIf="selectedImage" class="image-modal" (click)="closeImageView($event)">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeImageView($event)">×</button>
+      <div class="modal-image">
+        <img [src]="selectedImage.url" [alt]="selectedImage.brandName || getBrandName(selectedImage.brandId)">
+      </div>
+      <div class="modal-details">
+        <!-- Display brand name in modal -->
+        <h2>{{ selectedImage.brandName || getBrandName(selectedImage.brandId) }}</h2>
+        <div class="product-category">
+          <span class="category-dot" [style.background-category]="getCategoryBackground(selectedImage.categoryName || getCategoryName(selectedImage.categoryId))"></span>
+          <span>{{ selectedImage.categoryName || getCategoryName(selectedImage.categoryId) }}</span>
+        </div>
+        <div class="product-price">{{ currency }} {{ selectedImage.price }}</div>
+        <div class="product-stock" [class.in-stock]="selectedImage.availableStock > 0" [class.out-of-stock]="selectedImage.availableStock === 0">
+          {{ selectedImage.availableStock > 0 ? 'In Stock: ' + selectedImage.availableStock + ' available' : 'Out of Stock' }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

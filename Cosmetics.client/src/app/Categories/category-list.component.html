@@ -1,0 +1,86 @@
+<div class="category-management-container">
+  <div class="header">
+    <h1>Category Management</h1>
+    <p>Create, edit, and manage categories for your branding items</p>
+  </div>
+
+  <div class="content-wrapper">
+    <!-- Category Form -->
+    <div class="category-form-container card">
+      <div class="card-header">
+        <h2>{{ isEditing ? 'Edit Category' : 'Add New Category' }}</h2>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="categoryName">Category Name</label>
+            <input type="text" id="categoryName" formControlName="categoryName" class="form-control" placeholder="Enter category name">
+            <div class="invalid-feedback" *ngIf="categoryForm.get('categoryName')?.invalid && categoryForm.get('categoryName')?.touched">
+              Category name is required
+            </div>
+          </div>
+
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">
+              <i class="fas" [ngClass]="isEditing ? 'fa-save' : 'fa-plus'"></i>
+              {{ isEditing ? 'Update Category' : 'Add Category' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="resetForm()">
+              <i class="fas fa-undo"></i> Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Category List -->
+    <div class="category-list-container card">
+      <div class="card-header">
+        <h2>Categories</h2>
+        <div class="search-container">
+          <input type="text"
+                 [(ngModel)]="searchTerm"
+                 (keyup.enter)="onSearch()"
+                 placeholder="Search categories..."
+                 class="search-input">
+          <button class="btn btn-outline-primary search-button" (click)="onSearch()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="loading-spinner" *ngIf="isLoading">
+          <div class="spinner"></div>
+          <p>Loading categories...</p>
+        </div>
+
+        <div class="no-data" *ngIf="!isLoading && filteredCategories.length === 0">
+          <p>No categories found. Add your first category!</p>
+        </div>
+
+        <div class="category-list" *ngIf="!isLoading && filteredCategories.length > 0">
+          <div class="category-item" *ngFor="let category of filteredCategories">
+            <div class="category-info">
+              <div class="category-preview" [style.background-category]="category.categoryName"></div>
+              <div class="category-details">
+                <h3>{{ category.categoryName }}</h3>
+              </div>
+            </div>
+            <div class="category-actions">
+              <!-- Link to stock management for this category -->
+              <a [routerLink]="['/admin/stock']" [queryParams]="{categoryId: category.id}" class="btn btn-info btn-sm">
+                <i class="fas fa-boxes"></i> Manage Stock
+              </a>
+              <button class="btn btn-primary btn-sm" (click)="editCategory(category)">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="deleteCategory(category.id)">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

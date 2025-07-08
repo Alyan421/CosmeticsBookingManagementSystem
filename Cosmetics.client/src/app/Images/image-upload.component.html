@@ -1,0 +1,91 @@
+<div class="upload-container">
+  <div class="header" *ngIf="!isUpdateMode">
+    <h1>Upload Image</h1>
+    <p>Upload an image and associate it with a brand, category, and set initial stock</p>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="upload-form-container card">
+      <div class="card-header">
+        <h2>{{ isUpdateMode ? 'Update Image' : 'Image Upload' }}</h2>
+      </div>
+      <div class="card-body">
+        <div *ngIf="isLoadingData" class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Loading data...</p>
+        </div>
+
+        <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingData">
+          <!-- File upload section -->
+          <div class="form-group">
+            <label for="file">{{ isUpdateMode ? 'Change Image (Optional)' : 'Select Image' }}</label>
+            <input type="file" id="file" (change)="onFileChange($event)" class="form-control" accept="image/*">
+            <div class="invalid-feedback" *ngIf="uploadForm.get('file')?.invalid && uploadForm.get('file')?.touched">
+              Please select an image file.
+            </div>
+          </div>
+
+          <!-- Image preview section -->
+          <div class="image-preview-container" *ngIf="imagePreview">
+            <div class="image-preview">
+              <img [src]="imagePreview" alt="Preview">
+            </div>
+          </div>
+
+          <!-- Brand selection -->
+          <div class="form-group">
+            <label for="brandId">Select Brand</label>
+            <select id="brandId" formControlName="brandId" class="form-control" [class.is-invalid]="uploadForm.get('brandId')?.invalid && uploadForm.get('brandId')?.touched">
+              <option value="">Select a brand</option>
+              <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="uploadForm.get('brandId')?.invalid && uploadForm.get('brandId')?.touched">
+              Please select a brand.
+            </div>
+          </div>
+
+          <!-- Category selection -->
+          <div class="form-group">
+            <label for="categoryId">Select Category</label>
+            <select id="categoryId" formControlName="categoryId" class="form-control" [class.is-invalid]="uploadForm.get('categoryId')?.invalid && uploadForm.get('categoryId')?.touched">
+              <option value="">Select a category</option>
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="uploadForm.get('categoryId')?.invalid && uploadForm.get('categoryId')?.touched">
+              Please select a category.
+            </div>
+          </div>
+
+          <!-- Stock quantity -->
+          <div class="form-group">
+            <label for="availableStock">{{ isUpdateMode ? 'Update Stock Quantity' : 'Initial Stock Quantity' }}</label>
+            <input type="number" id="availableStock" formControlName="availableStock" class="form-control" min="0" [class.is-invalid]="uploadForm.get('availableStock')?.invalid && uploadForm.get('availableStock')?.touched">
+            <div class="invalid-feedback" *ngIf="uploadForm.get('availableStock')?.invalid && uploadForm.get('availableStock')?.touched">
+              Stock quantity must be a positive number.
+            </div>
+          </div>
+
+          <!-- Form buttons -->
+          <div class="form-buttons">
+            <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || isLoading">
+              <i class="fas" [class.fa-upload]="!isUpdateMode" [class.fa-save]="isUpdateMode"></i>
+              {{ isUpdateMode ? 'Update Image & Stock' : 'Upload Image & Create Stock' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isLoading" *ngIf="!isUpdateMode">
+              <i class="fas fa-undo"></i> Reset
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()" [disabled]="isLoading">
+              <i class="fas fa-arrow-left"></i> {{ isUpdateMode ? 'Cancel' : 'Back' }}
+            </button>
+          </div>
+
+          <!-- Loading indicator -->
+          <div class="loading-indicator" *ngIf="isLoading">
+            <div class="spinner"></div>
+            <p>{{ isUpdateMode ? 'Updating image and stock...' : 'Uploading image and creating stock...' }}</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

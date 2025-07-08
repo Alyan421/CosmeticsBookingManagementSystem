@@ -1,0 +1,119 @@
+<div class="image-gallery">
+  <header>
+    <h1>Image Gallery</h1>
+    <p class="subtitle">Browse and manage your image collection</p>
+  </header>
+
+  <div class="filter-section">
+    <!-- Add Brand Filter Section -->
+    <h3>Filter by Brand</h3>
+    <div class="brand-filter">
+      <select [(ngModel)]="selectedBrandName" class="brand-select">
+        <option value="">All Brands</option>
+        <option *ngFor="let brand of brands" [value]="brand.name">{{ brand.name }}</option>
+      </select>
+      <button class="filter-btn" (click)="filterByBrandName()">
+        <i class="fas fa-filter"></i> Filter
+      </button>
+      <button class="filter-btn" (click)="loadImages()">
+        <i class="fas fa-sync"></i> Reset
+      </button>
+    </div>
+
+    <h3>Filter by Category</h3>
+    <div class="category-buttons">
+      <button class="filter-btn all-btn" (click)="loadImages()">All Categories</button>
+      <div class="category-chips">
+        <button *ngFor="let category of categories"
+                class="filter-btn category-chip"
+                [style.background-category]="getCategoryBackground(category.categoryName)"
+                [style.category]="getContrastCategory(category.categoryName)"
+                (click)="filterByCategoryName(category.categoryName)">
+          {{ category.categoryName }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="image-stats">
+    <span>Showing {{ paginatedImages.length }} of {{ images.length }} images</span>
+    <div class="view-options">
+      <button [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')">
+        <i class="fa fa-th"></i> Grid
+      </button>
+      <button [class.active]="viewMode === 'list'" (click)="setViewMode('list')">
+        <i class="fa fa-list"></i> List
+      </button>
+    </div>
+  </div>
+
+  <div class="image-container" [class.grid-view]="viewMode === 'grid'" [class.list-view]="viewMode === 'list'">
+    <div class="image-card" *ngFor="let image of paginatedImages">
+      <div class="image-preview">
+        <img [src]="image.url" [alt]="'Image ' + image.id" loading="lazy" />
+      </div>
+      <div class="image-details">
+        <span class="image-id">ID: {{ image.id }}</span>
+        <!-- Add brand name display -->
+        <span class="image-brand">Brand: {{ image.brandName || 'Unknown' }}</span>
+        <span class="image-category">Category: {{ image.categoryName || getCategoryName(image.categoryId) }}</span>
+      </div>
+      <div class="image-actions">
+        <button class="action-btn view-btn" (click)="viewImage(image)">
+          <i class="fa fa-eye"></i> View
+        </button>
+        <button class="action-btn update-btn" (click)="updateImage(image)">
+          <i class="fa fa-edit"></i> Update
+        </button>
+        <button class="action-btn delete-btn" (click)="deleteImage(image.id)">
+          <i class="fa fa-trash"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="paginatedImages.length === 0" class="no-results">
+    <p>No images found for the selected filter.</p>
+    <button class="reset-btn" (click)="loadImages()">Show All Images</button>
+  </div>
+
+  <div class="pagination" *ngIf="images.length > itemsPerPage">
+    <button class="page-btn" (click)="previousPage()" [disabled]="currentPage === 1">
+      <i class="fa fa-chevron-left"></i> Previous
+    </button>
+    <div class="page-indicator">
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    </div>
+    <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <div *ngIf="selectedImage" class="image-modal" (click)="closeImageView($event)">
+    <div class="modal-content">
+      <span class="close-btn" (click)="closeImageView($event)">&times;</span>
+      <img [src]="selectedImage.url" alt="Selected image">
+      <div class="modal-details">
+        <h3>Image Details</h3>
+        <p><strong>ID:</strong> {{ selectedImage.id }}</p>
+        <!-- Add brand name to modal -->
+        <p><strong>Brand:</strong> {{ selectedImage.brandName || 'Unknown' }}</p>
+        <p><strong>Category:</strong> {{ selectedImage.categoryName || getCategoryName(selectedImage.categoryId) }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Modal - will show the image-upload component -->
+  <div *ngIf="showUpdateModal" class="update-modal">
+    <div class="modal-content">
+      <span class="close-btn" (click)="closeUpdateModal()">&times;</span>
+      <h2>Update Image</h2>
+      <app-image-upload [isUpdateMode]="true"
+                        [imageToUpdate]="imageToUpdate"
+                        (updateComplete)="onUpdateComplete()"></app-image-upload>
+    </div>
+  </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
