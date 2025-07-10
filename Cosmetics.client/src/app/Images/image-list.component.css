@@ -3,8 +3,9 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  category: #333;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #FFF0F5; /* Light pink background */
 }
 
 header {
@@ -15,30 +16,33 @@ header {
   header h1 {
     font-size: 32px;
     margin-bottom: 5px;
-    category: #333;
+    color: #AD1457; /* Dark pink color for headings */
+    font-weight: 600;
   }
 
 .subtitle {
   font-size: 16px;
-  category: #666;
+  color: #666;
   margin-top: 0;
 }
 
 /* Filter Section */
 .filter-section {
-  background-category: #f8f9fa;
+  background-color: #FFFFFF;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(244, 143, 177, 0.15); /* Pink shadow */
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
   .filter-section h3 {
     margin-top: 0;
     margin-bottom: 15px;
     text-align: center;
-    category: #555;
+    color: #C2185B; /* Pink color for subheadings */
     font-size: 18px;
+    font-weight: 500;
   }
 
 .category-buttons {
@@ -64,28 +68,30 @@ header {
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
+  background-color: #F8BBD0; /* Light pink background */
+  color: #880E4F; /* Dark pink text */
 }
 
 .all-btn {
-  background-category: #007bff;
-  category: white;
+  background-color: #EC407A; /* Darker pink for the all button */
+  color: white;
   padding: 10px 25px;
 }
 
   .all-btn:hover {
-    background-category: #0069d9;
+    background-color: #D81B60;
     transform: translateY(-2px);
   }
 
-.category-chip {
+.color-chip {
   padding: 8px 15px;
   min-width: 80px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(244, 143, 177, 0.15);
 }
 
-  .category-chip:hover {
+  .color-chip:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(244, 143, 177, 0.25);
   }
 
 /* Image Stats & View Options */
@@ -95,7 +101,7 @@ header {
   align-items: center;
   margin-bottom: 20px;
   font-size: 14px;
-  category: #666;
+  color: #666;
 }
 
 .view-options {
@@ -104,7 +110,7 @@ header {
 }
 
   .view-options button {
-    background-category: #f1f1f1;
+    background-color: #FCE4EC; /* Very light pink */
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
@@ -113,11 +119,12 @@ header {
     display: flex;
     align-items: center;
     gap: 5px;
+    color: #C2185B; /* Pink color */
   }
 
     .view-options button.active {
-      background-category: #007bff;
-      category: white;
+      background-color: #EC407A; /* Medium pink */
+      color: white;
     }
 
 /* Image Container and Cards */
@@ -127,7 +134,7 @@ header {
 
 .grid-view {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -159,23 +166,24 @@ header {
   }
 
 .image-card {
-  background-category: white;
+  background-color: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px rgba(244, 143, 177, 0.15);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
   .image-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 15px rgba(244, 143, 177, 0.25);
   }
 
 .image-preview {
   position: relative;
-  padding-top: 75%; /* 4:3 aspect ratio */
+  padding-top: 100%; /* Square aspect ratio for cosmetics images */
   overflow: hidden;
-  background-category: #f8f9fa;
+  background-color: #FCE4EC; /* Very light pink background */
 }
 
   .image-preview img {
@@ -195,18 +203,26 @@ header {
 .image-details {
   padding: 15px;
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #eee;
+  flex-direction: column;
+  gap: 5px;
+  border-bottom: 1px solid #F8BBD0; /* Light pink border */
 }
 
-.image-id, .image-category {
+.image-id, .image-brand, .image-category {
   font-size: 14px;
-  category: #666;
+  color: #666;
+}
+
+.image-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #C2185B; /* Pink color for price */
 }
 
 .image-actions {
   display: flex;
   padding: 10px;
+  gap: 5px;
 }
 
 .action-btn {
@@ -216,7 +232,7 @@ header {
   background: none;
   cursor: pointer;
   font-size: 14px;
-  transition: background-category 0.2s;
+  transition: background-color 0.2s;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -225,45 +241,58 @@ header {
 }
 
 .view-btn {
-  category: #17a2b8;
+  color: #C2185B; /* Pink color */
 }
 
   .view-btn:hover {
-    background-category: rgba(23, 162, 184, 0.1);
+    background-color: rgba(194, 24, 91, 0.1);
+  }
+
+.update-btn {
+  color: #AB47BC; /* Purple color suitable for cosmetics */
+}
+
+  .update-btn:hover {
+    background-color: rgba(171, 71, 188, 0.1);
   }
 
 .delete-btn {
-  category: #dc3545;
+  color: #F06292; /* Light pink for delete */
 }
 
   .delete-btn:hover {
-    background-category: rgba(220, 53, 69, 0.1);
+    background-color: rgba(240, 98, 146, 0.1);
   }
 
 /* No Results */
 .no-results {
   text-align: center;
   padding: 40px 20px;
-  background-category: #f8f9fa;
+  background-color: #FCE4EC; /* Very light pink */
   border-radius: 8px;
   margin: 30px 0;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
   .no-results p {
     font-size: 16px;
-    category: #666;
+    color: #666;
     margin-bottom: 20px;
   }
 
 .reset-btn {
-  background-category: #007bff;
-  category: white;
+  background-color: #EC407A; /* Medium pink */
+  color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
 }
+
+  .reset-btn:hover {
+    background-color: #D81B60; /* Darker pink on hover */
+  }
 
 /* Pagination */
 .pagination {
@@ -275,8 +304,8 @@ header {
 }
 
 .page-btn {
-  background-category: #007bff;
-  category: white;
+  background-color: #EC407A; /* Medium pink */
+  color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
@@ -285,21 +314,21 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: background-category 0.2s;
+  transition: background-color 0.2s;
 }
 
   .page-btn:hover:not(:disabled) {
-    background-category: #0069d9;
+    background-color: #D81B60; /* Darker pink on hover */
   }
 
   .page-btn:disabled {
-    background-category: #ccc;
+    background-color: #F8BBD0; /* Light pink when disabled */
     cursor: not-allowed;
   }
 
 .page-indicator {
   font-size: 14px;
-  category: #666;
+  color: #666;
 }
 
 /* Image Modal */
@@ -309,7 +338,7 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-category: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -317,13 +346,14 @@ header {
 }
 
 .modal-content {
-  background-category: white;
+  background-color: white;
   border-radius: 8px;
   max-width: 800px;
   width: 90%;
   max-height: 90vh;
   overflow: auto;
   position: relative;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
   .modal-content img {
@@ -331,6 +361,7 @@ header {
     display: block;
     object-fit: contain;
     max-height: 500px;
+    background-color: #FCE4EC; /* Very light pink background */
   }
 
 .modal-details {
@@ -339,7 +370,9 @@ header {
 
   .modal-details h3 {
     margin-top: 0;
-    category: #333;
+    color: #C2185B; /* Pink color for heading */
+    border-bottom: 1px solid #F8BBD0; /* Light pink border */
+    padding-bottom: 10px;
   }
 
 .close-btn {
@@ -347,10 +380,10 @@ header {
   top: 10px;
   right: 15px;
   font-size: 24px;
-  category: white;
+  color: white;
   cursor: pointer;
   z-index: 1001;
-  background-category: rgba(0, 0, 0, 0.5);
+  background-color: rgba(194, 24, 91, 0.5); /* Semi-transparent pink */
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -358,6 +391,67 @@ header {
   justify-content: center;
   align-items: center;
 }
+
+/* Brand Filter */
+.brand-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.brand-select {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #F8BBD0; /* Light pink border */
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  max-width: 300px;
+}
+
+  .brand-select:focus {
+    outline: none;
+    border-color: #EC407A; /* Medium pink */
+    box-shadow: 0 0 0 2px rgba(236, 64, 122, 0.25);
+  }
+
+/* Update Modal */
+.update-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+  .update-modal .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid #F8BBD0; /* Light pink border */
+  }
+
+  .update-modal .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #C2185B; /* Pink color */
+    background-color: transparent;
+  }
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -378,116 +472,5 @@ header {
   .list-view .image-actions {
     margin-left: 0;
     width: 100%;
-  }
-}
-
-/* Styles for the update modal */
-.update-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-category: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  overflow-y: auto;
-}
-
-  .update-modal .modal-content {
-    background-category: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-  }
-
-  .update-modal .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    category: #666;
-  }
-
-.action-btn.update-btn {
-  background-category: #ffc107;
-  category: #212529;
-}
-
-  .action-btn.update-btn:hover {
-    background-category: #e0a800;
-  }
-
-/* Add these styles to your existing CSS file */
-
-.brand-filter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.brand-select {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-category: white;
-  font-size: 14px;
-  max-width: 300px;
-}
-
-  .brand-select:focus {
-    outline: none;
-    border-category: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-  }
-
-.filter-btn {
-  background-category: #007bff;
-  category: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: background-category 0.2s;
-}
-
-  .filter-btn:hover {
-    background-category: #0069d9;
-  }
-
-  .filter-btn i {
-    font-size: 12px;
-  }
-
-/* Style for the brand name in the image card */
-.image-brand {
-  display: block;
-  font-size: 0.9rem;
-  category: #555;
-  margin-bottom: 4px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .brand-filter {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .brand-select {
-    max-width: 100%;
   }
 }

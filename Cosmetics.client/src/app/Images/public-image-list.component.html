@@ -1,6 +1,6 @@
 <div class="public-gallery">
   <header>
-    <h1>Branding Collection</h1>
+    <h1>Cosmetics Collection</h1>
     <div class="gallery-controls">
       <div class="view-options">
         <button [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')">
@@ -13,7 +13,7 @@
     </div>
   </header>
 
-  <!-- Moved filters to top -->
+  <!-- Filters Section -->
   <div class="top-filters">
     <div class="filter-header">
       <h3>Filters</h3>
@@ -43,13 +43,17 @@
             <option *ngFor="let category of categories" [value]="category.categoryName">{{ category.categoryName }}</option>
           </select>
         </div>
-        <div class="category-chips">
-          <div class="category-chip all" [class.selected]="!selectedCategoryName" (click)="clearFilters()">All</div>
+
+        <!-- Category Name Buttons -->
+        <div class="category-name-grid">
+          <div class="category-name-item all" [class.selected]="!selectedCategoryName" (click)="clearFilters()">
+            All
+          </div>
           <div *ngFor="let category of categories"
-               class="category-chip"
+               class="category-name-item"
                [class.selected]="selectedCategoryName === category.categoryName"
-               [style.background-category]="getCategoryBackground(category.categoryName)"
                (click)="filterByCategoryName(category.categoryName)">
+            {{ category.categoryName }}
           </div>
         </div>
       </div>
@@ -85,6 +89,7 @@
     </div>
   </div>
 
+  <!-- Gallery Content -->
   <main class="gallery-content">
     <div class="gallery-info">
       <p>Showing {{ paginatedImages.length }} of {{ filteredImages.length }} items</p>
@@ -96,15 +101,13 @@
           <img [src]="image.url" [alt]="image.brandName || getBrandName(image.brandId)" loading="lazy">
         </div>
         <div class="product-details">
-          <!-- Display brand name -->
           <h3 class="product-title">{{ image.brandName || getBrandName(image.brandId) }}</h3>
           <div class="product-category">
-            <span class="category-dot" [style.background-category]="getCategoryBackground(image.categoryName || getCategoryName(image.categoryId))"></span>
             <span>{{ image.categoryName || getCategoryName(image.categoryId) }}</span>
           </div>
           <div class="product-price">{{ currency }} {{ image.price }}</div>
           <div class="product-product" [class.in-product]="image.availableProduct > 0" [class.out-of-product]="image.availableProduct === 0">
-            {{ image.availableProduct > 0 ? 'In Product' : 'Out of Product' }}
+            {{ image.availableProduct > 0 ? 'In Stock' : 'Out of Stock' }}
           </div>
         </div>
       </div>
@@ -140,20 +143,15 @@
         <img [src]="selectedImage.url" [alt]="selectedImage.brandName || getBrandName(selectedImage.brandId)">
       </div>
       <div class="modal-details">
-        <!-- Display brand name in modal -->
         <h2>{{ selectedImage.brandName || getBrandName(selectedImage.brandId) }}</h2>
         <div class="product-category">
-          <span class="category-dot" [style.background-category]="getCategoryBackground(selectedImage.categoryName || getCategoryName(selectedImage.categoryId))"></span>
           <span>{{ selectedImage.categoryName || getCategoryName(selectedImage.categoryId) }}</span>
         </div>
         <div class="product-price">{{ currency }} {{ selectedImage.price }}</div>
         <div class="product-product" [class.in-product]="selectedImage.availableProduct > 0" [class.out-of-product]="selectedImage.availableProduct === 0">
-          {{ selectedImage.availableProduct > 0 ? 'In Product: ' + selectedImage.availableProduct + ' available' : 'Out of Product' }}
+          {{ selectedImage.availableProduct > 0 ? 'In Stock: ' + selectedImage.availableProduct + ' available' : 'Out of Stock' }}
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

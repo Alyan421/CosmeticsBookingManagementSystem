@@ -11,13 +11,13 @@
 
   .header h1 {
     font-size: 2rem;
-    category: #333;
+    color: #333;
     margin-bottom: 0.5rem;
   }
 
   .header p {
     font-size: 1rem;
-    category: #666;
+    color: #666;
   }
 
 .content-wrapper {
@@ -26,7 +26,7 @@
 }
 
 .card {
-  background-category: white;
+  background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -34,7 +34,7 @@
 }
 
 .card-header {
-  background-category: #f8f9fa;
+  background-color: #f8f9fa;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #eee;
 }
@@ -42,7 +42,7 @@
   .card-header h2 {
     margin: 0;
     font-size: 1.25rem;
-    category: #333;
+    color: #333;
   }
 
 .card-body {
@@ -57,7 +57,7 @@
     display: block;
     font-weight: 500;
     margin-bottom: 0.25rem;
-    category: #333;
+    color: #333;
     font-size: 0.9rem;
   }
 
@@ -67,17 +67,17 @@
   font-size: 0.9rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  transition: border-category 0.2s;
+  transition: border-color 0.2s;
   box-sizing: border-box;
 }
 
   .form-control:focus {
-    border-category: #007bff;
+    border-color: #007bff;
     outline: none;
   }
 
 .invalid-feedback {
-  category: #dc3545;
+  color: #dc3545;
   font-size: 0.8rem;
   margin-top: 0.25rem;
 }
@@ -93,7 +93,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 0.5rem;
-  background-category: #f8f9fa;
+  background-color: #f8f9fa;
 }
 
   .image-preview img {
@@ -124,32 +124,32 @@
 }
 
 .btn-primary {
-  background-category: #007bff;
-  category: white;
+  background-color: #007bff;
+  color: white;
 }
 
   .btn-primary:hover {
-    background-category: #0069d9;
+    background-color: #0069d9;
   }
 
 .btn-secondary {
-  background-category: #6c757d;
-  category: white;
+  background-color: #6c757d;
+  color: white;
 }
 
   .btn-secondary:hover {
-    background-category: #5a6268;
+    background-color: #5a6268;
   }
 
 .btn-outline-secondary {
-  category: #6c757d;
-  background-category: transparent;
+  color: #6c757d;
+  background-color: transparent;
   border: 1px solid #6c757d;
 }
 
   .btn-outline-secondary:hover {
-    background-category: #6c757d;
-    category: white;
+    background-color: #6c757d;
+    color: white;
   }
 
 .loading-spinner,

@@ -5,16 +5,13 @@
   </header>
 
   <div class="filter-section">
-    <!-- Add Brand Filter Section -->
+    <!-- Add Brand Filter Section (Modified to filter automatically) -->
     <h3>Filter by Brand</h3>
     <div class="brand-filter">
-      <select [(ngModel)]="selectedBrandName" class="brand-select">
+      <select [(ngModel)]="selectedBrandName" (change)="filterByBrandName()" class="brand-select">
         <option value="">All Brands</option>
         <option *ngFor="let brand of brands" [value]="brand.name">{{ brand.name }}</option>
       </select>
-      <button class="filter-btn" (click)="filterByBrandName()">
-        <i class="fas fa-filter"></i> Filter
-      </button>
       <button class="filter-btn" (click)="loadImages()">
         <i class="fas fa-sync"></i> Reset
       </button>
@@ -54,9 +51,9 @@
       </div>
       <div class="image-details">
         <span class="image-id">ID: {{ image.id }}</span>
-        <!-- Add brand name display -->
         <span class="image-brand">Brand: {{ image.brandName || 'Unknown' }}</span>
         <span class="image-category">Category: {{ image.categoryName || getCategoryName(image.categoryId) }}</span>
+        <span class="image-price">Price: Rs {{ image.price?.toFixed(2) || '0.00' }}</span>
       </div>
       <div class="image-actions">
         <button class="action-btn view-btn" (click)="viewImage(image)">
@@ -96,9 +93,10 @@
       <div class="modal-details">
         <h3>Image Details</h3>
         <p><strong>ID:</strong> {{ selectedImage.id }}</p>
-        <!-- Add brand name to modal -->
         <p><strong>Brand:</strong> {{ selectedImage.brandName || 'Unknown' }}</p>
         <p><strong>Category:</strong> {{ selectedImage.categoryName || getCategoryName(selectedImage.categoryId) }}</p>
+        <p><strong>Price:</strong> Rs {{ selectedImage.price?.toFixed(2) || '0.00' }}</p>
+        <p><strong>Available Stock:</strong> {{ selectedImage.availableProduct || 0 }}</p>
       </div>
     </div>
   </div>

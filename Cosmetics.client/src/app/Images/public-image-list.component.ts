@@ -243,4 +243,41 @@ export class PublicImageListComponent implements OnInit {
     const brightness = (r * 299 + g * 587 + b * 114) / 1000;
     return brightness > 125 ? '#000000' : '#FFFFFF';
   }
+
+  // Add this new method to the PublicImageListComponent class
+  getCategoryIcon(categoryName: string): string {
+    // Map category names to icon images
+    const categoryIcons: { [key: string]: string } = {
+      'Lipstick': 'assets/icons/lipstick.png',
+      'Mascara': 'assets/icons/mascara.png',
+      'Eyeshadow': 'assets/icons/eyeshadow.png',
+      'Foundation': 'assets/icons/foundation.png',
+      'Blush': 'assets/icons/blush.png',
+      'Nail Polish': 'assets/icons/nail-polish.png',
+      'Skincare': 'assets/icons/skincare.png',
+      'Fragrance': 'assets/icons/fragrance.png',
+      'Brushes': 'assets/icons/brushes.png',
+      'Eyeliner': 'assets/icons/eyeliner.png',
+      'Powder': 'assets/icons/powder.png',
+      'Palette': 'assets/icons/palette.png'
+    };
+
+    // If we have a direct match, return the icon
+    if (categoryName && categoryIcons[categoryName]) {
+      return categoryIcons[categoryName];
+    }
+
+    // Check for partial matches in the category name
+    if (categoryName) {
+      const lowerCaseName = categoryName.toLowerCase();
+      for (const [key, iconPath] of Object.entries(categoryIcons)) {
+        if (lowerCaseName.includes(key.toLowerCase())) {
+          return iconPath;
+        }
+      }
+    }
+
+    // Default fallback icon
+    return 'assets/icons/cosmetics-default.png';
+  }
 }

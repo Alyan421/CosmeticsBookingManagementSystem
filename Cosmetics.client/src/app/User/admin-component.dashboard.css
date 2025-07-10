@@ -5,7 +5,7 @@
 }
 
 .welcome-panel {
-  background-category: #fff;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -18,12 +18,12 @@
 
 .welcome-message h1 {
   font-size: 1.75rem;
-  category: #333;
+  color: #AD1457; /* Dark pink */
   margin: 0 0 0.5rem 0;
 }
 
 .welcome-message p {
-  category: #666;
+  color: #666;
   margin: 0;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .stat-card {
-  background-category: #f8f9fa;
+  background-color: #FCE4EC; /* Very light pink */
   border-radius: 6px;
   padding: 0.75rem 1.25rem;
   display: flex;
@@ -48,12 +48,12 @@
 .stat-value {
   font-size: 1.5rem;
   font-weight: bold;
-  category: #007bff;
+  color: #EC407A; /* Medium pink */
 }
 
 .stat-label {
   font-size: 0.875rem;
-  category: #666;
+  color: #666;
   margin-top: 0.25rem;
 }
 
@@ -64,7 +64,7 @@
 }
 
 .admin-card {
-  background-category: #fff;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -79,15 +79,15 @@
   }
 
 .highlight-card {
-  border-left: 4px solid #4CAF50;
-  background-category: #f1f8e9;
+  border-left: 4px solid #EC407A; /* Medium pink */
+  background-color: #FCE4EC; /* Very light pink */
 }
 
 .card-icon {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-category: #f8f9fa;
+  background-color: #F8BBD0; /* Light pink */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,12 +97,8 @@
 
   .card-icon i {
     font-size: 1.5rem;
-    category: #007bff;
+    color: #EC407A; /* Medium pink */
   }
-
-.highlight-card .card-icon i {
-  category: #4CAF50;
-}
 
 .card-content {
   flex-grow: 1;
@@ -111,11 +107,11 @@
   .card-content h3 {
     margin: 0 0 0.5rem 0;
     font-size: 1.25rem;
-    category: #333;
+    color: #AD1457; /* Dark pink */
   }
 
   .card-content p {
-    category: #666;
+    color: #666;
     margin: 0 0 1rem 0;
     font-size: 0.9rem;
     line-height: 1.4;
@@ -124,24 +120,25 @@
 .admin-card-link {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-category: #007bff;
-  category: white;
+  background-color: #EC407A; /* Medium pink */
+  color: white;
   text-decoration: none;
   border-radius: 4px;
   font-size: 0.875rem;
-  transition: background-category 0.2s;
+  transition: background-color 0.2s;
 }
 
   .admin-card-link:hover {
-    background-category: #0069d9;
+    background-color: #D81B60; /* Darker pink */
   }
 
-.highlight-card .admin-card-link {
-  background-category: #4CAF50;
+.pink-btn {
+  background-color: #EC407A; /* Medium pink */
+  color: white;
 }
 
-  .highlight-card .admin-card-link:hover {
-    background-category: #3e8e41;
+  .pink-btn:hover {
+    background-color: #D81B60; /* Darker pink */
   }
 
 /* Responsive design */

@@ -51,7 +51,8 @@ export class ImageUploadComponent implements OnInit, OnChanges {
       file: [null, this.isUpdateMode ? null : Validators.required],
       brandId: ['', Validators.required],
       categoryId: ['', Validators.required],
-      availableProduct: [0, [Validators.required, Validators.min(0)]]
+      availableProduct: [0, [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0)]] // Add price field with validation
     });
   }
 
@@ -68,7 +69,7 @@ export class ImageUploadComponent implements OnInit, OnChanges {
   prepopulateForm(): void {
     if (!this.imageToUpdate) return;
 
-    // Fetch product data to get available product
+    // Fetch product data to get available product and price
     this.productService.getProduct(
       this.imageToUpdate.brandId,
       this.imageToUpdate.categoryId
@@ -77,7 +78,8 @@ export class ImageUploadComponent implements OnInit, OnChanges {
         this.uploadForm.patchValue({
           brandId: this.imageToUpdate?.brandId,
           categoryId: this.imageToUpdate?.categoryId,
-          availableProduct: productData?.availableProduct || 0
+          availableProduct: productData?.availableProduct || 0,
+          price: productData?.price || 0 // Include price from product
         });
 
         // Show the current image preview - ensure we handle undefined
@@ -166,7 +168,8 @@ export class ImageUploadComponent implements OnInit, OnChanges {
     const productData: ProductUpdate = {
       brandId: formValues.brandId,
       categoryId: formValues.categoryId,
-      availableProduct: formValues.availableProduct
+      availableProduct: formValues.availableProduct,
+      price: formValues.price // Include price in the product update
     };
 
     this.productService.updateProduct(productData).subscribe({
@@ -221,7 +224,8 @@ export class ImageUploadComponent implements OnInit, OnChanges {
       file: null,
       brandId: '',
       categoryId: '',
-      availableProduct: 0
+      availableProduct: 0,
+      price: 0 // Reset price field
     });
     this.imagePreview = null;
   }

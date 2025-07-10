@@ -65,6 +65,20 @@
             </div>
           </div>
 
+          <!-- Product price -->
+          <div class="form-group">
+            <label for="price">{{ isUpdateMode ? 'Update Product Price' : 'Initial Product Price' }}</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rs</span>
+              </div>
+              <input type="number" id="price" formControlName="price" class="form-control" min="0" step="0.01" [class.is-invalid]="uploadForm.get('price')?.invalid && uploadForm.get('price')?.touched">
+            </div>
+            <div class="invalid-feedback" *ngIf="uploadForm.get('price')?.invalid && uploadForm.get('price')?.touched">
+              Price must be a positive number.
+            </div>
+          </div>
+
           <!-- Form buttons -->
           <div class="form-buttons">
             <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || isLoading">

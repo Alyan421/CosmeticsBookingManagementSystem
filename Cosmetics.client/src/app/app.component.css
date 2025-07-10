@@ -1,10 +1,29 @@
 main {
   padding: 20px;
   min-height: calc(100vh - 120px); /* Adjust for header and footer height */
-  background-category: #f9f9f9;
+  color: var(--text-dark);
+  background-color: var(--bg-color);
 }
 
   main h1 {
     text-align: center;
-    category: #333;
+    color: var(--dark-pink);
+    margin-bottom: 30px;
   }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  color: var(--dark-pink);
+  border-bottom: 2px solid var(--secondary-pink);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}

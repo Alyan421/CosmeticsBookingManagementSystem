@@ -13,7 +13,7 @@ header {
 }
 
   header h1 {
-    category: #333;
+    color: #333;
     font-size: 28px;
     margin: 0;
   }
@@ -34,7 +34,7 @@ header {
 }
 
   .card h2 {
-    category: #333;
+    color: #333;
     font-size: 20px;
     margin-top: 0;
     margin-bottom: 20px;
@@ -51,7 +51,7 @@ header {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
-    category: #555;
+    color: #555;
   }
 
   .form-group input, .form-group textarea {
@@ -68,7 +68,7 @@ header {
   }
 
     .form-group input:focus, .form-group textarea:focus {
-      border-category: #28a745;
+      border-color: #28a745;
       outline: none;
       box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
     }
@@ -82,7 +82,7 @@ header {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
-    category: #666;
+    color: #666;
   }
 
   .price-input input {
@@ -107,49 +107,49 @@ button {
 }
 
 .btn-primary {
-  background-category: #28a745;
-  category: white;
+  background-color: #28a745;
+  color: white;
 }
 
   .btn-primary:hover {
-    background-category: #218838;
+    background-color: #218838;
   }
 
 .btn-secondary {
-  background-category: #f8f9fa;
-  category: #333;
+  background-color: #f8f9fa;
+  color: #333;
   border: 1px solid #ddd;
 }
 
   .btn-secondary:hover {
-    background-category: #e2e6ea;
+    background-color: #e2e6ea;
   }
 
 .btn-edit {
-  background-category: #17a2b8;
-  category: white;
+  background-color: #17a2b8;
+  color: white;
 }
 
   .btn-edit:hover {
-    background-category: #138496;
+    background-color: #138496;
   }
 
 .btn-info {
-  background-category: #6c757d;
-  category: white;
+  background-color: #6c757d;
+  color: white;
 }
 
   .btn-info:hover {
-    background-category: #5a6268;
+    background-color: #5a6268;
   }
 
 .btn-delete {
-  background-category: #dc3545;
-  category: white;
+  background-color: #dc3545;
+  color: white;
 }
 
   .btn-delete:hover {
-    background-category: #c82333;
+    background-color: #c82333;
   }
 
 /* Brand List Styles */
@@ -172,7 +172,7 @@ button {
 }
 
 .brand-item {
-  background-category: #f9f9f9;
+  background-color: #f9f9f9;
   border-radius: 6px;
   padding: 15px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -185,18 +185,18 @@ button {
 
 .brand-info h3 {
   margin: 0 0 5px 0;
-  category: #333;
+  color: #333;
   font-size: 18px;
 }
 
 .brand-info .price {
   font-weight: bold;
-  category: #28a745;
+  color: #28a745;
   margin: 5px 0;
 }
 
 .brand-info .description {
-  category: #666;
+  color: #666;
   margin: 5px 0;
   font-size: 14px;
   line-height: 1.4;
@@ -219,7 +219,7 @@ button {
 
 /* Selected item styles */
 .selected-item {
-  background-category: #f8f9fa;
+  background-color: #f8f9fa;
   border-radius: 4px;
   padding: 15px;
 }
@@ -255,8 +255,8 @@ button {
   }
 
 .search-button {
-  background-category: #28a745;
-  category: white;
+  background-color: #28a745;
+  color: white;
   border: none;
   border-radius: 4px;
   padding: 10px 15px;
@@ -269,7 +269,7 @@ button {
 }
 
   .search-button:hover {
-    background-category: #218838;
+    background-color: #218838;
     transform: translateY(-2px);
   }
 

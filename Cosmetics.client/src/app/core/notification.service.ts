@@ -50,17 +50,17 @@ export class NotificationService {
 
     // Set category based on type
     if (type === 'success') {
-      notification.style.backgroundCategory = '#4CAF50';
-      notification.style.category = 'white';
+      notification.style.backgroundColor = '#4CAF50';
+      notification.style.color = 'white';
     } else if (type === 'error') {
-      notification.style.backgroundCategory = '#F44336';
-      notification.style.category = 'white';
+      notification.style.backgroundColor = '#F44336';
+      notification.style.color = 'white';
     } else if (type === 'info') {
-      notification.style.backgroundCategory = '#2196F3';
-      notification.style.category = 'white';
+      notification.style.backgroundColor = '#2196F3';
+      notification.style.color = 'white';
     } else if (type === 'warning') {
-      notification.style.backgroundCategory = '#FF9800';
-      notification.style.category = 'white';
+      notification.style.backgroundColor = '#FF9800';
+      notification.style.color = 'white';
     }
 
     // Style close button
@@ -68,7 +68,7 @@ export class NotificationService {
     if (closeBtn) {
       closeBtn.style.background = 'transparent';
       closeBtn.style.border = 'none';
-      closeBtn.style.category = 'white';
+      closeBtn.style.color = 'white';
       closeBtn.style.fontSize = '20px';
       closeBtn.style.cursor = 'pointer';
       closeBtn.style.marginLeft = '10px';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environment/environment'; // Make sure this path is correct!
+import { environment } from '../../environment/environment';
 
 export interface Product {
   brandId: number;
@@ -9,12 +9,14 @@ export interface Product {
   brandName: string;
   categoryName: string;
   availableProduct: number;
+  price: number; // Added Price property
 }
 
 export interface ProductUpdate {
   brandId: number;
   categoryId: number;
   availableProduct: number;
+  price: number; // Added Price property
 }
 
 @Injectable({

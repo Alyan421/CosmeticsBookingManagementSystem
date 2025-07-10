@@ -3,10 +3,11 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  category: #333;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
   display: flex;
   flex-direction: column;
+  background-color: #FFF0F5; /* Light pink background for cosmetics theme */
 }
 
 header {
@@ -14,11 +15,12 @@ header {
   margin-bottom: 20px;
 }
 
-  header h1 {
-    font-size: 32px;
-    margin-bottom: 5px;
-    category: #333;
-  }
+header h1 {
+  font-size: 32px;
+  margin-bottom: 5px;
+  color: #AD1457; /* Dark pink for headings */
+  font-weight: 600;
+}
 
 .gallery-controls {
   display: flex;
@@ -31,30 +33,32 @@ header {
   gap: 10px;
 }
 
-  .view-options button {
-    background-category: #f1f1f1;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
+.view-options button {
+  background-color: #FCE4EC; /* Very light pink */
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #C2185B; /* Pink color */
+}
 
-    .view-options button.active {
-      background-category: #007bff;
-      category: white;
-    }
+.view-options button.active {
+  background-color: #EC407A; /* Medium pink */
+  color: white;
+}
 
 /* Top Filters */
 .top-filters {
-  background-category: #f8f9fa;
+  background-color: white;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(244, 143, 177, 0.15); /* Pink shadow */
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
 .filter-header {
@@ -67,7 +71,8 @@ header {
   .filter-header h3 {
     margin: 0;
     font-size: 18px;
-    category: #333;
+    color: #C2185B; /* Pink color */
+    font-weight: 500;
   }
 
 .filters-row {
@@ -83,15 +88,15 @@ header {
 
   .filter-group h4 {
     margin-bottom: 10px;
-    category: #333;
+    color: #880E4F; /* Dark pink */
     font-size: 14px;
     font-weight: 600;
   }
 
 .clear-filters {
-  background-category: #f8f9fa;
-  category: #6c757d;
-  border: 1px solid #ddd;
+  background-color: #FCE4EC; /* Very light pink */
+  color: #C2185B; /* Pink color */
+  border: 1px solid #F8BBD0; /* Light pink border */
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
@@ -103,15 +108,15 @@ header {
 }
 
   .clear-filters.active {
-    background-category: #dc3545;
-    category: white;
-    border-category: #dc3545;
+    background-color: #EC407A; /* Medium pink */
+    color: white;
+    border-color: #EC407A;
   }
 
   .clear-filters:hover {
-    background-category: #dc3545;
-    category: white;
-    border-category: #dc3545;
+    background-color: #EC407A; /* Medium pink */
+    color: white;
+    border-color: #EC407A;
   }
 
 /* Select Dropdowns */
@@ -123,14 +128,20 @@ header {
   .select-wrapper select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #F8BBD0; /* Light pink border */
     border-radius: 4px;
-    background-category: #fff;
+    background-color: #fff;
     appearance: none;
     -webkit-appearance: none;
     cursor: pointer;
     font-size: 14px;
   }
+
+    .select-wrapper select:focus {
+      border-color: #EC407A; /* Medium pink */
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(236, 64, 122, 0.25);
+    }
 
   .select-wrapper::after {
     content: '\f107';
@@ -141,7 +152,7 @@ header {
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    category: #555;
+    color: #C2185B; /* Pink color */
   }
 
 /* Category Chips */
@@ -157,26 +168,68 @@ header {
   height: 30px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid #ddd;
-  transition: transform 0.2s, border-category 0.2s;
+  border: 2px solid #F8BBD0; /* Light pink border */
+  transition: transform 0.2s, border-color 0.2s;
 }
+
+.category-name-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.category-name-item {
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: white;
+  border: 1px solid #F8BBD0; /* Light pink border */
+  color: #880E4F; /* Dark pink */
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+  .category-name-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(244, 143, 177, 0.15);
+    background-color: #FCE4EC; /* Very light pink */
+  }
+
+  .category-name-item.selected {
+    background-color: #EC407A; /* Medium pink */
+    color: white;
+    border-color: #EC407A;
+    box-shadow: 0 4px 8px rgba(236, 64, 122, 0.25);
+  }
+
+  .category-name-item.all {
+    background-color: #FCE4EC; /* Very light pink */
+    color: #C2185B; /* Pink color */
+  }
+
+    .category-name-item.all.selected {
+      background-color: #EC407A; /* Medium pink */
+      color: white;
+    }
 
   .category-chip:hover {
     transform: scale(1.1);
   }
 
   .category-chip.selected {
-    border-category: #333;
+    border-color: #C2185B; /* Pink color */
     transform: scale(1.1);
   }
 
   .category-chip.all {
-    background-category: #f8f9fa;
+    background-color: #FCE4EC; /* Very light pink */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    category: #333;
+    color: #C2185B; /* Pink color */
     width: auto;
     height: auto;
     padding: 5px 10px;
@@ -198,7 +251,7 @@ header {
     display: block;
     font-size: 12px;
     margin-bottom: 5px;
-    category: #666;
+    color: #666;
   }
 
 .input-with-currency {
@@ -210,7 +263,7 @@ header {
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    category: #666;
+    color: #C2185B; /* Pink color */
     font-size: 14px;
     font-weight: 500;
   }
@@ -218,14 +271,20 @@ header {
   .input-with-currency input {
     width: 100%;
     padding: 8px 8px 8px 40px;
-    border: 1px solid #ddd;
+    border: 1px solid #F8BBD0; /* Light pink border */
     border-radius: 4px;
   }
 
+    .input-with-currency input:focus {
+      border-color: #EC407A; /* Medium pink */
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(236, 64, 122, 0.25);
+    }
+
 .price-slider {
-  margin: 0 5px 40px 5px; /* Increased bottom margin from 30px to 40px */
+  margin: 0 5px 40px 5px;
   position: relative;
-  height: 60px; /* Increased height from 40px to 60px to provide more vertical space */
+  height: 60px;
   padding-top: 10px;
 }
 
@@ -234,7 +293,7 @@ header {
     width: 100%;
     height: 5px;
     border-radius: 5px;
-    background: #ddd;
+    background: #F8BBD0; /* Light pink */
     outline: none;
     position: absolute;
     pointer-events: all;
@@ -254,10 +313,10 @@ header {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #007bff;
+      background: #EC407A; /* Medium pink */
       cursor: pointer;
       border: 2px solid white;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      box-shadow: 0 0 5px rgba(236, 64, 122, 0.25);
       margin-top: -7px;
       z-index: 2;
     }
@@ -266,10 +325,10 @@ header {
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background: #007bff;
+      background: #EC407A; /* Medium pink */
       cursor: pointer;
       border: 2px solid white;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      box-shadow: 0 0 5px rgba(236, 64, 122, 0.25);
       z-index: 2;
     }
 
@@ -277,7 +336,7 @@ header {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
-  category: #666;
+  color: #666;
   margin-top: 5px;
   padding: 0 2px;
 }
@@ -289,7 +348,7 @@ header {
 
 .gallery-info {
   margin-bottom: 15px;
-  category: #666;
+  color: #666;
   font-size: 14px;
 }
 
@@ -319,24 +378,25 @@ header {
 
 /* Product Cards */
 .product-card {
-  background-category: white;
+  background-color: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 10px rgba(244, 143, 177, 0.15); /* Pink shadow */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
   .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 15px rgba(244, 143, 177, 0.25); /* Pink shadow */
   }
 
 .product-image {
   position: relative;
-  padding-top: 100%;
+  padding-top: 100%; /* Square aspect ratio for cosmetics */
   overflow: hidden;
-  background-category: #f8f9fa;
+  background-color: #FCE4EC; /* Very light pink */
 }
 
   .product-image img {
@@ -361,7 +421,7 @@ header {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  category: #333;
+  color: #880E4F; /* Dark pink */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -370,13 +430,14 @@ header {
   min-height: 40px;
 }
 
+/* Update product-category to remove the need for mini icons */
 .product-category {
   display: flex;
   align-items: center;
-  gap: 5px;
   margin-bottom: 8px;
   font-size: 14px;
-  category: #666;
+  color: #AD1457; /* Dark pink for category names */
+  font-weight: 500;
 }
 
 .category-dot {
@@ -384,13 +445,13 @@ header {
   height: 14px;
   border-radius: 50%;
   display: inline-block;
-  border: 1px solid #ddd;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
 .product-price {
   font-weight: bold;
   font-size: 18px;
-  category: #e91e63;
+  color: #C2185B; /* Pink color for price */
   margin-bottom: 8px;
 }
 
@@ -402,13 +463,13 @@ header {
 }
 
 .in-product {
-  background-category: #e8f5e9;
-  category: #2e7d32;
+  background-color: #FCE4EC; /* Very light pink */
+  color: #C2185B; /* Pink color */
 }
 
 .out-of-product {
-  background-category: #ffebee;
-  category: #c62828;
+  background-color: #FFEBEE; /* Light red */
+  color: #C62828; /* Red color */
 }
 
 /* No Results */
@@ -417,8 +478,9 @@ header {
   justify-content: center;
   align-items: center;
   min-height: 300px;
-  background-category: #f8f9fa;
+  background-color: #FCE4EC; /* Very light pink */
   border-radius: 8px;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
 
 .no-results-content {
@@ -428,34 +490,34 @@ header {
 
   .no-results-content i {
     font-size: 40px;
-    category: #ccc;
+    color: #F48FB1; /* Medium light pink */
     margin-bottom: 15px;
   }
 
   .no-results-content h3 {
     margin-top: 0;
     margin-bottom: 10px;
-    category: #333;
+    color: #C2185B; /* Pink color */
   }
 
   .no-results-content p {
-    category: #666;
+    color: #666;
     margin-bottom: 20px;
   }
 
 .reset-btn {
-  background-category: #007bff;
-  category: white;
+  background-color: #EC407A; /* Medium pink */
+  color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-category 0.2s;
+  transition: background-color 0.2s;
 }
 
   .reset-btn:hover {
-    background-category: #0069d9;
+    background-color: #D81B60; /* Darker pink */
   }
 
 /* Pagination */
@@ -468,8 +530,8 @@ header {
 }
 
 .pagination-btn {
-  background-category: #007bff;
-  category: white;
+  background-color: #EC407A; /* Medium pink */
+  color: white;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
@@ -478,21 +540,21 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: background-category 0.2s;
+  transition: background-color 0.2s;
 }
 
   .pagination-btn:hover:not(:disabled) {
-    background-category: #0069d9;
+    background-color: #D81B60; /* Darker pink */
   }
 
   .pagination-btn:disabled {
-    background-category: #ccc;
+    background-color: #F8BBD0; /* Light pink */
     cursor: not-allowed;
   }
 
 .page-indicator {
   font-size: 14px;
-  category: #666;
+  color: #666;
 }
 
 /* Modal */
@@ -502,7 +564,9 @@ header {
   left: 0;
   right: 0;
   bottom: 0;
-  background-category: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -510,38 +574,55 @@ header {
 }
 
 .modal-content {
-  background-category: white;
+  background-color: white;
   border-radius: 10px;
-  max-width: 900px;
+  max-width: 800px;
   width: 90%;
   max-height: 90vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  overflow: auto;
   position: relative;
+  border: 1px solid #F8BBD0; /* Light pink border */
 }
+
+  .modal-content img {
+    width: 100%;
+    display: block;
+    object-fit: contain;
+    max-height: 500px;
+    background-color: #FCE4EC; /* Very light pink background */
+  }
+
+.modal-details {
+  padding: 20px;
+}
+
+  .modal-details h3 {
+    margin-top: 0;
+    color: #C2185B; /* Pink color for heading */
+    border-bottom: 1px solid #F8BBD0; /* Light pink border */
+    padding-bottom: 10px;
+  }
 
 .close-btn {
   position: absolute;
-  top: 15px;
+  top: 10px;
   right: 15px;
-  background: rgba(0, 0, 0, 0.5);
-  category: white;
-  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  z-index: 1001;
+  background-color: rgba(194, 24, 91, 0.5); /* Semi-transparent pink */
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  font-size: 20px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 2;
+  align-items: center;
 }
 
 .modal-image {
   height: 60vh;
-  background-category: #f8f9fa;
+  background-color: #FCE4EC; /* Very light pink */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -556,13 +637,13 @@ header {
 
 .modal-details {
   padding: 20px;
-  background-category: white;
+  background-color: white;
 }
 
   .modal-details h2 {
     margin-top: 0;
     margin-bottom: 15px;
-    category: #333;
+    color: #C2185B; /* Pink color */
     font-size: 24px;
   }
 
@@ -649,5 +730,122 @@ header {
 
   .modal-image {
     height: 40vh;
+  }
+}
+
+/* Add this new section for category icons */
+.category-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.category-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #F8BBD0;
+}
+
+  .category-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(244, 143, 177, 0.15);
+  }
+
+  .category-icon.selected {
+    background-color: #FCE4EC;
+    border-color: #EC407A;
+    box-shadow: 0 4px 8px rgba(244, 143, 177, 0.25);
+  }
+
+.category-icon-img {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+  .category-icon-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .category-icon-img i {
+    font-size: 24px;
+    color: #C2185B;
+  }
+
+.category-icon-name {
+  font-size: 12px;
+  text-align: center;
+  color: #880E4F;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.category-icon.all {
+  background-color: #FCE4EC;
+}
+
+/* Add styles for mini icons in product cards */
+.category-mini-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  margin-right: 4px;
+}
+
+/* Update the product-category styling */
+.product-category {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Mobile responsiveness for category names */
+@media (max-width: 768px) {
+  .category-name-grid {
+    gap: 6px;
+  }
+
+  .category-name-item {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
+/* Mobile responsiveness for category icons */
+@media (max-width: 768px) {
+  .category-icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 8px;
+  }
+
+  .category-icon-img {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  .category-icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 6px;
   }
 }

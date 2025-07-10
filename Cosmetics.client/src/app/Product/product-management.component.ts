@@ -28,7 +28,7 @@ export class ProductManagementComponent implements OnInit {
   productForm: FormGroup;
   isLoading = true;
   isSubmitting = false;
-  isEditing = false; // Add this variable declaration
+  isEditing = false;
   searchTerm = '';
   currentPage = 1;
   itemsPerPage = 10;
@@ -45,7 +45,8 @@ export class ProductManagementComponent implements OnInit {
     this.productForm = this.fb.group({
       brandId: ['', Validators.required],
       categoryId: ['', Validators.required],
-      availableProduct: [0, [Validators.required, Validators.min(0)]]
+      availableProduct: [0, [Validators.required, Validators.min(0)]],
+      price: [0, [Validators.required, Validators.min(0)]] // Added price field with validation
     });
   }
 
@@ -185,7 +186,8 @@ export class ProductManagementComponent implements OnInit {
     this.productForm.patchValue({
       brandId: product.brandId,
       categoryId: product.categoryId,
-      availableProduct: product.availableProduct
+      availableProduct: product.availableProduct,
+      price: product.price // Include price when editing
     });
 
     // Disable brand and category selection during edit
@@ -218,7 +220,8 @@ export class ProductManagementComponent implements OnInit {
     this.productForm.reset({
       brandId: '',
       categoryId: '',
-      availableProduct: 0
+      availableProduct: 0,
+      price: 0 // Include default price when resetting
     });
 
     // Enable brand and category selection
@@ -237,13 +240,14 @@ export class ProductManagementComponent implements OnInit {
   }
 
   exportToCSV(): void {
-    const headers = ['Brand ID', 'Brand Name', 'Category ID', 'Category Name', 'Available Product'];
+    const headers = ['Brand ID', 'Brand Name', 'Category ID', 'Category Name', 'Available Product', 'Price'];
     const csvData = this.products.map(product => [
       product.brandId,
       product.brandName,
       product.categoryId,
       product.categoryName,
-      product.availableProduct
+      product.availableProduct,
+      product.price
     ]);
 
     // Create CSV content

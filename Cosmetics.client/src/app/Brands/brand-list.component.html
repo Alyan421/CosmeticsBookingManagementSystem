@@ -11,20 +11,12 @@
         <form [formGroup]="brandForm" (ngSubmit)="brandForm.value.id ? updateBrand() : addBrand()">
           <div class="form-group">
             <label for="name">Name</label>
-            <input id="name" formControlName="name" placeholder="e.g. T-Shirt, Jeans" required>
-          </div>
-
-          <div class="form-group">
-            <label for="price">Price</label>
-            <div class="price-input">
-              <span class="currency">Rs</span>
-              <input id="price" type="number" step="0.01" formControlName="price" placeholder="0.00" required>
-            </div>
+            <input id="name" formControlName="name" placeholder="e.g. Nike, Adidas" required>
           </div>
 
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" formControlName="description" placeholder="Product description" rows="3"></textarea>
+            <textarea id="description" formControlName="description" placeholder="Brand description" rows="3"></textarea>
           </div>
 
           <div class="form-actions">
@@ -39,7 +31,6 @@
         <div class="selected-item">
           <p><strong>ID:</strong> {{ selectedBrand.id }}</p>
           <p><strong>Name:</strong> {{ selectedBrand.name }}</p>
-          <p><strong>Price:</strong> ${{ selectedBrand.price }}</p>
           <p><strong>Description:</strong> {{ selectedBrand.description }}</p>
         </div>
       </div>
@@ -51,7 +42,7 @@
         <h2>Branding Inventory</h2>
         <div class="search-bar">
           <div class="search-input-container">
-            <input type="text" placeholder="Search brandes..." [(ngModel)]="searchTerm">
+            <input type="text" placeholder="Search brands..." [(ngModel)]="searchTerm">
             <button class="search-button" (click)="searchBrandsButton()">
               <i class="fas fa-search"></i> Search
             </button>
@@ -62,7 +53,6 @@
           <div class="brand-item" *ngFor="let brand of filteredBrands">
             <div class="brand-info">
               <h3>{{ brand.name }}</h3>
-              <p class="price">Rs {{ brand.price }}</p>
               <p class="description">{{ brand.description }}</p>
             </div>
             <div class="brand-actions">

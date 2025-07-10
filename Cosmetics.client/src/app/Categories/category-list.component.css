@@ -11,13 +11,13 @@
 
   .header h1 {
     font-size: 2rem; /* Reduced from 2.5rem */
-    category: #333;
+    color: #333;
     margin-bottom: 0.5rem;
   }
 
   .header p {
     font-size: 1rem; /* Reduced from 1.1rem */
-    category: #666;
+    color: #666;
   }
 
 .content-wrapper {
@@ -27,14 +27,14 @@
 }
 
 .card {
-  background-category: white;
+  background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
 .card-header {
-  background-category: #f8f9fa;
+  background-color: #f8f9fa;
   padding: 0.75rem 1rem; /* Reduced padding */
   border-bottom: 1px solid #eee;
   display: flex;
@@ -45,7 +45,7 @@
   .card-header h2 {
     margin: 0;
     font-size: 1.25rem; /* Reduced from 1.5rem */
-    category: #333;
+    color: #333;
   }
 
 .card-body {
@@ -60,7 +60,7 @@
     display: block;
     font-weight: 500;
     margin-bottom: 0.25rem; /* Reduced from 0.5rem */
-    category: #333;
+    color: #333;
     font-size: 0.9rem; /* Added smaller font size */
   }
 
@@ -70,17 +70,17 @@
   font-size: 0.9rem; /* Reduced from 1rem */
   border: 1px solid #ddd;
   border-radius: 4px;
-  transition: border-category 0.2s;
+  transition: border-color 0.2s;
   box-sizing: border-box; /* Ensure padding doesn't increase width */
 }
 
   .form-control:focus {
-    border-category: #007bff;
+    border-color: #007bff;
     outline: none;
   }
 
 .invalid-feedback {
-  category: #dc3545;
+  color: #dc3545;
   font-size: 0.8rem; /* Reduced from 0.875rem */
   margin-top: 0.25rem;
 }
@@ -106,39 +106,39 @@
 }
 
 .btn-primary {
-  background-category: #007bff;
-  category: white;
+  background-color: #007bff;
+  color: white;
 }
 
   .btn-primary:hover {
-    background-category: #0069d9;
+    background-color: #0069d9;
   }
 
 .btn-secondary {
-  background-category: #6c757d;
-  category: white;
+  background-color: #6c757d;
+  color: white;
 }
 
   .btn-secondary:hover {
-    background-category: #5a6268;
+    background-color: #5a6268;
   }
 
 .btn-danger {
-  background-category: #dc3545;
-  category: white;
+  background-color: #dc3545;
+  color: white;
 }
 
   .btn-danger:hover {
-    background-category: #c82333;
+    background-color: #c82333;
   }
 
 .btn-info {
-  background-category: #17a2b8;
-  category: white;
+  background-color: #17a2b8;
+  color: white;
 }
 
   .btn-info:hover {
-    background-category: #138496;
+    background-color: #138496;
   }
 
 .btn-sm {
@@ -147,14 +147,14 @@
 }
 
 .btn-outline-primary {
-  category: #007bff;
+  color: #007bff;
   border: 1px solid #007bff;
-  background-category: transparent;
+  background-color: transparent;
 }
 
   .btn-outline-primary:hover {
-    background-category: #007bff;
-    category: white;
+    background-color: #007bff;
+    color: white;
   }
 
 .loading-spinner {
@@ -188,7 +188,7 @@
 .no-data {
   text-align: center;
   padding: 1.5rem; /* Reduced from 2rem */
-  category: #6c757d;
+  color: #6c757d;
 }
 
 .category-list {
@@ -228,7 +228,7 @@
 .category-details h3 {
   margin: 0;
   font-size: 1.1rem; /* Reduced from 1.2rem */
-  category: #333;
+  color: #333;
 }
 
 .category-actions {

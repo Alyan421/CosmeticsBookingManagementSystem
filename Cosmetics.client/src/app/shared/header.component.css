@@ -1,19 +1,19 @@
 .main-header {
-  background-category: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Change from sticky to fixed for better mobile support */
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow);
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  z-index: 1000; /* Increase z-index to ensure it stays on top */
+  z-index: 1000;
   padding: 0;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px; /* Slightly reduce padding for very small screens */
+  padding: 0 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,159 +23,191 @@
 }
 
 .logo a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    category: #333;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--dark-pink);
 }
 
 .logo-icon {
-    font-size: 24px;
-    category: #007bff;
-    margin-right: 10px;
+  font-size: 24px;
+  color: var(--accent-pink);
+  margin-right: 10px;
 }
 
 .logo-text {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--dark-pink);
 }
 
 .main-nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .main-nav li {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .main-nav a {
-    display: block;
-    padding: 10px 15px;
-    category: #555;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 16px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+  display: block;
+  padding: 10px 15px;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-    .main-nav a:hover {
-        category: #007bff;
-        background-category: rgba(0, 123, 255, 0.1);
+  .main-nav a:hover {
+    color: var(--accent-pink);
+    background-color: var(--light-pink);
+  }
+
+  .main-nav a.active {
+    color: var(--accent-pink);
+    background-color: var(--light-pink);
+  }
+
+/* Admin Dashboard Buttons */
+.admin-btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+  .admin-btn.pink {
+    background-color: #EC407A; /* Medium pink */
+    color: white;
+  }
+
+    .admin-btn.pink:hover {
+      background-color: #D81B60; /* Darker pink */
     }
 
-    .main-nav a.active {
-        category: #007bff;
-        background-category: rgba(0, 123, 255, 0.1);
+  .admin-btn.light-pink {
+    background-color: #F8BBD0; /* Light pink */
+    color: #880E4F; /* Dark pink text */
+  }
+
+    .admin-btn.light-pink:hover {
+      background-color: #F48FB1; /* Slightly darker light pink */
+      color: white;
     }
 
 .auth-buttons {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .auth-btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    border: none;
-    font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+  font-size: 14px;
 }
 
 .login-btn {
-    background-category: transparent;
-    category: #007bff;
-    border: 1px solid #007bff;
+  background-color: transparent;
+  color: var(--primary-pink);
+  border: 1px solid var(--primary-pink);
 }
 
-    .login-btn:hover {
-        background-category: rgba(0, 123, 255, 0.1);
-    }
+  .login-btn:hover {
+    background-color: var(--light-pink);
+  }
 
 .logout-btn {
-    background-category: #007bff;
-    category: white;
+  background-color: var(--primary-pink);
+  color: white;
 }
 
-    .logout-btn:hover {
-        background-category: #0069d9;
-    }
+  .logout-btn:hover {
+    background-color: var(--dark-pink);
+  }
 
-/* Improve mobile menu button visibility */
+/* Mobile menu styles */
 .mobile-menu-btn {
   display: none;
   background: none;
   border: none;
   font-size: 24px;
-  category: #007bff; /* Make it more visible */
+  color: var(--primary-pink);
   cursor: pointer;
   padding: 10px;
-  margin-right: -10px; /* Give it some breathing room */
+  margin-right: -10px;
 }
 
-/* Fix for the mobile menu positioning */
 .mobile-menu {
   display: none;
   position: fixed;
-  top: 70px; /* Match the header height */
+  top: 70px;
   left: 0;
   width: 100%;
-  background-category: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow);
   z-index: 999;
   height: auto;
-  max-height: calc(100vh - 70px); /* Limit height and enable scrolling */
+  max-height: calc(100vh - 70px);
   overflow-y: auto;
-  transform: translateY(-150%); /* Move it further up to ensure it's hidden */
+  transform: translateY(-150%);
   transition: transform 0.3s ease;
 }
 
-    .mobile-menu.open {
-      transform: translateY(0);
-      display: block;
-    }
+  .mobile-menu.open {
+    transform: translateY(0);
+    display: block;
+  }
 
-    .mobile-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+  .mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-    .mobile-menu li {
-        border-bottom: 1px solid #eee;
-    }
+  .mobile-menu li {
+    border-bottom: 1px solid var(--border-color);
+  }
 
-    .mobile-menu a {
-        display: block;
-        padding: 15px 20px;
-        category: #555;
-        text-decoration: none;
-        font-weight: 500;
-        transition: background-category 0.2s;
-    }
+  .mobile-menu a {
+    display: block;
+    padding: 15px 20px;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
 
-        .mobile-menu a:hover {
-            background-category: #f8f9fa;
-        }
+    .mobile-menu a:hover {
+      background-color: var(--light-pink);
+      color: var(--dark-pink);
+    }
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .main-nav, .auth-buttons {
-        display: none;
-    }
+  .main-nav, .auth-buttons {
+    display: none;
+  }
 
-    .mobile-menu-btn {
-        display: block;
-    }
+  .mobile-menu-btn {
+    display: block;
+  }
 
-    .mobile-menu {
-        display: block;
-    }
+  .mobile-menu {
+    display: block;
+  }
 }

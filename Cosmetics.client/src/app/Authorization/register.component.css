@@ -11,14 +11,14 @@
   max-width: 450px;
   padding: 30px;
   border-radius: 12px;
-  background-category: #ffffff;
+  background-color: #ffffff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 24px;
-  category: #333;
+  color: #333;
   font-size: 28px;
 }
 
@@ -30,7 +30,7 @@ label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  category: #555;
+  color: #555;
 }
 
 input {
@@ -39,35 +39,35 @@ input {
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 16px;
-  transition: border-category 0.3s;
+  transition: border-color 0.3s;
 }
 
   input:focus {
-    border-category: #007bff;
+    border-color: #007bff;
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
   }
 
 .register-btn {
   width: 100%;
-  background-category: #007bff;
-  category: #fff;
+  background-color: #007bff;
+  color: #fff;
   border: none;
   padding: 14px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
-  transition: background-category 0.3s;
+  transition: background-color 0.3s;
   margin-top: 10px;
 }
 
   .register-btn:hover:not(:disabled) {
-    background-category: #0056b3;
+    background-color: #0056b3;
   }
 
   .register-btn:disabled {
-    background-category: #cccccc;
+    background-color: #cccccc;
     cursor: not-allowed;
   }
 
@@ -80,17 +80,17 @@ input {
 }
 
 .error-message {
-  background-category: rgba(220, 53, 69, 0.1);
-  category: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
 }
 
 .success-message {
-  background-category: rgba(40, 167, 69, 0.1);
-  category: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
 }
 
 .error {
-  category: #dc3545;
+  color: #dc3545;
   font-size: 12px;
   margin-top: 5px;
 }
@@ -115,7 +115,7 @@ input {
 
   .divider span {
     padding: 0 10px;
-    category: #777;
+    color: #777;
     font-size: 14px;
   }
 
@@ -138,21 +138,21 @@ input {
 }
 
 .login-btn {
-  background-category: #6c757d;
-  category: white;
+  background-color: #6c757d;
+  color: white;
 }
 
   .login-btn:hover {
-    background-category: #5a6268;
+    background-color: #5a6268;
   }
 
 .browse-btn {
-  background-category: #28a745;
-  category: white;
+  background-color: #28a745;
+  color: white;
 }
 
   .browse-btn:hover {
-    background-category: #218838;
+    background-color: #218838;
   }
 
   .login-btn i, .browse-btn i {

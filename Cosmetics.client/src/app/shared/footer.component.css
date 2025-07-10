@@ -1,8 +1,8 @@
 .main-footer {
-  background-category: #2c3e50;
-  category: #ecf0f1;
+  background-color: var(--dark-pink);
+  color: #fff;
   padding: 50px 0 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .container {
@@ -23,7 +23,7 @@
 }
 
 .footer-title {
-  category: #fff;
+  color: #fff;
   font-size: 18px;
   margin-bottom: 20px;
   position: relative;
@@ -37,13 +37,13 @@
     bottom: 0;
     width: 50px;
     height: 2px;
-    background-category: #3498db;
+    background-color: var(--accent-pink);
   }
 
 .about p {
   margin-bottom: 20px;
   line-height: 1.6;
-  category: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .social-links {
@@ -58,14 +58,14 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background-category: #34495e;
-  category: #ecf0f1;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
   .social-icon:hover {
-    background-category: #3498db;
+    background-color: var(--accent-pink);
     transform: translateY(-3px);
   }
 
@@ -80,33 +80,33 @@
 }
 
 .links a {
-  category: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  transition: category 0.3s ease;
+  transition: color 0.3s ease;
   display: inline-block;
 }
 
   .links a:hover {
-    category: #3498db;
+    color: #fff;
     transform: translateX(5px);
   }
 
 .contact p {
   margin-bottom: 10px;
-  category: #bdc3c7;
+  color: rgba(255, 255, 255, 0.8);
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .contact i {
-  category: #3498db;
+  color: var(--accent-pink);
   width: 20px;
   text-align: center;
 }
 
 .footer-bottom {
-  border-top: 1px solid #34495e;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
   display: flex;
   justify-content: space-between;
@@ -118,7 +118,7 @@
   .footer-bottom p {
     margin: 0;
     font-size: 14px;
-    category: #bdc3c7;
+    color: rgba(255, 255, 255, 0.7);
   }
 
 .footer-bottom-links {
@@ -127,14 +127,14 @@
 }
 
   .footer-bottom-links a {
-    category: #bdc3c7;
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     font-size: 14px;
-    transition: category 0.3s ease;
+    transition: color 0.3s ease;
   }
 
     .footer-bottom-links a:hover {
-      category: #3498db;
+      color: #fff;
     }
 
 /* Responsive design */

@@ -10,7 +10,7 @@
 
   .not-found h1 {
     font-size: 6rem;
-    category: #007bff;
+    color: #007bff;
     margin: 0;
     line-height: 1;
   }
@@ -22,15 +22,15 @@
 
   .not-found a {
     display: inline-block;
-    background-category: #007bff;
-    category: white;
+    background-color: #007bff;
+    color: white;
     padding: 0.75rem 1.5rem;
     border-radius: 4px;
     text-decoration: none;
     font-weight: 500;
-    transition: background-category 0.2s;
+    transition: background-color 0.2s;
   }
 
     .not-found a:hover {
-      background-category: #0069d9;
+      background-color: #0069d9;
     }

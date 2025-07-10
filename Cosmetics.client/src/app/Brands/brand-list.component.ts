@@ -18,12 +18,11 @@ export class BrandListComponent implements OnInit {
   searchTerm: string = '';
 
   constructor(private brandService: BrandService, private fb: FormBuilder) {
-    // Initialize the form with the correct order of properties
+    // Initialize the form with updated properties (no price)
     this.brandForm = this.fb.group({
       id: [null],
-      description: [''],
       name: [''],
-      price: ['']
+      description: ['']
     });
   }
 
@@ -41,22 +40,20 @@ export class BrandListComponent implements OnInit {
   getBrandById(id: number): void {
     this.brandService.getBrandById(id).subscribe(data => {
       this.selectedBrand = data;
-      // Make sure the form is updated with the correct order
+      // Update form with brand data (no price)
       this.brandForm.patchValue({
         id: data.id,
-        description: data.description,
         name: data.name,
-        price: data.price
+        description: data.description
       });
     });
   }
 
   addBrand(): void {
-    // Create a properly ordered object for API submission
+    // Create a brand object for API submission (no price)
     const brandData = {
-      description: this.brandForm.value.description,
       name: this.brandForm.value.name,
-      price: this.brandForm.value.price
+      description: this.brandForm.value.description
     };
 
     this.brandService.createBrand(brandData).subscribe(() => {
@@ -67,12 +64,11 @@ export class BrandListComponent implements OnInit {
 
   updateBrand(): void {
     const id = this.brandForm.value.id;
-    // Create a properly ordered object for API submission
+    // Create a brand object for API submission (no price)
     const brandData = {
       id: id,
-      description: this.brandForm.value.description,
       name: this.brandForm.value.name,
-      price: this.brandForm.value.price
+      description: this.brandForm.value.description
     };
 
     this.brandService.updateBrand(brandData).subscribe(() => {
@@ -83,12 +79,11 @@ export class BrandListComponent implements OnInit {
 
   editBrand(brand: any): void {
     this.selectedBrand = brand;
-    // Make sure the form is updated with the correct order
+    // Update form with brand data (no price)
     this.brandForm.patchValue({
       id: brand.id,
-      description: brand.description,
       name: brand.name,
-      price: brand.price
+      description: brand.description
     });
   }
 
@@ -105,7 +100,7 @@ export class BrandListComponent implements OnInit {
     this.applySearch();
   }
 
-  // New method for search button click
+  // Method for search button click
   searchBrandsButton(): void {
     this.applySearch();
   }
