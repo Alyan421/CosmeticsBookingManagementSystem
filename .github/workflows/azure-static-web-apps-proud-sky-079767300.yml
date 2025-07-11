@@ -30,12 +30,13 @@ jobs:
       - name: Create assets directory
         run: mkdir -p Cosmetics.client/src/assets
 
-      - name: Determine API URL
-        id: set_api_url
+      - name: Determine API URL and export
         run: |
           if [ -n "${{ secrets.API_URL }}" ]; then
+            echo "Using API from secrets"
             echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
           else
+            echo "Using fallback API"
             echo "API_URL=${{ env.FALLBACK_API_URL }}" >> $GITHUB_ENV
           fi
 
