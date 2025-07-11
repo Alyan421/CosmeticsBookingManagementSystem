@@ -18,47 +18,34 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     permissions:
-       id-token: write
-       contents: read
+      id-token: write
+      contents: read
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v3
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          submodules: true
-          lfs: false
-                # Create assets directory if it doesn't exist
-      - name: Create assets directory
-        run: mkdir -p Cosmetics.client/src/assets
-      
-      # Create or update config.js with the API URL (corrected syntax)
-      - name: Create config.js with API URL
-        run: |
-          echo "window.config = { apiUrl: \"${{ secrets.API_URL != '' && secrets.API_URL || env.FALLBACK_API_URL }}\" };" > Cosmetics.client/src/assets/config.js
-      
-      # Add script tag to index.html if not already present
-      - name: Update index.html
-        run: |
-          if ! grep -q "config.js" Cosmetics.client/src/index.html; then
-            sed -i '/<head>/a \  <script src="assets/config.js"></script>' Cosmetics.client/src/index.html
-          fi
-      
-      # Make sure assets are included in angular.json
-      - name: Update angular.json
-        run: |
-          if ! grep -q '"src/assets"' Cosmetics.client/angular.json; then
-            sed -i 's/"assets": \[/{/; s/{/{ "glob": "**\/*", "input": "src\/assets", "output": "\/assets" },/; s/]/],/' Cosmetics.client/angular.json
-          fi
-          
-      - name: Build And Deploy
-        id: builddeploy
+          node-version: '20.14.0' # Ensure this matches your Angular project's requirements
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Build the Angular app
+      - name: Build Angular app
+        run: npm run build --prod
+
+      # Deploy to Azure Static Web Apps
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_SKY_079767300 }}
-          action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "./Cosmetics.client" # App source code path
-          output_location: "dist/Cosmetics.client/browser" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          app_location: "./Cosmetics.client" # Path to the Angular app source code
+          output_location: "dist/Cosmetics.client" # Path to the built app content
+          api_location: "" # Leave empty if no API is used
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -66,7 +53,6 @@ jobs:
     name: Close Pull Request Job
     steps:
       - name: Close Pull Request
-        id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_SKY_079767300 }}
