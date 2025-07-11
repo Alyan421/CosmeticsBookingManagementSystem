@@ -124,7 +124,7 @@ if (builder.Environment.IsProduction())
     builder.Configuration["Cloudinary:ApiKey"] = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
     builder.Configuration["Cloudinary:ApiSecret"] = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
 
-    var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',') ?? new[] { "https://green-tree-0e8213e00.2.azurestaticapps.net" };
+    var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',') ?? new[] { "https://victorious-ground-01db06200.2.azurestaticapps.net" };
     // Add CORS services with environment-based configuration
     builder.Services.AddCors(options =>
     {
