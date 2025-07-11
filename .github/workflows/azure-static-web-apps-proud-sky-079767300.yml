@@ -1,0 +1,73 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+
+env:
+  FALLBACK_API_URL: 'https://your-fallback-url.azurewebsites.net/api'
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    permissions:
+       id-token: write
+       contents: read
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+                # Create assets directory if it doesn't exist
+      - name: Create assets directory
+        run: mkdir -p Cosmetics.client/src/assets
+      
+      # Create or update config.js with the API URL (corrected syntax)
+      - name: Create config.js with API URL
+        run: |
+          echo "window.config = { apiUrl: \"${{ secrets.API_URL != '' && secrets.API_URL || env.FALLBACK_API_URL }}\" };" > Cosmetics.client/src/assets/config.js
+      
+      # Add script tag to index.html if not already present
+      - name: Update index.html
+        run: |
+          if ! grep -q "config.js" Cosmetics.client/src/index.html; then
+            sed -i '/<head>/a \  <script src="assets/config.js"></script>' Cosmetics.client/src/index.html
+          fi
+      
+      # Make sure assets are included in angular.json
+      - name: Update angular.json
+        run: |
+          if ! grep -q '"src/assets"' Cosmetics.client/angular.json; then
+            sed -i 's/"assets": \[/{/; s/{/{ "glob": "**\/*", "input": "src\/assets", "output": "\/assets" },/; s/]/],/' Cosmetics.client/angular.json
+          fi
+          
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_SKY_079767300 }}
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "./Cosmetics.client" # App source code path
+          output_location: "dist/Cosmetics.client/browser" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROUD_SKY_079767300 }}
+          action: "close"
