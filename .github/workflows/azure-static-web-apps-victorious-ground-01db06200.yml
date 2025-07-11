@@ -22,7 +22,7 @@ jobs:
 
       - name: Update window.config.apiUrl in config.js
         run: |
-          sed -i 's|apiUrl:.*|apiUrl: "'"${{ secrets.API_URL != '' && secrets.API_URL || env.FALLBACK_API_URL }}"'"|g' cms.client/src/assets/config.js
+          sed -i 's|apiUrl:.*|apiUrl: "'"${{ secrets.API_URL != '' && secrets.API_URL || env.FALLBACK_API_URL }}"'"|g' Cosmetics.client/src/assets/config.js
 
       - name: Build And Deploy
         id: builddeploy
