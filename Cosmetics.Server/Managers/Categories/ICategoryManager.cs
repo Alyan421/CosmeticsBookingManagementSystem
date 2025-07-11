@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Server.Controllers.Categories.DTO;
-using CMS.Server.Models;
+using Cosmetics.Server.Controllers.Categories.DTO;
+using Cosmetics.Server.Models;
 
-namespace CMS.Server.Managers.Categories
+namespace Cosmetics.Server.Managers.Categories
 {
     public interface ICategoryManager
     {

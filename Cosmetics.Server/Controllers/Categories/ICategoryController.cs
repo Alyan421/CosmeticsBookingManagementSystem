@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Controllers.Categories.DTO;
+using Cosmetics.Server.Controllers.Categories.DTO;
 
-namespace CMS.Server.Controllers.Categories
+namespace Cosmetics.Server.Controllers.Categories
 {
     public interface ICategoryController
     {

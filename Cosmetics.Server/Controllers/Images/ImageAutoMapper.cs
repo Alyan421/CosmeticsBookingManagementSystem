@@ -1,8 +1,8 @@
 using AutoMapper;
-using CMS.Server.Controllers.Images.DTO;
-using CMS.Server.Models;
+using Cosmetics.Server.Controllers.Images.DTO;
+using Cosmetics.Server.Models;
 
-namespace CMS.Server.Controllers.Images
+namespace Cosmetics.Server.Controllers.Images
 {
     public class ImageAutoMapper : Profile
     {

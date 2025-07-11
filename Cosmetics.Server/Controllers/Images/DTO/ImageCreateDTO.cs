@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CMS.Server.Controllers.Images.DTO
+namespace Cosmetics.Server.Controllers.Images.DTO
 {
     public class ImageCreateDTO
     {

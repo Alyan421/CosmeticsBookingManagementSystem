@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Server.Models;
-using CMS.Server.Controllers.Brands.DTO;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.Controllers.Brands.DTO;
 
-namespace CMS.Server.Managers.Brands
+namespace Cosmetics.Server.Managers.Brands
 {
     public interface IBrandManager
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CMS.Server.Controllers.Categories.DTO
+namespace Cosmetics.Server.Controllers.Categories.DTO
 {
     public class CategoryGetDTO
     {

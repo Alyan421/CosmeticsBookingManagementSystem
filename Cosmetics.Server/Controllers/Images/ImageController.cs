@@ -1,19 +1,19 @@
 ﻿using AutoMapper;
-using CMS.Server.Models;
+using Cosmetics.Server.Models;
 using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Managers.Images;
+using Cosmetics.Server.Managers.Images;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Server.Services;
-using CMS.Server.Controllers.Images.DTO;
+using Cosmetics.Server.Services;
+using Cosmetics.Server.Controllers.Images.DTO;
 using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using CMS.Server.EntityFrameworkCore;
+using Cosmetics.Server.EntityFrameworkCore;
 using AutoMapper.Configuration.Annotations;
 
-namespace CMS.Server.Controllers.Images
+namespace Cosmetics.Server.Controllers.Images
 {
     [ApiController]
     [Route("api/[controller]")]

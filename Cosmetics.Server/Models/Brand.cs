@@ -1,4 +1,4 @@
-﻿using CMS.Server.Models;
+﻿using Cosmetics.Server.Models;
 
 public class Brand : BaseEntity<int>
 {

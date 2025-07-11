@@ -1,10 +1,10 @@
-﻿using CMS.Server.Models;
+﻿using Cosmetics.Server.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace CMS.Server.Services
+namespace Cosmetics.Server.Services
 {
     public static class JwtTokenGenerator
     {

@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CMS.Server.EntityFrameworkCore;
+using Cosmetics.Server.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using CMS.Server.Models;
+using Cosmetics.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
-using CMS.Server.Controllers.Products.DTO;
+using Cosmetics.Server.Controllers.Products.DTO;
 using AutoMapper;
 
-namespace CMS.Server.Controllers.Products
+namespace Cosmetics.Server.Controllers.Products
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -188,7 +188,7 @@ namespace CMS.Server.Controllers.Products
                 }
 
                 // Create new product
-                var product = new CMS.Server.Models.Product
+                var product = new Cosmetics.Server.Models.Product
                 {
                     BrandId = productCreate.BrandId,
                     CategoryId = productCreate.CategoryId,
@@ -264,7 +264,7 @@ namespace CMS.Server.Controllers.Products
                 if (product == null)
                 {
                     // Create new brand-category relationship
-                    product = new CMS.Server.Models.Product
+                    product = new Cosmetics.Server.Models.Product
                     {
                         BrandId = productUpdate.BrandId,
                         CategoryId = productUpdate.CategoryId,
@@ -345,7 +345,7 @@ namespace CMS.Server.Controllers.Products
                     if (product == null)
                     {
                         // Create new relationship
-                        product = new CMS.Server.Models.Product
+                        product = new Cosmetics.Server.Models.Product
                         {
                             BrandId = update.BrandId,
                             CategoryId = update.CategoryId,

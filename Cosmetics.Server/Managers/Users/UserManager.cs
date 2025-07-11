@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CMS.Server.Controllers.Users.DTO;
-using CMS.Server.Models;
-using CMS.Server.Repository;
-using CMS.Server.Services;
+using Cosmetics.Server.Controllers.Users.DTO;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.Repository;
+using Cosmetics.Server.Services;
 using System.Text.RegularExpressions;
 
 using Microsoft.IdentityModel.Tokens;
@@ -10,7 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace CMS.Server.Managers.Users
+namespace Cosmetics.Server.Managers.Users
 {
     public class UserManager : IUserManager
     {

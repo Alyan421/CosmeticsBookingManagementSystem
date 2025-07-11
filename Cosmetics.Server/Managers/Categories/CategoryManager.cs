@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using CMS.Server.Controllers.Categories.DTO;
-using CMS.Server.Models;
-using CMS.Server.Repository;
+using Cosmetics.Server.Controllers.Categories.DTO;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.Repository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace CMS.Server.Managers.Categories
+namespace Cosmetics.Server.Managers.Categories
 {
     public class CategoryManager : ICategoryManager
     {

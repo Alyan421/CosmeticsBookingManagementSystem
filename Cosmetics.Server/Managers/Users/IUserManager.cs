@@ -1,9 +1,9 @@
-﻿using CMS.Server.Controllers.Users.DTO;
+﻿using Cosmetics.Server.Controllers.Users.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CMS.Server.Managers.Users
+namespace Cosmetics.Server.Managers.Users
 {
     public interface IUserManager
     {

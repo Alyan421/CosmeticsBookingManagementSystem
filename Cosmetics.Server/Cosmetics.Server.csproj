@@ -44,7 +44,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
-  <!-- Removed ProjectReference to cms.client.esproj -->
+  <!-- Removed ProjectReference to Cosmetics.client.esproj -->
 
   <ItemGroup>
     <Folder Include="Migrations\" />

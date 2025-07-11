@@ -1,16 +1,16 @@
-﻿using CMS.Server.Models;
-using CMS.Server.Repository;
-using CMS.Server.Controllers.Images.DTO;
-using CMS.Server.Services;
+﻿using Cosmetics.Server.Models;
+using Cosmetics.Server.Repository;
+using Cosmetics.Server.Controllers.Images.DTO;
+using Cosmetics.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
-using CMS.Server.EntityFrameworkCore;
+using Cosmetics.Server.EntityFrameworkCore;
 
-namespace CMS.Server.Managers.Images
+namespace Cosmetics.Server.Managers.Images
 {
     public class ImageManager : IImageManager
     {

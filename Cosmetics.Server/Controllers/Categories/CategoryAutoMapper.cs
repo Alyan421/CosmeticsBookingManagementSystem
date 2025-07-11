@@ -1,9 +1,9 @@
 using AutoMapper;
-using CMS.Server.Models;
-using CMS.Server.Controllers.Categories.DTO;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.Controllers.Categories.DTO;
 using System.Linq;
 
-namespace CMS.Server.Controllers.Categories
+namespace Cosmetics.Server.Controllers.Categories
 {
     public class CategoryAutoMapper : Profile
     {

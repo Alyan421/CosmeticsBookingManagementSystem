@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CMS.Server.Models;
+using Cosmetics.Server.Models;
 
-namespace CMS.Server.Controllers.Brands.DTO
+namespace Cosmetics.Server.Controllers.Brands.DTO
 {
     public class BrandCreateDTO
     {

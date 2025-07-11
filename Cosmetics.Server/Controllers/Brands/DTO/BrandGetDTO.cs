@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using CMS.Server.Controllers.Categories.DTO;
+using Cosmetics.Server.Controllers.Categories.DTO;
 using System.Collections.Generic;
 
-namespace CMS.Server.Controllers.Brands.DTO
+namespace Cosmetics.Server.Controllers.Brands.DTO
 {
     public class BrandGetDTO
     {

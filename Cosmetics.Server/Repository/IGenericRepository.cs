@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
-namespace CMS.Server.Repository
+namespace Cosmetics.Server.Repository
 {
     public interface IGenericRepository<T> where T : class
     {

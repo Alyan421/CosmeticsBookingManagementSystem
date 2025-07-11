@@ -1,8 +1,8 @@
 using AutoMapper;
-using CMS.Server.Models;
-using CMS.Server.Controllers.Users.DTO;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.Controllers.Users.DTO;
 
-namespace CMS.Server.Controllers.Users
+namespace Cosmetics.Server.Controllers.Users
 {
     public class UserAutoMapper : Profile
     {

@@ -1,4 +1,4 @@
-﻿namespace CMS.Server.Services
+﻿namespace Cosmetics.Server.Services
 {
     public interface IImageStorageService
     {

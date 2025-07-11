@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CMS.Server.Controllers.Products.DTO;
-using CMS.Server.Models;
+using Cosmetics.Server.Controllers.Products.DTO;
+using Cosmetics.Server.Models;
 
-namespace CMS.Server.Controllers.Products
+namespace Cosmetics.Server.Controllers.Products
 {
     public class ProductAutoMapper : Profile
     {

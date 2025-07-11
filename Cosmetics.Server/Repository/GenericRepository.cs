@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using CMS.Server.Models;
-using CMS.Server.EntityFrameworkCore;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.Linq.Expressions;
 
-namespace CMS.Server.Repository
+namespace Cosmetics.Server.Repository
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

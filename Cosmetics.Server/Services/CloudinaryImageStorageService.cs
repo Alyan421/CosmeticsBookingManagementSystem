@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace CMS.Server.Services
+namespace Cosmetics.Server.Services
 {
     public class CloudinaryImageStorageService : IImageStorageService
     {
@@ -26,7 +26,7 @@ namespace CMS.Server.Services
 
             var account = new Account(cloudName, apiKey, apiSecret);
             _cloudinary = new Cloudinary(account);
-            _folder = "fancy-collection"; // Optional folder name within your Cloudinary account
+            _folder = "brand-corner-collection"; // Optional folder name within your Cloudinary account
         }
 
         public async Task<string> UploadImageAsync(IFormFile file)

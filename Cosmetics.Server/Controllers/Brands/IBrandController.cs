@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Controllers.Brands.DTO;
+using Cosmetics.Server.Controllers.Brands.DTO;
 
-namespace CMS.Server.Controllers.Brands
+namespace Cosmetics.Server.Controllers.Brands
 {
     public interface IBrandController
     {

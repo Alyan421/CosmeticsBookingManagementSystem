@@ -1,4 +1,4 @@
-﻿namespace CMS.Server.Controllers.Images.DTO
+﻿namespace Cosmetics.Server.Controllers.Images.DTO
 {
     public class ImageGetDTO
     {

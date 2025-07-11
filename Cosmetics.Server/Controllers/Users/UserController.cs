@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using CMS.Server.Models;
+using Cosmetics.Server.Models;
 using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Managers.Users;
+using Cosmetics.Server.Managers.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Server.Services;
-using CMS.Server.Controllers.Users.DTO;
+using Cosmetics.Server.Services;
+using Cosmetics.Server.Controllers.Users.DTO;
 using Microsoft.AspNetCore.Authorization;
 
-namespace CMS.Server.Controllers.Users
+namespace Cosmetics.Server.Controllers.Users
 {
     [ApiController]
     [Route("api/[controller]")]

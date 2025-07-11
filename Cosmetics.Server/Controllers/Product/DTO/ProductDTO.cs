@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CMS.Server.Controllers.Products.DTO
+namespace Cosmetics.Server.Controllers.Products.DTO
 {
     public class ProductDTO
     {

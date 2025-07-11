@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CMS.Server.Controllers.Brands.DTO;
-using CMS.Server.Models;
-using CMS.Server.Repository;
+using Cosmetics.Server.Controllers.Brands.DTO;
+using Cosmetics.Server.Models;
+using Cosmetics.Server.Repository;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace CMS.Server.Managers.Brands
+namespace Cosmetics.Server.Managers.Brands
 {
     public class BrandManager : IBrandManager
     {

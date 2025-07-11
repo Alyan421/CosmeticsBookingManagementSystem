@@ -1,7 +1,7 @@
-﻿using CMS.Server.Models;
+﻿using Cosmetics.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CMS.Server.EntityFrameworkCore
+namespace Cosmetics.Server.EntityFrameworkCore
 {
     public class AMSDbContext : DbContext
     {

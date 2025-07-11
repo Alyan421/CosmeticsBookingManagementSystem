@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CMS.Server.Controllers.Brands.DTO
+namespace Cosmetics.Server.Controllers.Brands.DTO
 {
     public class BrandUpdateDTO
     {

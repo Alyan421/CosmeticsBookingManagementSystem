@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Controllers.Images.DTO;
+using Cosmetics.Server.Controllers.Images.DTO;
 
-namespace CMS.Server.Controllers.Images
+namespace Cosmetics.Server.Controllers.Images
 {
     public interface IImageController
     {

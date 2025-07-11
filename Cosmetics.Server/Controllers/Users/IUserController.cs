@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Controllers.Users.DTO;
+using Cosmetics.Server.Controllers.Users.DTO;
 using Microsoft.AspNetCore.Authorization;
 
-namespace CMS.Server.Controllers.Users
+namespace Cosmetics.Server.Controllers.Users
 {
     public interface IUserController
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CMS.Server.Models
+namespace Cosmetics.Server.Models
 {
     public class Product
     {

@@ -1,4 +1,4 @@
-﻿namespace CMS.Server.Controllers.Users.DTO
+﻿namespace Cosmetics.Server.Controllers.Users.DTO
 {
     public class UserLoginDTO
     {

@@ -2,7 +2,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace CMS.Server.Services
+namespace Cosmetics.Server.Services
 {
     public class AuthResponsesOperationFilter : IOperationFilter
     {

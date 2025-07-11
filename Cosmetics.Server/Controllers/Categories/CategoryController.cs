@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using CMS.Server.Controllers.Categories.DTO;
+using Cosmetics.Server.Controllers.Categories.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using CMS.Server.Managers.Categories;
+using Cosmetics.Server.Managers.Categories;
 
-namespace CMS.Server.Controllers.Categories
+namespace Cosmetics.Server.Controllers.Categories
 {
     [ApiController]
     [Route("api/[controller]")]

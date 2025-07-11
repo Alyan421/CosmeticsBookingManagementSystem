@@ -1,4 +1,4 @@
-﻿namespace CMS.Server.Models
+﻿namespace Cosmetics.Server.Models
 {
     public class User : BaseEntity<int>
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace CMS.Server.Controllers.Categories.DTO
+namespace Cosmetics.Server.Controllers.Categories.DTO
 {
     public class CategoryCreateDTO
     {

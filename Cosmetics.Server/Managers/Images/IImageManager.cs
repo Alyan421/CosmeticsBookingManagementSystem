@@ -1,9 +1,9 @@
-﻿using CMS.Server.Controllers.Images.DTO;
+﻿using Cosmetics.Server.Controllers.Images.DTO;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CMS.Server.Managers.Images
+namespace Cosmetics.Server.Managers.Images
 {
     public interface IImageManager
     {
