@@ -16,29 +16,35 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add controllers with JSON loop handling
+// Add services to the container.
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-// Configure image storage service
+// Configure image storage service based on configuration
 var storageProvider = builder.Configuration["Storage:Provider"] ?? "Cloudinary";
 if (string.Equals(storageProvider, "Local", StringComparison.OrdinalIgnoreCase))
 {
+    // Register local file storage
     builder.Services.AddScoped<IImageStorageService, LocalImageStorageService>();
+
+    // Enable static files for serving local images
     builder.Services.AddDirectoryBrowser();
 }
 else
 {
+    // Register Cloudinary storage (default)
     builder.Services.AddScoped<IImageStorageService, CloudinaryImageStorageService>();
 }
 
-// PostgreSQL DbContext setup
+// Configure DbContext with SQL Server
 builder.Services.AddDbContext<AMSDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Repositories and Managers
+// Register Repository and Generic Repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+// Register ImageManager
 builder.Services.AddScoped<IBrandManager, BrandManager>();
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 builder.Services.AddScoped<IImageManager, ImageManager>();
@@ -46,7 +52,7 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 
 builder.Services.AddHttpContextAccessor();
 
-// JWT Authentication
+// Configure JWT Authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -68,18 +74,19 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Rate Limiting
+// Rate limiting
 builder.Services.AddMemoryCache();
 builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
 builder.Services.AddInMemoryRateLimiting();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
-// Swagger with JWT
+// Configure Swagger with JWT support
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Inventory API", Version = "v1" });
 
+    // Add JWT Authentication to Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -103,63 +110,72 @@ builder.Services.AddSwaggerGen(c =>
             Array.Empty<string>()
         }
     });
-
-    // Optional: only if you have this operation filter in your project
-    // c.OperationFilter<AuthResponsesOperationFilter>();
+    c.OperationFilter<AuthResponsesOperationFilter>();
 });
 
-// AutoMapper
+// Register Automappers
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// CORS setup
-string[] allowedOrigins;
+// Handle environment-specific configurations
 if (builder.Environment.IsProduction())
 {
-    // Use environment variables for Cloudinary in production
+    // Override Cloudinary configuration with environment variables
     builder.Configuration["Cloudinary:CloudName"] = Environment.GetEnvironmentVariable("CLOUDINARY_CLOUD_NAME");
     builder.Configuration["Cloudinary:ApiKey"] = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY");
     builder.Configuration["Cloudinary:ApiSecret"] = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET");
 
-    allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',') ??
-                     new[] { "https://victorious-ground-01db06200.2.azurestaticapps.net" };
+    var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',') ?? new[] { "https://victorious-ground-01db06200.2.azurestaticapps.net" };
+    // Add CORS services with environment-based configuration
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAngularApp", policy =>
+        {
+            policy.WithOrigins(allowedOrigins) // This allows requests from any origin
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        });
+    });
 }
 else
 {
-    allowedOrigins = new[] { "http://localhost:4200" };
-}
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAngularApp", policy =>
+    // Development CORS configuration
+    builder.Services.AddCors(options =>
     {
-        policy.WithOrigins(allowedOrigins)
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        options.AddPolicy("AllowAngularApp", policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
     });
-});
+}
 
 var app = builder.Build();
 
-// Serve static files if using local storage
+// Enable static files for local image storage if using local provider
 if (string.Equals(storageProvider, "Local", StringComparison.OrdinalIgnoreCase))
 {
-    app.UseStaticFiles();
+    app.UseStaticFiles(); // Enable serving static files
 
+    // Optional: Enable directory browsing for debugging purposes
     if (app.Environment.IsDevelopment())
     {
         app.UseDirectoryBrowser();
     }
 }
 
-// Middleware
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Use CORS before other middleware
 app.UseCors("AllowAngularApp");
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
