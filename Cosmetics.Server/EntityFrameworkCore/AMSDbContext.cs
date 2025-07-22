@@ -13,7 +13,7 @@ namespace Cosmetics.Server.EntityFrameworkCore
         public DbSet<Category> Categories { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Product> Products { get; set; }  // Add the junction table
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -51,28 +51,39 @@ namespace Cosmetics.Server.EntityFrameworkCore
                       .HasMaxLength(50);
             });
 
-            // Configure Product (Junction Table)
+            // Configure Product Entity
             modelBuilder.Entity<Product>(entity =>
             {
-                // Set composite key
-                entity.HasKey(cc => new { cc.BrandId, cc.CategoryId });
-                entity.Property(e => e.AvailableProduct).IsRequired();
-                entity.Property(e => e.Price).IsRequired(); // Add Price property configuration
+                // Use Id as primary key instead of composite key
+                entity.HasKey(p => p.Id);
 
-                // Configure many-to-many relationship with Brand
-                entity.HasOne(cc => cc.Brand)
-                      .WithMany(c => c.Products)
-                      .HasForeignKey(cc => cc.BrandId)
+                entity.Property(p => p.ProductName)
+                      .IsRequired()
+                      .HasMaxLength(200);
+
+                entity.Property(p => p.Description)
+                      .HasMaxLength(1000);
+
+                entity.Property(p => p.AvailableProduct).IsRequired();
+                entity.Property(p => p.Price).IsRequired();
+
+                // Configure many-to-one relationship with Brand
+                entity.HasOne(p => p.Brand)
+                      .WithMany(b => b.Products)
+                      .HasForeignKey(p => p.BrandId)
                       .OnDelete(DeleteBehavior.Cascade);
 
-                // Configure many-to-many relationship with Category
-                entity.HasOne(cc => cc.Category)
+                // Configure many-to-one relationship with Category
+                entity.HasOne(p => p.Category)
                       .WithMany(c => c.Products)
-                      .HasForeignKey(cc => cc.CategoryId)
+                      .HasForeignKey(p => p.CategoryId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                // Add index for better query performance
+                entity.HasIndex(p => new { p.BrandId, p.CategoryId });
             });
 
-            // Configure Category entity (updated for many-to-many)
+            // Configure Category entity
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -85,7 +96,6 @@ namespace Cosmetics.Server.EntityFrameworkCore
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Description).HasMaxLength(500);
-                // Removed Price property from Brand
             });
 
             // Configure Image entity
@@ -94,10 +104,10 @@ namespace Cosmetics.Server.EntityFrameworkCore
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.URL).IsRequired().HasMaxLength(500);
 
-                // Configure relationship with composite foreign key
+                // Configure relationship with single foreign key
                 entity.HasOne(i => i.Product)
-                      .WithOne(cc => cc.Image)
-                      .HasForeignKey<Image>(i => new { i.BrandId, i.CategoryId })
+                      .WithOne(p => p.Image)
+                      .HasForeignKey<Image>(i => i.ProductId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
         }

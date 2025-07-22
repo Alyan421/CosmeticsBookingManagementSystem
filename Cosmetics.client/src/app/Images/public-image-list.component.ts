@@ -14,18 +14,19 @@ import { BrandService } from '../Brands/brand.service';
 })
 export class PublicImageListComponent implements OnInit {
   images: any[] = [];
+  allImages: any[] = []; // Store all images for filtering
   filteredImages: any[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 30;
   categories: any[] = [];
-  brands: any[] = []; // Add brands array
+  brands: any[] = [];
   selectedCategoryName: string = '';
-  selectedBrandName: string = ''; // Add selected brand name
+  selectedBrandName: string = '';
   viewMode: string = 'grid';
   selectedImage: any = null;
   categoriesMap: Map<number, string> = new Map();
-  brandsMap: Map<number, string> = new Map(); // Add brands map
-  currency: string = 'PKR'; // Set currency to PKR
+  brandsMap: Map<number, string> = new Map();
+  currency: string = 'PKR';
 
   // Price filter properties
   minPrice: number = 0;
@@ -36,13 +37,13 @@ export class PublicImageListComponent implements OnInit {
   constructor(
     private imageService: ImageService,
     private categoryService: CategoryService,
-    private brandService: BrandService // Add brand service
+    private brandService: BrandService
   ) { }
 
   ngOnInit(): void {
     this.loadImages();
     this.loadCategories();
-    this.loadBrands(); // Load brands on init
+    this.loadBrands();
   }
 
   loadCategories(): void {
@@ -58,7 +59,6 @@ export class PublicImageListComponent implements OnInit {
     });
   }
 
-  // Add method to load brands
   loadBrands(): void {
     this.brandService.getAllBrands().subscribe((data) => {
       this.brands = data;
@@ -70,30 +70,10 @@ export class PublicImageListComponent implements OnInit {
     });
   }
 
-  filterByCategoryName(categoryName: string): void {
-    this.selectedCategoryName = categoryName;
-    this.imageService.filterByCategoryName(categoryName).subscribe((data) => {
-      this.images = data;
-      this.applyFilters();
-      this.currentPage = 1;
-    });
-  }
-
-  // Add method to filter by brand name
-  filterByBrandName(brandName: string): void {
-    this.selectedBrandName = brandName;
-    this.imageService.filterByBrandName(brandName).subscribe((data) => {
-      this.images = data;
-      this.applyFilters();
-      this.currentPage = 1;
-    });
-  }
-
   loadImages(): void {
-    this.selectedCategoryName = '';
-    this.selectedBrandName = '';
     this.imageService.getAllImages().subscribe((data) => {
-      this.images = data;
+      this.allImages = data; // Store all images
+      this.images = [...data]; // Copy for current display
 
       // Set price range based on actual data
       if (data.length > 0) {
@@ -105,57 +85,128 @@ export class PublicImageListComponent implements OnInit {
         }
       }
 
-      this.applyFilters();
+      this.applyAllFilters();
       this.currentPage = 1;
     });
   }
 
-  applyFilters(): void {
-    this.filteredImages = this.images.filter(image => {
-      // Apply price filter
-      const priceInRange = image.price >= this.priceRange.min &&
-        image.price <= this.priceRange.max;
+  // Unified filter application method
+  applyAllFilters(): void {
+    let filtered = [...this.allImages];
 
-      // Check if filter is active
-      this.isFilterActive = this.selectedCategoryName !== '' ||
-        this.selectedBrandName !== '' || // Add brand name to filter check
-        this.priceRange.min > this.minPrice ||
-        this.priceRange.max < this.maxPrice;
+    // Apply category filter
+    if (this.selectedCategoryName && this.selectedCategoryName !== '') {
+      filtered = filtered.filter(image =>
+        this.getCategoryName(image.categoryId).toLowerCase() === this.selectedCategoryName.toLowerCase()
+      );
+    }
 
-      return priceInRange;
+    // Apply brand filter
+    if (this.selectedBrandName && this.selectedBrandName !== '') {
+      filtered = filtered.filter(image =>
+        this.getBrandName(image.brandId).toLowerCase() === this.selectedBrandName.toLowerCase()
+      );
+    }
+
+    // Apply price filter
+    filtered = filtered.filter(image => {
+      return image.price >= this.priceRange.min && image.price <= this.priceRange.max;
     });
+
+    this.filteredImages = filtered;
+
+    // Check if any filter is active
+    this.isFilterActive = this.selectedCategoryName !== '' ||
+      this.selectedBrandName !== '' ||
+      this.priceRange.min > this.minPrice ||
+      this.priceRange.max < this.maxPrice;
+
     this.currentPage = 1;
   }
 
-  onCategoryFilterChange(): void {
-    if (this.selectedCategoryName) {
-      this.filterByCategoryName(this.selectedCategoryName);
-    } else {
-      // When "All Categories" is selected (empty value)
-      this.loadImages();
-    }
+  // Updated filter methods to use unified filtering
+  filterByCategoryName(categoryName: string): void {
+    this.selectedCategoryName = categoryName;
+    this.applyAllFilters();
   }
 
-  // Add method for brand filter change
+  filterByBrandName(brandName: string): void {
+    this.selectedBrandName = brandName;
+    this.applyAllFilters();
+  }
+
+  onCategoryFilterChange(): void {
+    this.applyAllFilters();
+  }
+
   onBrandFilterChange(): void {
-    if (this.selectedBrandName) {
-      this.filterByBrandName(this.selectedBrandName);
-    } else {
-      // When "All Brands" is selected (empty value)
-      this.loadImages();
-    }
+    this.applyAllFilters();
   }
 
   onPriceFilterChange(): void {
-    this.applyFilters();
+    this.applyAllFilters();
   }
 
-  // Update clear filters to include brand filter
   clearFilters(): void {
     this.selectedCategoryName = '';
     this.selectedBrandName = '';
     this.priceRange = { min: this.minPrice, max: this.maxPrice };
-    this.loadImages();
+    this.applyAllFilters();
+  }
+
+  // Reset specific filters while maintaining others
+  clearCategoryFilter(): void {
+    this.selectedCategoryName = '';
+    this.applyAllFilters();
+  }
+
+  clearBrandFilter(): void {
+    this.selectedBrandName = '';
+    this.applyAllFilters();
+  }
+
+  clearPriceFilter(): void {
+    this.priceRange = { min: this.minPrice, max: this.maxPrice };
+    this.applyAllFilters();
+  }
+
+  // Search functionality (if needed)
+  searchImages(searchTerm: string): void {
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.applyAllFilters();
+      return;
+    }
+
+    const term = searchTerm.toLowerCase();
+    let filtered = [...this.allImages];
+
+    // Apply existing filters first
+    if (this.selectedCategoryName && this.selectedCategoryName !== '') {
+      filtered = filtered.filter(image =>
+        this.getCategoryName(image.categoryId).toLowerCase() === this.selectedCategoryName.toLowerCase()
+      );
+    }
+
+    if (this.selectedBrandName && this.selectedBrandName !== '') {
+      filtered = filtered.filter(image =>
+        this.getBrandName(image.brandId).toLowerCase() === this.selectedBrandName.toLowerCase()
+      );
+    }
+
+    filtered = filtered.filter(image => {
+      return image.price >= this.priceRange.min && image.price <= this.priceRange.max;
+    });
+
+    // Apply search filter
+    filtered = filtered.filter(image =>
+      (image.productName && image.productName.toLowerCase().includes(term)) ||
+      (image.productDescription && image.productDescription.toLowerCase().includes(term)) ||
+      this.getCategoryName(image.categoryId).toLowerCase().includes(term) ||
+      this.getBrandName(image.brandId).toLowerCase().includes(term)
+    );
+
+    this.filteredImages = filtered;
+    this.currentPage = 1;
   }
 
   get paginatedImages(): any[] {
@@ -204,7 +255,6 @@ export class PublicImageListComponent implements OnInit {
     return this.categoriesMap.get(categoryId) || 'Unknown';
   }
 
-  // Add method to get brand name
   getBrandName(brandId: number): string {
     return this.brandsMap.get(brandId) || 'Unknown';
   }
@@ -244,7 +294,6 @@ export class PublicImageListComponent implements OnInit {
     return brightness > 125 ? '#000000' : '#FFFFFF';
   }
 
-  // Add this new method to the PublicImageListComponent class
   getCategoryIcon(categoryName: string): string {
     // Map category names to icon images
     const categoryIcons: { [key: string]: string } = {
@@ -279,5 +328,32 @@ export class PublicImageListComponent implements OnInit {
 
     // Default fallback icon
     return 'assets/icons/cosmetics-default.png';
+  }
+
+  // Additional utility methods for filter status
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.selectedCategoryName !== '') count++;
+    if (this.selectedBrandName !== '') count++;
+    if (this.priceRange.min > this.minPrice || this.priceRange.max < this.maxPrice) count++;
+    return count;
+  }
+
+  getFilterSummary(): string {
+    const filters: string[] = [];
+
+    if (this.selectedCategoryName !== '') {
+      filters.push(`Category: ${this.selectedCategoryName}`);
+    }
+
+    if (this.selectedBrandName !== '') {
+      filters.push(`Brand: ${this.selectedBrandName}`);
+    }
+
+    if (this.priceRange.min > this.minPrice || this.priceRange.max < this.maxPrice) {
+      filters.push(`Price: ${this.priceRange.min} - ${this.priceRange.max} ${this.currency}`);
+    }
+
+    return filters.length > 0 ? filters.join(', ') : 'No filters applied';
   }
 }

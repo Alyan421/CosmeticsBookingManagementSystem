@@ -2,6 +2,7 @@
 using Cosmetics.Server.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Cosmetics.Server.Migrations
 {
     [DbContext(typeof(AMSDbContext))]
-    partial class AMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250721111619_UpdateProductSchema")]
+    partial class UpdateProductSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,46 +69,8 @@ namespace Cosmetics.Server.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("Cosmetics.Server.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer")
-                        .HasColumnName("productid");
-
-                    b.Property<string>("URL")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
-                        .HasColumnName("url");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId")
-                        .IsUnique();
-
-                    b.ToTable("images");
-                });
-
             modelBuilder.Entity("Cosmetics.Server.Models.Product", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AvailableProduct")
-                        .HasColumnType("integer")
-                        .HasColumnName("availableproduct");
-
                     b.Property<int>("BrandId")
                         .HasColumnType("integer")
                         .HasColumnName("brandid");
@@ -114,26 +79,17 @@ namespace Cosmetics.Server.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("categoryid");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
-                        .HasColumnName("description");
+                    b.Property<int>("AvailableProduct")
+                        .HasColumnType("integer")
+                        .HasColumnName("availableproduct");
 
                     b.Property<double>("Price")
                         .HasColumnType("double precision")
                         .HasColumnName("price");
 
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("productname");
-
-                    b.HasKey("Id");
+                    b.HasKey("BrandId", "CategoryId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("BrandId", "CategoryId");
 
                     b.ToTable("products");
                 });
@@ -175,15 +131,35 @@ namespace Cosmetics.Server.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Cosmetics.Server.Models.Image", b =>
+            modelBuilder.Entity("Image", b =>
                 {
-                    b.HasOne("Cosmetics.Server.Models.Product", "Product")
-                        .WithOne("Image")
-                        .HasForeignKey("Cosmetics.Server.Models.Image", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
-                    b.Navigation("Product");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("integer")
+                        .HasColumnName("brandid");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("categoryid");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("url");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId", "CategoryId")
+                        .IsUnique();
+
+                    b.ToTable("images");
                 });
 
             modelBuilder.Entity("Cosmetics.Server.Models.Product", b =>
@@ -205,6 +181,17 @@ namespace Cosmetics.Server.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Image", b =>
+                {
+                    b.HasOne("Cosmetics.Server.Models.Product", "Product")
+                        .WithOne("Image")
+                        .HasForeignKey("Image", "BrandId", "CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Brand", b =>
                 {
                     b.Navigation("Products");
@@ -217,7 +204,8 @@ namespace Cosmetics.Server.Migrations
 
             modelBuilder.Entity("Cosmetics.Server.Models.Product", b =>
                 {
-                    b.Navigation("Image");
+                    b.Navigation("Image")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

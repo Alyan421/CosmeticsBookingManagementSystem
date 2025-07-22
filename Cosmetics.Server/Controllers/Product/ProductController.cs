@@ -31,16 +31,21 @@ namespace Cosmetics.Server.Controllers.Products
             try
             {
                 var products = await _context.Products
-                    .Include(cc => cc.Brand)
-                    .Include(cc => cc.Category)
-                    .Select(cc => new ProductDTO
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Image)
+                    .Select(p => new ProductDTO
                     {
-                        BrandId = cc.BrandId,
-                        CategoryId = cc.CategoryId,
-                        BrandName = cc.Brand.Name,
-                        CategoryName = cc.Category.CategoryName,
-                        AvailableProduct = cc.AvailableProduct,
-                        Price = cc.Price // Include Price in the selection
+                        Id = p.Id,
+                        BrandId = p.BrandId,
+                        CategoryId = p.CategoryId,
+                        BrandName = p.Brand.Name,
+                        CategoryName = p.Category.CategoryName,
+                        ProductName = p.ProductName,
+                        Description = p.Description,
+                        AvailableProduct = p.AvailableProduct,
+                        Price = p.Price,
+                        ImageUrl = p.Image != null ? p.Image.URL : null
                     })
                     .ToListAsync();
 
@@ -52,23 +57,72 @@ namespace Cosmetics.Server.Controllers.Products
             }
         }
 
-        [HttpGet("brand/{brandId}")]
-        public async Task<IActionResult> GetProductByBrand(int brandId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProduct(int id)
         {
             try
             {
+                var product = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Image)
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (product == null)
+                {
+                    return NotFound($"Product with ID {id} not found");
+                }
+
+                var productDTO = new ProductDTO
+                {
+                    Id = product.Id,
+                    BrandId = product.BrandId,
+                    CategoryId = product.CategoryId,
+                    BrandName = product.Brand.Name,
+                    CategoryName = product.Category.CategoryName,
+                    ProductName = product.ProductName,
+                    Description = product.Description,
+                    AvailableProduct = product.AvailableProduct,
+                    Price = product.Price,
+                    ImageUrl = product.Image?.URL
+                };
+
+                return Ok(productDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("brand/{brandId}")]
+        public async Task<IActionResult> GetProductsByBrand(int brandId)
+        {
+            try
+            {
+                var brand = await _context.Brands.FindAsync(brandId);
+                if (brand == null)
+                {
+                    return NotFound($"Brand with ID {brandId} not found");
+                }
+
                 var products = await _context.Products
-                    .Include(cc => cc.Brand)
-                    .Include(cc => cc.Category)
-                    .Where(cc => cc.BrandId == brandId)
-                    .Select(cc => new ProductDTO
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Image)
+                    .Where(p => p.BrandId == brandId)
+                    .Select(p => new ProductDTO
                     {
-                        BrandId = cc.BrandId,
-                        CategoryId = cc.CategoryId,
-                        BrandName = cc.Brand.Name,
-                        CategoryName = cc.Category.CategoryName,
-                        AvailableProduct = cc.AvailableProduct,
-                        Price = cc.Price // Include Price in the selection
+                        Id = p.Id,
+                        BrandId = p.BrandId,
+                        CategoryId = p.CategoryId,
+                        BrandName = p.Brand.Name,
+                        CategoryName = p.Category.CategoryName,
+                        ProductName = p.ProductName,
+                        Description = p.Description,
+                        AvailableProduct = p.AvailableProduct,
+                        Price = p.Price,
+                        ImageUrl = p.Image != null ? p.Image.URL : null
                     })
                     .ToListAsync();
 
@@ -81,22 +135,33 @@ namespace Cosmetics.Server.Controllers.Products
         }
 
         [HttpGet("category/{categoryId}")]
-        public async Task<IActionResult> GetProductByCategory(int categoryId)
+        public async Task<IActionResult> GetProductsByCategory(int categoryId)
         {
             try
             {
+                var category = await _context.Categories.FindAsync(categoryId);
+                if (category == null)
+                {
+                    return NotFound($"Category with ID {categoryId} not found");
+                }
+
                 var products = await _context.Products
-                    .Include(cc => cc.Brand)
-                    .Include(cc => cc.Category)
-                    .Where(cc => cc.CategoryId == categoryId)
-                    .Select(cc => new ProductDTO
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Image)
+                    .Where(p => p.CategoryId == categoryId)
+                    .Select(p => new ProductDTO
                     {
-                        BrandId = cc.BrandId,
-                        CategoryId = cc.CategoryId,
-                        BrandName = cc.Brand.Name,
-                        CategoryName = cc.Category.CategoryName,
-                        AvailableProduct = cc.AvailableProduct,
-                        Price = cc.Price // Include Price in the selection
+                        Id = p.Id,
+                        BrandId = p.BrandId,
+                        CategoryId = p.CategoryId,
+                        BrandName = p.Brand.Name,
+                        CategoryName = p.Category.CategoryName,
+                        ProductName = p.ProductName,
+                        Description = p.Description,
+                        AvailableProduct = p.AvailableProduct,
+                        Price = p.Price,
+                        ImageUrl = p.Image != null ? p.Image.URL : null
                     })
                     .ToListAsync();
 
@@ -108,32 +173,41 @@ namespace Cosmetics.Server.Controllers.Products
             }
         }
 
-        [HttpGet("{brandId}/{categoryId}")]
-        public async Task<IActionResult> GetProduct(int brandId, int categoryId)
+        [HttpGet("brand/{brandId}/category/{categoryId}")]
+        public async Task<IActionResult> GetProductsByBrandAndCategory(int brandId, int categoryId)
         {
             try
             {
-                var product = await _context.Products
-                    .Include(cc => cc.Brand)
-                    .Include(cc => cc.Category)
-                    .FirstOrDefaultAsync(cc => cc.BrandId == brandId && cc.CategoryId == categoryId);
+                var products = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .Include(p => p.Image)
+                    .Where(p => p.BrandId == brandId && p.CategoryId == categoryId)
+                    .GroupBy(p => new { p.BrandId, p.CategoryId, p.Brand.Name, p.Category.CategoryName })
+                    .Select(g => new ProductByBrandCategoryDTO
+                    {
+                        BrandId = g.Key.BrandId,
+                        CategoryId = g.Key.CategoryId,
+                        BrandName = g.Key.Name,
+                        CategoryName = g.Key.CategoryName,
+                        Products = g.Select(p => new ProductSummaryDTO
+                        {
+                            Id = p.Id,
+                            ProductName = p.ProductName,
+                            Description = p.Description,
+                            AvailableProduct = p.AvailableProduct,
+                            Price = p.Price,
+                            ImageUrl = p.Image != null ? p.Image.URL : null
+                        }).ToList()
+                    })
+                    .FirstOrDefaultAsync();
 
-                if (product == null)
+                if (products == null || !products.Products.Any())
                 {
-                    return NotFound($"Product for brand ID {brandId} and category ID {categoryId} not found");
+                    return NotFound($"No products found for brand ID {brandId} and category ID {categoryId}");
                 }
 
-                var productDTO = new ProductDTO
-                {
-                    BrandId = product.BrandId,
-                    CategoryId = product.CategoryId,
-                    BrandName = product.Brand.Name,
-                    CategoryName = product.Category.CategoryName,
-                    AvailableProduct = product.AvailableProduct,
-                    Price = product.Price // Include Price in the DTO
-                };
-
-                return Ok(productDTO);
+                return Ok(products);
             }
             catch (Exception ex)
             {
@@ -147,20 +221,9 @@ namespace Cosmetics.Server.Controllers.Products
         {
             try
             {
-                // Validate input
                 if (productCreate == null)
                 {
                     return BadRequest("Product create data is required.");
-                }
-
-                if (productCreate.AvailableProduct < 0)
-                {
-                    return BadRequest("Product cannot be negative.");
-                }
-
-                if (productCreate.Price < 0)
-                {
-                    return BadRequest("Price cannot be negative.");
                 }
 
                 // Check if brand and category exist
@@ -176,22 +239,25 @@ namespace Cosmetics.Server.Controllers.Products
                     return NotFound($"Category with ID {productCreate.CategoryId} not found.");
                 }
 
-                // Check if the combination already exists
+                // Check if product name already exists for this brand-category combination
                 var existingProduct = await _context.Products
-                    .FirstOrDefaultAsync(cc =>
-                        cc.BrandId == productCreate.BrandId &&
-                        cc.CategoryId == productCreate.CategoryId);
+                    .FirstOrDefaultAsync(p =>
+                        p.BrandId == productCreate.BrandId &&
+                        p.CategoryId == productCreate.CategoryId &&
+                        p.ProductName.ToLower() == productCreate.ProductName.ToLower());
 
                 if (existingProduct != null)
                 {
-                    return BadRequest("This brand-category combination already exists.");
+                    return BadRequest($"A product with name '{productCreate.ProductName}' already exists for this brand-category combination.");
                 }
 
                 // Create new product
-                var product = new Cosmetics.Server.Models.Product
+                var product = new Product
                 {
                     BrandId = productCreate.BrandId,
                     CategoryId = productCreate.CategoryId,
+                    ProductName = productCreate.ProductName,
+                    Description = productCreate.Description,
                     AvailableProduct = productCreate.AvailableProduct,
                     Price = productCreate.Price
                 };
@@ -202,17 +268,19 @@ namespace Cosmetics.Server.Controllers.Products
                 // Create response DTO
                 var productDTO = new ProductDTO
                 {
+                    Id = product.Id,
                     BrandId = product.BrandId,
                     CategoryId = product.CategoryId,
                     BrandName = brand.Name,
                     CategoryName = category.CategoryName,
+                    ProductName = product.ProductName,
+                    Description = product.Description,
                     AvailableProduct = product.AvailableProduct,
-                    Price = product.Price
+                    Price = product.Price,
+                    ImageUrl = null
                 };
 
-                return CreatedAtAction(nameof(GetProduct),
-                    new { brandId = product.BrandId, categoryId = product.CategoryId },
-                    productDTO);
+                return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, productDTO);
             }
             catch (Exception ex)
             {
@@ -220,26 +288,30 @@ namespace Cosmetics.Server.Controllers.Products
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateProduct(ProductUpdateDTO productUpdate)
+        public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDTO productUpdate)
         {
             try
             {
-                // Validate input
                 if (productUpdate == null)
                 {
                     return BadRequest("Product update data is required.");
                 }
 
-                if (productUpdate.AvailableProduct < 0)
+                if (id != productUpdate.Id)
                 {
-                    return BadRequest("Product cannot be negative.");
+                    return BadRequest("Product ID mismatch.");
                 }
 
-                if (productUpdate.Price < 0)
+                var product = await _context.Products
+                    .Include(p => p.Brand)
+                    .Include(p => p.Category)
+                    .FirstOrDefaultAsync(p => p.Id == id);
+
+                if (product == null)
                 {
-                    return BadRequest("Price cannot be negative.");
+                    return NotFound($"Product with ID {id} not found.");
                 }
 
                 // Check if brand and category exist
@@ -255,43 +327,42 @@ namespace Cosmetics.Server.Controllers.Products
                     return NotFound($"Category with ID {productUpdate.CategoryId} not found.");
                 }
 
-                // Find the brand-category combination
-                var product = await _context.Products
-                    .FirstOrDefaultAsync(cc =>
-                        cc.BrandId == productUpdate.BrandId &&
-                        cc.CategoryId == productUpdate.CategoryId);
+                // Check if product name already exists for this brand-category combination (excluding current product)
+                var existingProduct = await _context.Products
+                    .FirstOrDefaultAsync(p =>
+                        p.Id != id &&
+                        p.BrandId == productUpdate.BrandId &&
+                        p.CategoryId == productUpdate.CategoryId &&
+                        p.ProductName.ToLower() == productUpdate.ProductName.ToLower());
 
-                if (product == null)
+                if (existingProduct != null)
                 {
-                    // Create new brand-category relationship
-                    product = new Cosmetics.Server.Models.Product
-                    {
-                        BrandId = productUpdate.BrandId,
-                        CategoryId = productUpdate.CategoryId,
-                        AvailableProduct = productUpdate.AvailableProduct,
-                        Price = productUpdate.Price
-                    };
+                    return BadRequest($"A product with name '{productUpdate.ProductName}' already exists for this brand-category combination.");
+                }
 
-                    await _context.Products.AddAsync(product);
-                }
-                else
-                {
-                    // Update existing product
-                    product.AvailableProduct = productUpdate.AvailableProduct;
-                    product.Price = productUpdate.Price;
-                }
+                // Update product properties
+                product.BrandId = productUpdate.BrandId;
+                product.CategoryId = productUpdate.CategoryId;
+                product.ProductName = productUpdate.ProductName;
+                product.Description = productUpdate.Description;
+                product.AvailableProduct = productUpdate.AvailableProduct;
+                product.Price = productUpdate.Price;
 
                 await _context.SaveChangesAsync();
 
                 // Create response DTO
                 var productDTO = new ProductDTO
                 {
+                    Id = product.Id,
                     BrandId = product.BrandId,
                     CategoryId = product.CategoryId,
                     BrandName = brand.Name,
                     CategoryName = category.CategoryName,
+                    ProductName = product.ProductName,
+                    Description = product.Description,
                     AvailableProduct = product.AvailableProduct,
-                    Price = product.Price
+                    Price = product.Price,
+                    ImageUrl = product.Image?.URL
                 };
 
                 return Ok(productDTO);
@@ -302,98 +373,25 @@ namespace Cosmetics.Server.Controllers.Products
             }
         }
 
-        [HttpPost("bulk")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> BulkUpdateProduct(List<ProductUpdateDTO> productUpdates)
-        {
-            try
-            {
-                if (productUpdates == null || !productUpdates.Any())
-                {
-                    return BadRequest("No product updates provided.");
-                }
-
-                // Validate all product updates
-                foreach (var update in productUpdates)
-                {
-                    if (update.AvailableProduct < 0)
-                    {
-                        return BadRequest($"Product cannot be negative for Brand ID {update.BrandId} and Category ID {update.CategoryId}.");
-                    }
-
-                    if (update.Price < 0)
-                    {
-                        return BadRequest($"Price cannot be negative for Brand ID {update.BrandId} and Category ID {update.CategoryId}.");
-                    }
-                }
-
-                // Batch process all updates
-                foreach (var update in productUpdates)
-                {
-                    // Check if brand and category exist (can be optimized with a batch query)
-                    var brand = await _context.Brands.FindAsync(update.BrandId);
-                    if (brand == null) continue; // Skip invalid entries
-
-                    var category = await _context.Categories.FindAsync(update.CategoryId);
-                    if (category == null) continue; // Skip invalid entries
-
-                    var product = await _context.Products
-                        .FirstOrDefaultAsync(cc =>
-                            cc.BrandId == update.BrandId &&
-                            cc.CategoryId == update.CategoryId);
-
-                    if (product == null)
-                    {
-                        // Create new relationship
-                        product = new Cosmetics.Server.Models.Product
-                        {
-                            BrandId = update.BrandId,
-                            CategoryId = update.CategoryId,
-                            AvailableProduct = update.AvailableProduct,
-                            Price = update.Price
-                        };
-
-                        await _context.Products.AddAsync(product);
-                    }
-                    else
-                    {
-                        // Update existing
-                        product.AvailableProduct = update.AvailableProduct;
-                        product.Price = update.Price;
-                    }
-                }
-
-                await _context.SaveChangesAsync();
-                return Ok("Products updated successfully.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpDelete("{brandId}/{categoryId}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RemoveProduct(int brandId, int categoryId)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             try
             {
                 var product = await _context.Products
-                    .FirstOrDefaultAsync(cc => cc.BrandId == brandId && cc.CategoryId == categoryId);
+                    .Include(p => p.Image)
+                    .FirstOrDefaultAsync(p => p.Id == id);
 
                 if (product == null)
                 {
-                    return NotFound($"Product for Brand ID {brandId} and Category ID {categoryId} not found.");
+                    return NotFound($"Product with ID {id} not found.");
                 }
 
-                // Before removing, check if there are any images associated with this brand-category
-                var associatedImages = await _context.Images
-                    .Where(i => i.BrandId == brandId && i.CategoryId == categoryId)
-                    .ToListAsync();
-
-                if (associatedImages.Any())
+                // Check if there are any images associated with this product
+                if (product.Image != null)
                 {
-                    return BadRequest($"Cannot remove product while there are {associatedImages.Count} images associated with this brand-category combination. Delete the images first.");
+                    return BadRequest("Cannot delete product while it has an associated image. Delete the image first.");
                 }
 
                 _context.Products.Remove(product);
@@ -405,6 +403,14 @@ namespace Cosmetics.Server.Controllers.Products
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+        // Backward compatibility endpoints
+        [HttpGet("legacy/{brandId}/{categoryId}")]
+        [Obsolete("Use GetProductsByBrandAndCategory instead")]
+        public async Task<IActionResult> GetProductLegacy(int brandId, int categoryId)
+        {
+            return await GetProductsByBrandAndCategory(brandId, categoryId);
         }
     }
 }

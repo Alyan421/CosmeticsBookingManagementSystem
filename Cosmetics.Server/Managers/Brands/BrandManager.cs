@@ -31,12 +31,26 @@ namespace Cosmetics.Server.Managers.Brands
         {
             try
             {
+                // Validate that brand name is unique
+                var existingBrand = await _brandRepository.GetDbSet()
+                    .FirstOrDefaultAsync(b => b.Name.ToLower() == brand.Name.ToLower());
+
+                if (existingBrand != null)
+                {
+                    throw new InvalidOperationException($"Brand with name '{brand.Name}' already exists.");
+                }
+
                 // Add the brand
                 await _brandRepository.AddAsync(brand);
                 await _brandRepository.SaveChangesAsync();
 
                 // Return brand with relationships
                 return await GetBrandByIdAsync(brand.Id);
+            }
+            catch (InvalidOperationException)
+            {
+                // Rethrow business rule violations as-is
+                throw;
             }
             catch (Exception ex)
             {
@@ -48,12 +62,38 @@ namespace Cosmetics.Server.Managers.Brands
         {
             try
             {
+                // Check if brand exists
+                var existingBrand = await _brandRepository.GetByIdAsync(brand.Id);
+                if (existingBrand == null)
+                {
+                    throw new KeyNotFoundException($"Brand with ID {brand.Id} not found");
+                }
+
+                // Validate that brand name is unique (excluding current brand)
+                var duplicateBrand = await _brandRepository.GetDbSet()
+                    .FirstOrDefaultAsync(b => b.Id != brand.Id && b.Name.ToLower() == brand.Name.ToLower());
+
+                if (duplicateBrand != null)
+                {
+                    throw new InvalidOperationException($"Brand with name '{brand.Name}' already exists.");
+                }
+
                 // Update the brand
                 await _brandRepository.UpdateAsync(brand);
                 await _brandRepository.SaveChangesAsync();
 
                 // Return brand with relationships
                 return await GetBrandByIdAsync(brand.Id);
+            }
+            catch (KeyNotFoundException)
+            {
+                // Rethrow key not found exceptions as-is
+                throw;
+            }
+            catch (InvalidOperationException)
+            {
+                // Rethrow business rule violations as-is
+                throw;
             }
             catch (Exception ex)
             {
@@ -71,21 +111,22 @@ namespace Cosmetics.Server.Managers.Brands
                     return false; // Brand not found
                 }
 
-                var hasAssociatedBrands = await _productRepository.ExistsAsync(cc => cc.BrandId == id);
-                if (hasAssociatedBrands)
+                // Check if brand is associated with any products
+                var hasAssociatedProducts = await _productRepository.ExistsAsync(p => p.BrandId == id);
+                if (hasAssociatedProducts)
                 {
-                    throw new InvalidOperationException("Cannot delete brand as it is associated with one or more brands. Please remove these associations first.");
-                }
-
-                if (brand == null)
-                {
-                    return false;
+                    throw new InvalidOperationException("Cannot delete brand as it is associated with one or more products. Please remove these associations first.");
                 }
 
                 await _brandRepository.DeleteAsync(brand);
                 await _brandRepository.SaveChangesAsync();
 
                 return true;
+            }
+            catch (InvalidOperationException)
+            {
+                // Rethrow business rule violations as-is
+                throw;
             }
             catch (Exception ex)
             {
@@ -97,7 +138,24 @@ namespace Cosmetics.Server.Managers.Brands
         {
             try
             {
-                return await _brandRepository.GetByIdAsync(id);
+                var brand = await _brandRepository.GetDbSet()
+                    .Include(b => b.Products)
+                        .ThenInclude(p => p.Category)
+                    .Include(b => b.Products)
+                        .ThenInclude(p => p.Image)
+                    .FirstOrDefaultAsync(b => b.Id == id);
+
+                if (brand == null)
+                {
+                    throw new KeyNotFoundException($"Brand with ID {id} not found");
+                }
+
+                return brand;
+            }
+            catch (KeyNotFoundException)
+            {
+                // Rethrow key not found exceptions as-is
+                throw;
             }
             catch (Exception ex)
             {
@@ -109,11 +167,43 @@ namespace Cosmetics.Server.Managers.Brands
         {
             try
             {
-                return await _brandRepository.GetAllAsync();
+                return await _brandRepository.GetDbSet()
+                    .Include(b => b.Products)
+                        .ThenInclude(p => p.Category)
+                    .Include(b => b.Products)
+                        .ThenInclude(p => p.Image)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception("Error retrieving all brands", ex);
+            }
+        }
+
+        // Additional helper methods for product management
+        public async Task<IEnumerable<Product>> GetBrandProductsAsync(int brandId)
+        {
+            try
+            {
+                var brand = await GetBrandByIdAsync(brandId);
+                return brand.Products;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving products for brand with ID {brandId}", ex);
+            }
+        }
+
+        public async Task<int> GetBrandProductCountAsync(int brandId)
+        {
+            try
+            {
+                return await _productRepository.GetDbSet()
+                    .CountAsync(p => p.BrandId == brandId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error counting products for brand with ID {brandId}", ex);
             }
         }
     }

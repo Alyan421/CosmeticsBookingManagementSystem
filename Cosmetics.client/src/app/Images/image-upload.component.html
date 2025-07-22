@@ -1,13 +1,13 @@
 <div class="upload-container">
   <div class="header" *ngIf="!isUpdateMode">
-    <h1>Upload Image</h1>
-    <p>Upload an image and associate it with a brand, category, and set initial product</p>
+    <h1>Upload Product Image</h1>
+    <p>Upload an image for an existing product or create a new product with an image</p>
   </div>
 
   <div class="content-wrapper">
     <div class="upload-form-container card">
       <div class="card-header">
-        <h2>{{ isUpdateMode ? 'Update Image' : 'Image Upload' }}</h2>
+        <h2>{{ isUpdateMode ? 'Update Product Image' : 'Upload Product Image' }}</h2>
       </div>
       <div class="card-body">
         <div *ngIf="isLoadingData" class="loading-spinner">
@@ -18,10 +18,12 @@
         <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" *ngIf="!isLoadingData">
           <!-- File upload section -->
           <div class="form-group">
-            <label for="file">{{ isUpdateMode ? 'Change Image (Optional)' : 'Select Image' }}</label>
-            <input type="file" id="file" (change)="onFileChange($event)" class="form-control" accept="image/*">
-            <div class="invalid-feedback" *ngIf="uploadForm.get('file')?.invalid && uploadForm.get('file')?.touched">
-              Please select an image file.
+            <label for="file">{{ isUpdateMode ? 'Change Image (Optional)' : 'Select Image' }} *</label>
+            <input type="file" id="file" (change)="onFileChange($event)"
+                   class="form-control" accept="image/*"
+                   [class.is-invalid]="isFieldInvalid('file')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('file')">
+              {{ getFieldError('file') }}
             </div>
           </div>
 
@@ -32,63 +34,135 @@
             </div>
           </div>
 
-          <!-- Brand selection -->
-          <div class="form-group">
-            <label for="brandId">Select Brand</label>
-            <select id="brandId" formControlName="brandId" class="form-control" [class.is-invalid]="uploadForm.get('brandId')?.invalid && uploadForm.get('brandId')?.touched">
-              <option value="">Select a brand</option>
-              <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
-            </select>
-            <div class="invalid-feedback" *ngIf="uploadForm.get('brandId')?.invalid && uploadForm.get('brandId')?.touched">
-              Please select a brand.
+          <!-- Product Selection Mode Toggle -->
+          <div class="form-group" *ngIf="!isUpdateMode">
+            <div class="form-check">
+              <input type="checkbox" id="createNewProduct" formControlName="createNewProduct"
+                     class="form-check-input">
+              <label class="form-check-label" for="createNewProduct">
+                Create new product instead of using existing
+              </label>
             </div>
           </div>
 
-          <!-- Category selection -->
-          <div class="form-group">
-            <label for="categoryId">Select Category</label>
-            <select id="categoryId" formControlName="categoryId" class="form-control" [class.is-invalid]="uploadForm.get('categoryId')?.invalid && uploadForm.get('categoryId')?.touched">
-              <option value="">Select a category</option>
-              <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}</option>
-            </select>
-            <div class="invalid-feedback" *ngIf="uploadForm.get('categoryId')?.invalid && uploadForm.get('categoryId')?.touched">
-              Please select a category.
-            </div>
-          </div>
-
-          <!-- Product quantity -->
-          <div class="form-group">
-            <label for="availableProduct">{{ isUpdateMode ? 'Update Product Quantity' : 'Initial Product Quantity' }}</label>
-            <input type="number" id="availableProduct" formControlName="availableProduct" class="form-control" min="0" [class.is-invalid]="uploadForm.get('availableProduct')?.invalid && uploadForm.get('availableProduct')?.touched">
-            <div class="invalid-feedback" *ngIf="uploadForm.get('availableProduct')?.invalid && uploadForm.get('availableProduct')?.touched">
-              Product quantity must be a positive number.
-            </div>
-          </div>
-
-          <!-- Product price -->
-          <div class="form-group">
-            <label for="price">{{ isUpdateMode ? 'Update Product Price' : 'Initial Product Price' }}</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Rs</span>
+          <!-- Brand and Category Selection -->
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="brandId">Brand *</label>
+              <select id="brandId" formControlName="brandId" class="form-control"
+                      [class.is-invalid]="isFieldInvalid('brandId')">
+                <option value="">Select a brand</option>
+                <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('brandId')">
+                {{ getFieldError('brandId') }}
               </div>
-              <input type="number" id="price" formControlName="price" class="form-control" min="0" step="0.01" [class.is-invalid]="uploadForm.get('price')?.invalid && uploadForm.get('price')?.touched">
             </div>
-            <div class="invalid-feedback" *ngIf="uploadForm.get('price')?.invalid && uploadForm.get('price')?.touched">
-              Price must be a positive number.
+
+            <div class="form-group col-md-6">
+              <label for="categoryId">Category *</label>
+              <select id="categoryId" formControlName="categoryId" class="form-control"
+                      [class.is-invalid]="isFieldInvalid('categoryId')">
+                <option value="">Select a category</option>
+                <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('categoryId')">
+                {{ getFieldError('categoryId') }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Existing Product Selection (when not creating new) -->
+          <div class="form-group" *ngIf="!showCreateProduct">
+            <label for="productId">Select Product *</label>
+            <select id="productId" formControlName="productId" class="form-control"
+                    [class.is-invalid]="isFieldInvalid('productId')">
+              <option value="">{{ filteredProducts.length === 0 ? 'No products available without images for selected brand/category' : 'Select a product' }}</option>
+              <option *ngFor="let product of filteredProducts" [value]="product.id">
+                {{ product.productName }} - Rs {{ product.price.toFixed(2) }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('productId')">
+              {{ getFieldError('productId') }}
+            </div>
+            <small class="form-text text-muted" *ngIf="filteredProducts.length === 0 && uploadForm.get('brandId')?.value && uploadForm.get('categoryId')?.value">
+              No products without images found for this brand-category combination. Enable "Create new product" to add one.
+            </small>
+          </div>
+
+          <!-- Product Details Section -->
+          <div class="product-details-section" *ngIf="showCreateProduct || selectedProduct">
+            <h4 class="section-title">
+              {{ showCreateProduct ? 'New Product Details' : 'Selected Product Details' }}
+            </h4>
+
+            <div class="form-row">
+              <div class="form-group col-md-8">
+                <label for="productName">Product Name *</label>
+                <input type="text" id="productName" formControlName="productName"
+                       class="form-control" placeholder="Enter product name"
+                       [class.is-invalid]="isFieldInvalid('productName')"
+                       [readonly]="!showCreateProduct && !isUpdateMode">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('productName')">
+                  {{ getFieldError('productName') }}
+                </div>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="price">Price (Rs) *</label>
+                <input type="number" id="price" formControlName="price"
+                       class="form-control" min="0" step="0.01"
+                       [class.is-invalid]="isFieldInvalid('price')"
+                       [readonly]="!showCreateProduct && !isUpdateMode">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('price')">
+                  {{ getFieldError('price') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea id="description" formControlName="description"
+                        class="form-control" rows="3"
+                        placeholder="Enter product description (optional)"
+                        [class.is-invalid]="isFieldInvalid('description')"
+                        [readonly]="!showCreateProduct && !isUpdateMode"></textarea>
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('description')">
+                {{ getFieldError('description') }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="availableProduct">Available Quantity *</label>
+              <input type="number" id="availableProduct" formControlName="availableProduct"
+                     class="form-control" min="0"
+                     [class.is-invalid]="isFieldInvalid('availableProduct')"
+                     [readonly]="!showCreateProduct && !isUpdateMode">
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('availableProduct')">
+                {{ getFieldError('availableProduct') }}
+              </div>
             </div>
           </div>
 
           <!-- Form buttons -->
           <div class="form-buttons">
-            <button type="submit" class="btn btn-primary" [disabled]="uploadForm.invalid || isLoading">
+            <button type="submit" class="btn btn-primary"
+                    [disabled]="uploadForm.invalid || isLoading"
+                    [class.btn-success]="!uploadForm.invalid && !isLoading">
               <i class="fas" [class.fa-upload]="!isUpdateMode" [class.fa-save]="isUpdateMode"></i>
-              {{ isUpdateMode ? 'Update Image & Product' : 'Upload Image & Create Product' }}
+              <span *ngIf="!isUpdateMode">
+                {{ showCreateProduct ? 'Create Product & Upload Image' : 'Upload Image' }}
+              </span>
+              <span *ngIf="isUpdateMode">Update Image</span>
             </button>
-            <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isLoading" *ngIf="!isUpdateMode">
+
+            <button type="button" class="btn btn-secondary" (click)="resetForm()"
+                    [disabled]="isLoading" *ngIf="!isUpdateMode">
               <i class="fas fa-undo"></i> Reset
             </button>
-            <button type="button" class="btn btn-outline-secondary" (click)="goBack()" [disabled]="isLoading">
+
+            <button type="button" class="btn btn-outline-secondary" (click)="goBack()"
+                    [disabled]="isLoading">
               <i class="fas fa-arrow-left"></i> {{ isUpdateMode ? 'Cancel' : 'Back' }}
             </button>
           </div>
@@ -96,9 +170,33 @@
           <!-- Loading indicator -->
           <div class="loading-indicator" *ngIf="isLoading">
             <div class="spinner"></div>
-            <p>{{ isUpdateMode ? 'Updating image and product...' : 'Uploading image and creating product...' }}</p>
+            <p>
+              <span *ngIf="!isUpdateMode">
+                {{ showCreateProduct ? 'Creating product and uploading image...' : 'Uploading image...' }}
+              </span>
+              <span *ngIf="isUpdateMode">Updating image...</span>
+            </p>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Information Card -->
+    <div class="info-card card" *ngIf="!isUpdateMode">
+      <div class="card-body">
+        <div class="info-content">
+          <i class="fas fa-info-circle info-icon"></i>
+          <div>
+            <h3>How it works</h3>
+            <ul class="info-list">
+              <li>Select an existing product without an image, or create a new product</li>
+              <li>Each product can have only one image</li>
+              <li>Only products without existing images are shown for selection</li>
+              <li>When creating a new product, fill in all the product details</li>
+              <li>Supported formats: JPG, PNG, GIF</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>

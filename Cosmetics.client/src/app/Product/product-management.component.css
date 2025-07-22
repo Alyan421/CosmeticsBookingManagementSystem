@@ -1,6 +1,6 @@
 .product-container {
   padding: 2rem;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -44,6 +44,11 @@
   padding: 1.5rem;
 }
 
+/* Form Styles */
+.product-form-container {
+  border-left: 4px solid #007bff;
+}
+
 .form-row {
   display: flex;
   flex-wrap: wrap;
@@ -56,6 +61,26 @@
   padding-right: 15px;
   padding-left: 15px;
 }
+
+  .form-group.col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+
+  .form-group.col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+
+  .form-group.col-md-8 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+
+  .form-group.col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 
 .form-control {
   display: block;
@@ -79,6 +104,18 @@
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   }
 
+  .form-control.is-invalid {
+    border-color: #dc3545;
+  }
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
 .form-buttons {
   display: flex;
   justify-content: flex-end;
@@ -86,6 +123,7 @@
   margin-top: 1rem;
 }
 
+/* Button Styles */
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -98,8 +136,14 @@
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
 }
+
+  .btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
 
 .btn-primary {
   color: #fff;
@@ -107,8 +151,7 @@
   border-color: #007bff;
 }
 
-  .btn-primary:hover {
-    color: #fff;
+  .btn-primary:hover:not(:disabled) {
     background-color: #0069d9;
     border-color: #0062cc;
   }
@@ -120,7 +163,6 @@
 }
 
   .btn-secondary:hover {
-    color: #fff;
     background-color: #5a6268;
     border-color: #545b62;
   }
@@ -132,7 +174,6 @@
 }
 
   .btn-success:hover {
-    color: #fff;
     background-color: #218838;
     border-color: #1e7e34;
   }
@@ -144,7 +185,6 @@
 }
 
   .btn-danger:hover {
-    color: #fff;
     background-color: #c82333;
     border-color: #bd2130;
   }
@@ -156,15 +196,16 @@
 }
 
   .btn-info:hover {
-    color: #fff;
     background-color: #138496;
     border-color: #117a8b;
   }
 
+/* Action Buttons */
 .product-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .input-group {
@@ -173,13 +214,53 @@
   flex-wrap: wrap;
   align-items: stretch;
   width: 100%;
+  min-width: 250px;
 }
 
+.input-group-prepend,
 .input-group-append {
   display: flex;
-  margin-left: -1px;
 }
 
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  text-align: center;
+  white-space: nowrap;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.input-group-prepend .input-group-text {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group-append .input-group-text {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.input-group .form-control {
+  position: relative;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-bottom: 0;
+}
+
+.input-group-prepend + .form-control {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Table Styles */
 .table {
   width: 100%;
   margin-bottom: 1rem;
@@ -197,6 +278,7 @@
   .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
   }
 
 .table-striped tbody tr:nth-of-type(odd) {
@@ -213,16 +295,81 @@
   border-color: #454d55;
 }
 
-.no-data {
+/* Product-specific table styles */
+.description-cell {
+  max-width: 200px;
+}
+
+.description-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.875em;
+  font-weight: 500;
+  line-height: 1;
   text-align: center;
-  padding: 3rem;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.375rem;
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.image-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+}
+
+.no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
   color: #6c757d;
 }
 
-  .no-data i {
-    margin-bottom: 1rem;
-  }
+/* Quantity status colors */
+.quantity-high {
+  color: #28a745;
+  font-weight: 600;
+}
 
+.quantity-medium {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.quantity-low {
+  color: #fd7e14;
+  font-weight: 600;
+}
+
+.quantity-out {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* Pagination */
 .pagination {
   display: flex;
   padding-left: 0;
@@ -265,6 +412,7 @@
   color: #007bff;
   background-color: #fff;
   border: 1px solid #dee2e6;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
   .page-link:hover {
@@ -275,68 +423,51 @@
     border-color: #dee2e6;
   }
 
-.color-swatch {
+/* Loading and No Data */
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+}
+
+  .no-data i {
+    margin-bottom: 1rem;
+    color: #dee2e6;
+  }
+
+.spinner-border {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
   border-radius: 50%;
-  margin-right: 8px;
-  vertical-align: middle;
-  border: 1px solid #ddd;
+  animation: spinner-border 0.75s linear infinite;
 }
 
-.text-success {
-  color: #28a745 !important;
-}
-
-.text-danger {
-  color: #dc3545 !important;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .product-container {
-    padding: 1rem;
-  }
-
-  .product-actions {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .form-group.col-md-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-
-  .product-list-container .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .product-list-container .product-actions {
-    margin-top: 1rem;
-    width: 100%;
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
   }
 }
 
-/* Add these styles to your existing CSS */
-
+/* Info Card */
 .info-card {
-  margin-top: 1.5rem;
   background-color: #f8f9fa;
   border-left: 4px solid #17a2b8;
 }
 
 .info-content {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
 }
 
 .info-icon {
   font-size: 2rem;
   color: #17a2b8;
+  margin-top: 0.25rem;
 }
 
 .info-content h3 {
@@ -348,6 +479,7 @@
 .info-content p {
   margin: 0;
   color: #666;
+  line-height: 1.6;
 }
 
 .info-content a {
@@ -359,15 +491,46 @@
     text-decoration: underline;
   }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-container {
+    padding: 1rem;
+  }
 
-/* Add to the bottom of the existing CSS */
+  .product-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
 
-/* Responsive table */
-.responsive-table {
-  width: 100%;
-  margin-bottom: 1rem;
+  .input-group {
+    min-width: unset;
+  }
+
+  .form-group.col-md-4,
+  .form-group.col-md-6,
+  .form-group.col-md-8,
+  .form-group.col-md-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-actions {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .form-buttons {
+    justify-content: center;
+  }
 }
 
+/* Responsive Table */
 @media screen and (max-width: 767px) {
   .responsive-table {
     border: 0;
@@ -383,13 +546,15 @@
       border: 1px solid #ddd;
       border-radius: 0.25rem;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      padding: 1rem;
     }
 
     .responsive-table td {
       display: block;
-      text-align: right;
-      padding: 0.75rem;
-      border-bottom: 1px solid #ddd;
+      text-align: left;
+      padding: 0.5rem 0;
+      border: none;
+      border-bottom: 1px solid #eee;
     }
 
       .responsive-table td:last-child {
@@ -397,32 +562,42 @@
       }
 
       .responsive-table td::before {
-        content: attr(data-label);
-        float: left;
+        content: attr(data-label) ": ";
         font-weight: bold;
+        color: #495057;
       }
 
   .text-center {
-    text-align: right !important;
+    text-align: left !important;
   }
 
   .action-column {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 0.5rem;
+    margin-top: 0.5rem;
   }
+
+    .action-column::before {
+      content: none;
+    }
 
   .pagination-container {
     flex-direction: column;
     gap: 1rem;
+    text-align: center;
   }
 
-  .items-count {
-    text-align: center;
+  .description-cell,
+  .description-text {
+    max-width: unset;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
   }
 }
 
-/* Responsive buttons */
+/* Responsive Buttons */
 .responsive-btn {
   display: inline-flex;
   align-items: center;
@@ -432,13 +607,13 @@
 }
 
   .responsive-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
 
 @media (max-width: 576px) {
   .responsive-btn {
     padding: 0.5rem;
-    width: auto;
+    font-size: 0.875rem;
   }
 
   .action-text {
@@ -446,141 +621,63 @@
   }
 }
 
-@media (min-width: 577px) {
-  .responsive-btn {
-    min-width: 80px;
-  }
+/* Utility Classes */
+.text-success {
+  color: #28a745 !important;
 }
 
-/* Add this to the bottom of your existing CSS file */
-
-/* Modal styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.text-danger {
+  color: #dc3545 !important;
 }
 
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease-out;
+.text-warning {
+  color: #ffc107 !important;
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.text-center {
+  text-align: center !important;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #eee;
+.d-flex {
+  display: flex !important;
 }
 
-  .modal-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
-  }
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-  transition: color 0.2s;
+.justify-content-between {
+  justify-content: space-between !important;
 }
 
-  .close-btn:hover {
-    color: #333;
-  }
-
-.modal-body {
-  padding: 1.5rem;
+.align-items-center {
+  align-items: center !important;
 }
 
-  /* Ensure form actions in modal are properly spaced */
-  .modal-body .form-actions {
-    margin-top: 1.5rem;
-  }
-
-/* Make the modal responsive */
-@media (max-width: 576px) {
-  .modal-content {
-    width: 95%;
-    margin: 0 10px;
-  }
-
-  .modal-body {
-    padding: 1rem;
-  }
+.ml-2 {
+  margin-left: 0.5rem !important;
 }
 
-
-/* Modal styles */
-.edit-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.mr-1 {
+  margin-right: 0.25rem !important;
 }
 
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.mt-2 {
+  margin-top: 0.5rem !important;
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+.mt-3 {
+  margin-top: 1rem !important;
 }
 
-  .modal-header h2 {
-    margin: 0;
-    font-size: 1.25rem;
-  }
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  line-height: 1;
+.p-5 {
+  padding: 3rem !important;
 }
 
-.modal-body {
-  padding: 1rem;
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }

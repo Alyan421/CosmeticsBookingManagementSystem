@@ -1,23 +1,124 @@
 <div class="product-container">
   <div class="product-header">
-    <h1>Inventory Management</h1>
-    <p>Manage product levels and prices for all brand-category combinations</p>
+    <h1>Product Management</h1>
+    <p>Manage individual products with their details, inventory, and pricing</p>
+  </div>
+
+  <!-- Product Form Section -->
+  <div class="product-form-container card" *ngIf="isEditing || isCreating">
+    <div class="card-header">
+      <h2>{{ isCreating ? 'Create New Product' : 'Edit Product' }}</h2>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="productForm" (ngSubmit)="submitForm()" id="productForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="brandId">Brand *</label>
+            <select id="brandId" formControlName="brandId" class="form-control"
+                    [class.is-invalid]="isFieldInvalid('brandId')">
+              <option [value]="null">Select Brand</option>
+              <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('brandId')">
+              {{ getFieldError('brandId') }}
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="categoryId">Category *</label>
+            <select id="categoryId" formControlName="categoryId" class="form-control"
+                    [class.is-invalid]="isFieldInvalid('categoryId')">
+              <option [value]="null">Select Category</option>
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('categoryId')">
+              {{ getFieldError('categoryId') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-8">
+            <label for="productName">Product Name *</label>
+            <input type="text" id="productName" formControlName="productName"
+                   class="form-control" placeholder="Enter product name"
+                   [class.is-invalid]="isFieldInvalid('productName')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('productName')">
+              {{ getFieldError('productName') }}
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="price">Price *</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Rs</span>
+              </div>
+              <input type="number" id="price" formControlName="price"
+                     class="form-control" min="0" step="0.01"
+                     [class.is-invalid]="isFieldInvalid('price')">
+            </div>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('price')">
+              {{ getFieldError('price') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description"
+                      class="form-control" rows="3"
+                      placeholder="Enter product description (optional)"
+                      [class.is-invalid]="isFieldInvalid('description')"></textarea>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('description')">
+              {{ getFieldError('description') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="availableProduct">Available Quantity *</label>
+            <input type="number" id="availableProduct" formControlName="availableProduct"
+                   class="form-control" min="0"
+                   [class.is-invalid]="isFieldInvalid('availableProduct')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('availableProduct')">
+              {{ getFieldError('availableProduct') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isSubmitting">
+            <i class="fas" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"
+               [class.fa-save]="!isSubmitting"></i>
+            {{ isSubmitting ? 'Processing...' : (isCreating ? 'Create Product' : 'Update Product') }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()" [disabled]="isSubmitting">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Product List Section -->
   <div class="product-list-container card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      <h2>Current Inventory</h2>
+      <h2>Product List</h2>
       <div class="product-actions">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm" (keyup.enter)="onSearch()">
+          <input type="text" class="form-control" placeholder="Search products..."
+                 [(ngModel)]="searchTerm" (keyup.enter)="onSearch()">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
               <i class="fas fa-search"></i>
             </button>
           </div>
         </div>
-        <button class="btn btn-success ml-2" (click)="exportToCSV()">
+        <button class="btn btn-success ml-2" (click)="startCreating()">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+        <button class="btn btn-info ml-2" (click)="exportToCSV()">
           <i class="fas fa-file-export"></i> Export CSV
         </button>
         <button class="btn btn-info ml-2" (click)="loadData()">
@@ -25,94 +126,76 @@
         </button>
       </div>
     </div>
+
     <div class="card-body">
       <div *ngIf="isLoading" class="text-center p-5">
         <div class="spinner-border text-primary" role="status">
           <span class="sr-only">Loading...</span>
         </div>
-        <p class="mt-2">Loading inventory data...</p>
+        <p class="mt-2">Loading products...</p>
       </div>
 
-      <!-- Add this to your product-management.component.html -->
-      <div *ngIf="isEditing" class="edit-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2>Edit Product</h2>
-            <button type="button" class="close-btn" (click)="resetForm()">&times;</button>
-          </div>
-          <div class="modal-body">
-            <form [formGroup]="productForm" (ngSubmit)="submitForm()" id="productForm">
-              <div class="form-group">
-                <label>Brand</label>
-                <input type="text" class="form-control" [value]="getBrandName(productForm.get('brandId')?.value)" disabled>
-              </div>
-              <div class="form-group">
-                <label>Category</label>
-                <input type="text" class="form-control" [value]="getCategoryName(productForm.get('categoryId')?.value)" disabled>
-              </div>
-              <div class="form-group">
-                <label for="availableProduct">Available Product</label>
-                <input type="number" id="availableProduct" formControlName="availableProduct" class="form-control" min="0">
-              </div>
-              <div class="form-group">
-                <label for="price">Price</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Rs</span>
-                  </div>
-                  <input type="number" id="price" formControlName="price" class="form-control" min="0" step="0.01">
-                </div>
-              </div>
-              <div class="form-actions">
-                <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isSubmitting">
-                  <i class="fas fa-save"></i> Update
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="resetForm()">
-                  <i class="fas fa-times"></i> Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="!isLoading && filteredProducts.length === 0" class="no-data">
+      <div *ngIf="!isLoading && paginatedProducts.length === 0" class="no-data">
         <i class="fas fa-box-open fa-3x"></i>
-        <p>No product items found.</p>
+        <p>No products found.</p>
         <p *ngIf="searchTerm">Try changing your search criteria.</p>
+        <button class="btn btn-primary mt-3" (click)="startCreating()" *ngIf="!searchTerm">
+          <i class="fas fa-plus"></i> Create First Product
+        </button>
       </div>
 
-      <div *ngIf="!isLoading && filteredProducts.length > 0" class="product-table-container">
+      <div *ngIf="!isLoading && paginatedProducts.length > 0" class="product-table-container">
         <table class="table table-striped table-hover responsive-table">
           <thead class="thead-dark">
             <tr>
+              <th>Product Name</th>
               <th>Brand</th>
               <th>Category</th>
-              <th class="text-center">Available Product</th>
+              <th>Description</th>
+              <th class="text-center">Quantity</th>
               <th class="text-center">Price</th>
+              <th class="text-center">Image</th>
               <th class="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of filteredProducts">
+            <tr *ngFor="let product of paginatedProducts">
+              <td data-label="Product">
+                <strong>{{ product.productName }}</strong>
+              </td>
               <td data-label="Brand">{{ product.brandName }}</td>
               <td data-label="Category">
-                <span class="category-swatch" [style.background-category]="product.categoryName"></span>
-                {{ product.categoryName }}
+                <span class="category-badge">{{ product.categoryName }}</span>
               </td>
-              <td class="text-center" data-label="Available Product">
-                <span [class.text-danger]="product.availableProduct === 0" [class.text-success]="product.availableProduct > 10">
+              <td data-label="Description" class="description-cell">
+                <span class="description-text" [title]="product.description">
+                  {{ product.description || 'No description' }}
+                </span>
+              </td>
+              <td class="text-center" data-label="Quantity">
+                <span [class]="getQuantityClass(product.availableProduct)">
                   {{ product.availableProduct }}
                 </span>
               </td>
               <td class="text-center" data-label="Price">
-                Rs {{ product.price.toFixed(2) }}
+                <strong>Rs {{ product.price.toFixed(2) }}</strong>
+              </td>
+              <td class="text-center" data-label="Image">
+                <div class="image-cell">
+                  <img *ngIf="product.imageUrl" [src]="product.imageUrl"
+                       [alt]="product.productName" class="product-thumbnail">
+                  <span *ngIf="!product.imageUrl" class="no-image">
+                    <i class="fas fa-image"></i>
+                  </span>
+                </div>
               </td>
               <td class="text-center action-column" data-label="Actions">
-                <button class="btn btn-sm btn-primary mr-1 responsive-btn" (click)="editProduct(product)" title="Edit">
+                <button class="btn btn-sm btn-primary mr-1 responsive-btn"
+                        (click)="startEditing(product)" title="Edit">
                   <i class="fas fa-edit"></i><span class="action-text"> Edit</span>
                 </button>
-                <button class="btn btn-sm btn-danger responsive-btn" (click)="deleteProduct(product)" title="Delete">
+                <button class="btn btn-sm btn-danger responsive-btn"
+                        (click)="deleteProduct(product)" title="Delete">
                   <i class="fas fa-trash"></i><span class="action-text"> Delete</span>
                 </button>
               </td>
@@ -149,58 +232,18 @@
     </div>
   </div>
 
-  <!-- Add information about where to add product -->
+  <!-- Information Card -->
   <div class="info-card card">
     <div class="card-body">
       <div class="info-content">
         <i class="fas fa-info-circle info-icon"></i>
         <div>
-          <h3>Need to add new product?</h3>
-          <p>New product is now created when uploading images. Please go to the <a routerLink="/upload-image">Upload Image</a> page to add new product and upload an image simultaneously.</p>
+          <h3>Product Images</h3>
+          <p>
+            To add images to your products, visit the <a routerLink="/upload-image">Upload Image</a> page.
+            Each product can have one associated image.
+          </p>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Edit Product Modal -->
-  <div class="modal-overlay" *ngIf="isEditing">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Update Product</h2>
-        <button class="close-btn" (click)="resetForm()">×</button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="productForm" (ngSubmit)="submitForm()" id="productForm">
-          <div class="form-group">
-            <label>Brand</label>
-            <input type="text" class="form-control" [value]="getBrandName(productForm.get('brandId')?.value)" disabled>
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <input type="text" class="form-control" [value]="getCategoryName(productForm.get('categoryId')?.value)" disabled>
-          </div>
-          <div class="form-group">
-            <label for="availableProduct">Available Product</label>
-            <input type="number" id="availableProduct" formControlName="availableProduct" class="form-control" min="0">
-          </div>
-          <div class="form-group">
-            <label for="modalPrice">Price</label>
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Rs</span>
-              </div>
-              <input type="number" id="modalPrice" formControlName="price" class="form-control" min="0" step="0.01">
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isSubmitting">
-              <i class="fas fa-save"></i> Update Product
-            </button>
-            <button type="button" class="btn btn-secondary" (click)="resetForm()">
-              <i class="fas fa-times"></i> Cancel
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
