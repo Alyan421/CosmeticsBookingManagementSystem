@@ -105,6 +105,18 @@
   text-align: center;
 }
 
+/* Add specific styles for contact links */
+.contact a {
+  color: #fff !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+  .contact a:hover {
+    color: var(--accent-pink) !important;
+    text-decoration: underline;
+  }
+
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
