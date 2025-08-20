@@ -29,24 +29,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { role: 'Admin' }
   },
-  {
-    path: '',
-    canActivate: [AuthGuard],
-    resolve: {
-      role: (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-        const authService = inject(AuthService);
-        const router = inject(Router);
-        const role = authService.getCurrentUserRole();
-
-        if (role === 'Admin') {
-          router.navigate(['/admin-dashboard']);
-        } else {
-          router.navigate(['/public-gallery']);
-        }
-        return role;
-      }
-    },
-    component: NotFoundComponent
-  },
+  // Set the default route to public-gallery
+  { path: '', redirectTo: 'public-gallery', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent },
 ];
